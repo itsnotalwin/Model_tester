@@ -1,9 +1,9 @@
-TASK
-Build a complete photography portfolio website as a SINGLE self-contained file, index.html (HTML, CSS, and JavaScript inline), then deliver it into a shared repository using the exact procedure below. This is a creativity and capability test. Impress me, and show your full range through the work itself.
+TASK — BLIND HANDOFF v2
+Build a complete photography portfolio website as a SINGLE self-contained file, index.html (HTML, CSS, and JavaScript inline), then deliver the finished files as a private local artifact to the organizer. Do not access, discover, clone, browse or write to any destination repository. This is a creativity and capability test. Impress me, and show your full range through the work itself.
 
 IDENTITY
 Your submission slug is: {MODEL_SLUG}   (lowercase letters, digits, hyphens only)
-Target repository: {OWNER}/Model_tester, branch: {BRANCH}
+Delivery: create a local folder named {MODEL_SLUG}, then attach/hand over its files. A separate organizer imports them after the independent test ends. You are not given a repository name, URL, branch, or GitHub credentials.
 
 ═══════════════════════════════════════
 PART A: THE WEBSITE
@@ -16,7 +16,8 @@ HARD RULES
 - Use only relative paths. The site will be served at /submissions/{MODEL_SLUG}/ and must not assume it lives at the domain root.
 - Your page will be displayed inside a sandboxed iframe without same-origin access. Therefore: do not rely on localStorage, sessionStorage, cookies, or IndexedDB (if you touch them, wrap in try/catch and degrade gracefully); do not reference window.parent or window.top; do not open popups; internal links must be #hash links only; the contact form must be handled entirely in JS (preventDefault) with no real submission.
 - Do not search the web, consult other models, browse other submissions, or import external code/assets while making the website. Work independently from the brief.
-- EXCEPTION FOR DELIVERY ONLY: you may use an authorized GitHub connector/API to create, update, and verify files **inside your own submission folder**. This is required to deliver the work. It is not permission to browse the rest of the repository.
+- Do not use GitHub tools, Git commands, repository APIs, cloud browser, web search, site fetches, remote images, or other online resources for any stage, including delivery. Use local file creation and local preview/testing only.
+- Do not use any existing model-generated example or code from a previous run, even if it is accidentally available in your context.
 
 FIXED LAYOUT (identical for every submission; do not reorder or rename)
 Use these exact section IDs, in this exact order:
@@ -65,56 +66,55 @@ QUALITY BAR
 Everything must actually work, be polished, and feel intentional at 1440px and 390px widths. Performance matters: use IntersectionObserver and requestAnimationFrame appropriately, and avoid layout thrash. Finish the whole file; no placeholders, no TODOs, no "add more here" comments.
 
 ═══════════════════════════════════════
-PART B: ISOLATION (STRICTLY ENFORCED)
+PART B: BLIND ISOLATION — ZERO REPOSITORY ACCESS
 ═══════════════════════════════════════
 
-This is a blind, independent test. Your result is only valid if it is entirely your own.
+Your output must be independent. This is a blind benchmark, not a collaboration.
 
-You MUST NOT:
-- Read, open, list, search, clone, fetch, or view ANY file or folder in the repository other than your own folder. This includes other submissions, the root dashboard index.html, scripts/, .github/, PROMPT files, workflows, and git history of other paths.
-- Look at other submissions' commits, diffs, pull requests, branches, or deployed pages.
-- Use any existing site in the repo as a reference, template, or inspiration, even for structure or styling.
+ACCESS RULE (mandatory)
+- Work in a NEW, EMPTY local directory. Only the benchmark brief and your own newly authored files may inform your implementation.
+- DO NOT access any GitHub repository, repository listing, git history, commit, PR, issue, model dashboard, published preview, example submission, or model-comparison page. Do not inspect another model's work by any channel.
+- DO NOT run git clone, git fetch, git pull, sparse checkout, gh commands, repository search, or GitHub connector tools. In particular, `git` metadata and branching do not provide read isolation.
+- DO NOT use web search, connected apps, browser navigation to online sites, remote URLs, or networked tools. If tools with online access exist, do not call them. Local filesystem read/write and local browser rendering are permitted ONLY within your new submission workspace.
+- The destination repository is deliberately NOT disclosed. You are NOT responsible for committing, pushing or registering your submission. All publication happens independently, after your work is handed to the organizer.
+- Do not reference another participant or any previous submission in your website or audit.
 
-You MUST:
-- Write ONLY inside submissions/{MODEL_SLUG}/. Touch nothing else in the repo. Do not edit the dashboard, any index files (including submissions/index.json), scripts, workflows, or shared config.
-- Access the repo in the narrowest way possible. Create files directly via the API/tool (write file to path), or use a sparse checkout limited to submissions/{MODEL_SLUG}. Never run a full clone. Never run commands like ls, find, tree, grep, or cat over the repo root or submissions/.
-- If you are unsure whether an action would expose you to another submission, do not do it.
-
-Violation = disqualification. Any evidence of you reading outside your folder (tool logs, commits, audit answers) fails the submission. Submissions are also checked automatically: any change outside your folder or outside the four allowed filenames is rejected.
+Do not claim technical enforcement from these rules. A trustworthy blind evaluation also requires the organizer to run you in a sandbox with network access disabled and without a connected repository. If isolation is broken, disclose it in AUDIT.md and mark the test INVALID rather than claiming you were independent.
 
 ═══════════════════════════════════════
-PART C: DELIVERY (REQUIRED FOLDER STRUCTURE)
+PART C: PRIVATE ARTIFACT DELIVERY
 ═══════════════════════════════════════
 
-Create exactly these files, and nothing else:
+Create exactly these files in ONE local folder, and nothing else:
 
-submissions/{MODEL_SLUG}/
-  index.html     ← the complete website (Part A)
-  meta.json      ← registration data for the dashboard (schema below)
-  AUDIT.md       ← your self-audit (Part D)
-  thumb.png      ← OPTIONAL. Only if you can genuinely render a screenshot. Otherwise omit; the dashboard shows a live preview.
+{MODEL_SLUG}/
+  index.html     ← complete self-contained website (Part A)
+  meta.json      ← valid registration metadata, schema below
+  AUDIT.md       ← your honest audit (Part D)
+  thumb.png      ← OPTIONAL: only if you captured a genuine rendered screenshot
 
-meta.json schema (valid JSON, no comments; "slug" must equal the folder name exactly):
+The artifact folder basename MUST equal your submission slug. It is NOT a git checkout and must NOT contain a .git directory. The organizer will later place this folder under submissions/{MODEL_SLUG}/ in the public showcase; do not do that yourself.
+
+meta.json schema (valid JSON with no comments):
 {
   "slug": "{MODEL_SLUG}",
-  "model": "<your model name and version>",
-  "title": "<your site's title, e.g. the name you gave your art direction>",
-  "tagline": "<your one-line tagline from the site>",
-  "palette": ["#hex", "#hex", "#hex", "#hex"],
-  "techniques": ["<generation techniques you used for the photos>"],
+  "model": "<your actual model name and version>",
+  "title": "<your site's artistic title>",
+  "tagline": "<one-line tagline from your site>",
+  "palette": ["#123456", "#234567", "#345678", "#456789"],
+  "techniques": ["<actual generative techniques; at least three>"],
   "entry": "index.html",
   "thumb": null,
-  "submittedAt": "<the actual current ISO 8601 timestamp with timezone>"
+  "submittedAt": "<actual current ISO 8601 date-time including a timezone>"
 }
 
-For `thumb`, use JSON `null` (WITHOUT quotes) when no real screenshot is available. Only use `"thumb.png"` if that file was actually generated and committed. Do not put `"null"`, `"thumb.png or null"`, or an unfilled placeholder in meta.json.
+Replace every placeholder with a factual value and real palette colors. The four palette examples above are placeholders, NOT mandated colors. Keep `"entry": "index.html"` exact. Use unquoted JSON null for missing screenshots. If, and only if, you actually capture thumb.png, set `"thumb": "thumb.png"`.
 
 DELIVERY VERIFICATION (mandatory)
-- Commit message: `submission: {MODEL_SLUG}`. Commit to `{BRANCH}` of `{OWNER}/Model_tester`. If direct push is not permitted, open a PR against `{BRANCH}`. A PR counts as **pending**, not live, until it is merged.
-- Verify the actual GitHub write result (commit SHA or PR URL). Then re-fetch ONLY `submissions/{MODEL_SLUG}/index.html`, `meta.json`, and `AUDIT.md` from your own folder at the destination branch. Never report success merely because you generated the files locally.
-- Verify that `meta.json` is valid JSON, `slug` matches your folder, `entry` is exactly `"index.html"`, `index.html` is not empty, and all required files were committed.
-- Do not edit or register yourself in `submissions/index.json`: the repository's GitHub Action discovers valid `meta.json` files and rebuilds that manifest on `main`. The dashboard also checks the live repository manifest. Allow normal indexing/deployment delay. Do not alter shared scripts, workflows, or dashboard files.
-- If your tool cannot write to the target branch or open a PR, say delivery is blocked rather than falsely reporting a commit or completed audit.
+- Save and re-open your own index.html, meta.json and AUDIT.md. Verify JSON syntax, the exact folder slug, the required website content, and your audit. Test locally where tools permit.
+- Hand over the folder as an attached zip or three/four downloadable files, preserving the folder name and filenames. Never include a URL or access token for the organizer's repository.
+- Do NOT claim a git commit, PR, dashboard registration, or live deployment. Those actions have not happened. Your delivery is COMPLETE only as a LOCAL ARTIFACT, and publication remains PENDING ORGANIZER IMPORT.
+- If artifact tooling is unavailable, state the limitation plainly; do not pretend the delivery was written, committed, published or verified.
 
 ═══════════════════════════════════════
 PART D: SELF-AUDIT (REQUIRED BEFORE FINISHING)
@@ -125,9 +125,12 @@ After writing your files, re-read ONLY your own index.html and audit it honestly
 # Audit: {MODEL_SLUG}
 
 ## Isolation attestation
-- Files/paths I read in the repo: <list, should be only my own folder or "none">
-- Files/paths I wrote: <list>
-- I did not view any other submission, the dashboard, or repo history: YES / NO
+- External repositories, dashboards, model submissions or websites accessed: NONE / list each
+- Files/paths I read: <only my own local workspace, or list exceptions>
+- Files/paths I wrote: <my own local artifact paths>
+- I used NO web, network, GitHub, repo or remote browser tools: YES / NO
+- I did not view another model's work: YES / NO
+- Blind test validity: VALID / INVALID (explain any breach honestly)
 - Tools and commands I ran: <list>
 
 ## Spec compliance (PASS / FAIL, with a one-line note each)
@@ -158,8 +161,8 @@ If any item is FAIL, FIX it in index.html, then re-audit and update AUDIT.md bef
 FINAL RESPONSE
 ═══════════════════════════════════════
 
-When delivery and audit are complete AND your destination commit/PR has been verified, reply with ONLY:
-- the path of the folder you created,
-- the commit hash or PR link,
-- "AUDIT: complete".
-No other commentary.
+When your LOCAL artifact has been saved and your self-audit is complete, reply with ONLY:
+- the local artifact folder path and attachment/file links (if available),
+- "AUDIT: complete" (only if actually completed),
+- "PUBLISHING: pending organizer import".
+Do not provide or invent a commit SHA or PR link. No other commentary.
