@@ -84,6 +84,29 @@
       "thumb": null,
       "hasAudit": true,
       "submittedAt": "2026-10-22T20:34:22+02:00"
+    },
+    {
+      "slug": "deepseek-flash",
+      "model": "deepseek-account/deepseek-flash",
+      "title": "Low Light, Hard Weather",
+      "tagline": "I photograph the weather between people.",
+      "palette": [
+        "#080b0a",
+        "#ece8dc",
+        "#c9ff4a",
+        "#ff6548"
+      ],
+      "techniques": [
+        "Seeded fBm procedural terrain and atmospheric canvas painting",
+        "Layered vector and geometric canvas scenes with gradients, shadow and blend-mode lighting",
+        "Per-pixel chromatic noise fields with palette interpolation",
+        "Particle and flow-field ink simulation on canvas",
+        "Inline SVG portrait with gradients, clip paths and feTurbulence grain"
+      ],
+      "entry": "index.html",
+      "thumb": "thumb.png",
+      "hasAudit": true,
+      "submittedAt": "2026-10-22T20:35:34+02:00"
     }
   ]
 }
