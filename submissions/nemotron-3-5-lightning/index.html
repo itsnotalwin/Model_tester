@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mara Lindqvist • Reykjavík Photographer</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg-subtle: #12121a;
+      --fg: #e8e8f0;
+      --muted: #6b6b80;
+      --accent: #00d4aa;
+      --accent-dim: rgba(0, 212, 170, 0.15);
+      --card: #1a1a24;
+      --border: #2a2a3a;
+      --danger: #ff4757;
+      --success: #00d4aa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *, *::before, *::after {
+        animation-duration: 0ms !important;
+        transition-duration: 0ms !important;
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--fg);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    /* ---- Navigation ---- */
+    #nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    #nav .logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--fg);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #nav .logo svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--accent);
+    }
+
+    #nav .links {
+      display: flex;
+      gap: 32px;
+    }
+
+    #nav .links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+
+    #nav .links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #nav .links a:hover {
+      color: var(--fg);
+    }
+
+    #nav .links a:hover::after {
+      width: 100%;
+    }
+
+    #nav .links a.active {
+      color: var(--fg);
+    }
+
+    #nav .links a.active::after {
+      width: 100%;
+    }
+
+    /* ---- Hero ---- */
+    #hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 24px;
+      position: relative;
+    }
+
+    #hero::after {
+      content: '';
+      position: absolute;
+      bottom: 40px;
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--muted);
+      border-top-color: transparent;
+      animation: scrollCue 2s ease-in-out infinite;
+      transform: rotate(45deg);
+    }
+
+    @keyframes scrollCue {
+      0%, 100% { opacity: 1; transform: rotate(45deg) translateY(0); }
+      50% { opacity: 0.3; transform: rotate(45deg) translateY(8px); }
+    }
+
+    #hero h1 {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    #hero .tagline {
+      font-size: 1.25rem;
+      color: var(--muted);
+      margin-bottom: 32px;
+      max-width: 600px;
+    }
+
+    /* ---- Featured ---- */
+    #featured {
+      position: relative;
+      padding: 80px 24px 40px;
+    }
+
+    #featured .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    #featured .panel-container {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    #featured .panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #featured .panel.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    #featured .panel .photo-credit {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    #featured .progress-bar {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      right: 24px;
+      height: 2px;
+      background: var(--border);
+      overflow: hidden;
+    }
+
+    #featured .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.6s linear;
+    }
+
+    #featured .nav-btn {
+      position: absolute;
+      top: 50%;
+      width: 40px;
+      height: 40px;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: var(--fg);
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 50%;
+      margin-top: -20px;
+      transition: background 0.2s;
+    }
+
+    #featured .nav-btn:hover {
+      background: rgba(0, 212, 170, 0.3);
+    }
+
+    #featured .nav-btn.prev {
+      left: 24px;
+    }
+
+    #featured .nav-btn.next {
+      right: 24px;
+    }
+
+    /* ---- Gallery ---- */
+    #gallery {
+      padding: 80px 24px;
+      background: var(--bg-subtle);
+    }
+
+    #gallery .filter-bar {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    #gallery .filter-btn {
+      padding: 8px 20px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 4px;
+    }
+
+    #gallery .filter-btn:hover,
+    #gallery .filter-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    #gallery .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    @media (min-width: 1024px) {
+      #gallery .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      #gallery .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .gallery-tile {
+      position: relative;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .gallery-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gallery-tile:hover img {
+      transform: scale(1.08);
+    }
+
+    .gallery-tile .info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px;
+      background: linear-gradient(transparent, rgba(10, 10, 15, 0.8));
+    }
+
+    .gallery-tile .title {
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .gallery-tile .category {
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+    }
+
+    /* ---- Lightbox ---- */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s;
+    }
+
+    #lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    #lightbox .content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      text-align: center;
+    }
+
+    #lightbox .photo-img {
+      max-width: 100%;
+      max-height: 80%;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    #lightbox .info {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      right: 50%;
+      transform: translateX(-50%);
+      color: var(--fg);
+    }
+
+    #lightbox .info .title {
+      font-size: 1.25rem;
+      margin-bottom: 4px;
+    }
+
+    #lightbox .info .category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+    }
+
+    #lightbox .info .exif {
+      font-size: 0.625rem;
+      color: var(--muted);
+    }
+
+    #lightbox .nav {
+      position: absolute;
+      top: 50%;
+      width: 44px;
+      height: 44px;
+      margin-top: -22px;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: var(--fg);
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    #lightbox .nav.prev { left: 32px; }
+    #lightbox .nav.next { right: 32px; }
+
+    #lightbox .close {
+      position: absolute;
+      top: 32px;
+      right: 32px;
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* ---- About ---- */
+    #about {
+      padding: 80px 24px;
+    }
+
+    #about .about-grid {
+      display: grid;
+      gap: 40px;
+    }
+
+    @media (min-width: 1024px) {
+      #about .about-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    #about .portrait {
+      position: relative;
+      aspect-ratio: 4/5;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #about .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #about .bio {
+      padding-right: 24px;
+    }
+
+    #about .bio h2 {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    #about .bio p {
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    #about .stats {
+      display: flex;
+      gap: 24px;
+    }
+
+    #about .stat {
+      text-align: left;
+    }
+
+    #about .stat .number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--fg), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    #about .stat .label {
+      color: var(--muted);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* ---- Contact ---- */
+    #contact {
+      padding: 80px 24px;
+      background: var(--bg-subtle);
+    }
+
+    #contact .contact-grid {
+      display: grid;
+      gap: 40px;
+    }
+
+    @media (min-width: 1024px) {
+      #contact .contact-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    #contact .form-group {
+      margin-bottom: 20px;
+    }
+
+    #contact .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      margin-bottom: 8px;
+      color: var(--fg);
+    }
+
+    #contact .form-group input,
+    #contact .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      font-size: 1rem;
+      border-radius: 4px;
+      transition: border-color 0.2s;
+    }
+
+    #contact .form-group input:focus,
+    #contact .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    #contact .form-group .error {
+      color: var(--danger);
+      font-size: 0.75rem;
+      margin-top: 4px;
+      display: none;
+    }
+
+    #contact .form-group .success {
+      color: var(--success);
+      font-size: 0.75rem;
+      margin-top: 4px;
+      display: none;
+    }
+
+    #contact .form-group.valid input,
+    #contact .form-group.valid textarea {
+      border-color: var(--success);
+    }
+
+    #contact .form-group.valid .success {
+      display: block;
+    }
+
+    #contact .form-group.invalid .error {
+      display: block;
+    }
+
+    #contact button {
+      padding: 12px 24px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      font-weight: 500;
+      border-radius: 4px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    #contact button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
+    }
+
+    #contact .footer {
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    /* ---- Custom Cursor ---- */
+    .cursor {
+      position: fixed;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+    }
+
+    .cursor.dactive {
+      width: 64px;
+      height: 64px;
+      background: var(--danger);
+    }
+
+    /* ---- Ambient Animation - Floating Particles ---- */
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(20px); }
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .drift {
+      animation: drift 8s ease-in-out infinite;
+    }
+
+    /* ---- Reduced Motion ---- */
+    @media (prefers-reduced-motion: reduce) {
+      .cursor {
+        display: none;
+      }
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0ms !important;
+        transition-duration: 0ms !important;
+      }
+      .particle,
+      .drift {
+        display: none !important;
+        animation: none !important;
+      }
+    }
+
+    /* ---- Focus States ---- */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav id="nav">
+    <a href="#hero" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 3l7 17 15-6"/>
+      </svg>
+      Mara Lindqvist
+    </a>
+    <ul class="links">
+      <li><a href="#work" class="active">Work</a></li>
+      <li><a href="#featured">Featured</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <h1>Mara Lindqvist</h1>
+    <p class="tagline">Capturing the sublime moments where light meets landscape</p>
+    <div></div> <!-- scroll cue -->
+  </section>
+
+  <!-- Featured Section -->
+  <section id="featured">
+    <div class="section-label">Featured Work</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="panel-container">
+      <div class="panel active" id="panel1">
+        <div class="photo-credit">Basalt Dawn</div>
+      </div>
+      <div class="panel" id="panel2">
+        <div class="photo-credit">The Quiet Hour</div>
+      </div>
+      <div class="panel" id="panel3">
+        <div class="photo-credit">Neon Tram</div>
+      </div>
+      <div class="panel" id="panel4">
+        <div class="photo-credit">Fractured Light</div>
+      </div>
+      <div class="panel" id="panel5">
+        <div class="photo-credit">Salt Flats Mirror</div>
+      </div>
+    </div>
+    <button class="nav-btn prev" aria-label="Previous panel">&lsaquo;</button>
+    <button class="nav-btn next" aria-label="Next panel">&rsaquo;</button>
+  </section>
+
+  <!-- Gallery -->
+  <section id="gallery">
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="landscape">Landscape</button>
+      <button class="filter-btn" data-filter="portrait">Portrait</button>
+      <button class="filter-btn" data-filter="street">Street</button>
+      <button class="filter-btn" data-filter="abstract">Abstract</button>
+    </div>
+    <div class="grid" id="grid">
+      <!-- 12 gallery tiles generated via JS -->
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div id="lightbox" aria-modal="true" role="dialog">
+    <button class="nav prev" aria-label="Previous photo"><</button>
+    <button class="nav next" aria-label="Next photo">></button>
+    <button class="close" aria-label="Close lightbox">&times;</button>
+    <div class="content">
+      <img class="photo-img" id="lightboxImg" src="" alt="">
+      <div class="info">
+        <div class="title" id="lightboxTitle"></div>
+        <div class="category" id="lightboxCategory"></div>
+        <div class="exif" id="lightboxExif"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="portrait">
+        <!-- Generated portrait SVG will be set via JS -->
+      </div>
+      <div class="bio">
+        <h2>Based in Reykjavík</h2>
+        <p>Mara Lindqvist is a documentary photographer based in Reykjavík, Iceland. Specializing in landscape, street, and abstract photography, she finds inspiration in the raw beauty of the Nordic landscape and the everyday moments of human connection.</p>
+        <div class="stats">
+          <div class="stat">
+            <div class="number" data-target="12">0</div>
+            <div class="label">Projects</div>
+          </div>
+          <div class="stat">
+            <div class="number" data-target="48">0</div>
+            <div class="label">Photos Taken</div>
+          </div>
+          <div class="stat">
+            <div class="number" data-target="7">0</div>
+            <div class="label">Years Experience</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="contact-grid">
+      <div class="form-section">
+        <h2>Get in Touch</h2>
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" required>
+            <div class="error" id="nameError">Please enter your name</div>
+            <div class="success" id="nameSuccess">Thanks!</div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+            <div class="error" id="emailError">Please enter a valid email</div>
+            <div class="success" id="emailSuccess">Thanks!</div>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" rows="3" required></textarea>
+            <div class="error" id="messageError">Please enter a message</div>
+            <div class="success" id="messageSuccess">Thanks!</div>
+          </div>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+      <div class="footer">
+        <span>2024 Mara Lindqvist</span>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ambient Particles -->
+  <div id="particles" aria-hidden="true"></div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+
+  <script>
+    // Photo data with titles, categories, and generation techniques
+    const photos = [
+      { id: 1, title: "Basalt Dawn", category: "Landscape", technique: "svg-gradient" },
+      { id: 2, title: "The Quiet Hour", category: "Portrait", technique: "canvas-noise" },
+      { id: 3, title: "Neon Tram", category: "Street", technique: "svg-gradient" },
+      { id: 4, title: "Fractured Light", category: "Abstract", technique: "canvas-noise" },
+      { id: 5, title: "Salt Flats Mirror", category: "Landscape", technique: "css-filter" },
+      { id: 6, title: "Hands of the Baker", category: "Portrait", technique: "svg-gradient" },
+      { id: 7, title: "Rain on Line 9", category: "Street", technique: "canvas-noise" },
+      { id: 8, title: "Chromatic Drift", category: "Abstract", technique: "css-filter" },
+      { id: 9, title: "Glacier Blue", category: "Landscape", technique: "svg-gradient" },
+      { id: 10, title: "Vera", category: "Portrait", technique: "canvas-noise" },
+      { id: 11, title: "Crosswalk Ballet", category: "Street", technique: "svg-gradient" },
+      { id: 12, title: "Ink in Water", category: "Abstract", technique: "canvas-noise" }
+    ];
+
+    // Gallery rendering
+    function renderGallery() {
+      const grid = document.getElementById('grid');
+      let html = '';
+      
+      photos.forEach((photo) => {
+        html += `
+          <article class="gallery-tile" data-id="${photo.id}" data-category="${photo.category}" tabindex="0" role="button" aria-label="View ${photo.title}">
+            <div class="img-wrapper" style="background: linear-gradient(135deg, #1a1a24 0%, #0f0f15 100%);">
+              <!-- Generated photo will be filled in by JS -->
+            </div>
+            <div class="info">
+              <div class="title">${photo.title}</div>
+              <div class="category">${photo.category}</div>
+            </div>
+          </article>
+        `;
+      });
+      
+      grid.innerHTML = html;
+      
+      // Add click and keydown handlers
+      document.querySelectorAll('.gallery-tile').forEach(tile => {
+        tile.addEventListener('click', () => openLightbox(tile.dataset.id));
+        tile.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openLightbox(tile.dataset.id);
+          }
+        });
+      });
+    }
+
+    // Open lightbox
+    let currentPhotoIndex = 0;
+    let lightboxPhotos = [];
+
+    function openLightbox(id) {
+      const photo = photos.find(p => p.id === parseInt(id));
+      if (!photo) return;
+      
+      currentPhotoIndex = photo.id - 1;
+      lightboxPhotos = photos;
+      showLightbox(currentPhotoIndex);
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function showLightbox(index) {
+      const photo = lightboxPhotos[index];
+      if (!photo) return;
+      
+      const img = document.getElementById('lightboxImg');
+      const title = document.getElementById('lightboxTitle');
+      const category = document.getElementById('lightboxCategory');
+      const exif = document.getElementById('lightboxExif');
+      
+      // Generate large image based on technique
+      img.src = generatePhotoSrc(photo.technique, 'large');
+      img.alt = photo.title;
+      
+      title.textContent = photo.title;
+      category.textContent = `Category: ${photo.category}`;
+      
+      // Generate EXIF data
+      const exifData = generateExif(photo.id);
+      exif.innerHTML = exifData;
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function navigateLightbox(direction) {
+      currentPhotoIndex += direction;
+      if (currentPhotoIndex < 0) currentPhotoIndex = lightboxPhotos.length - 1;
+      if (currentPhotoIndex >= lightboxPhotos.length) currentPhotoIndex = 0;
+      showLightbox(currentPhotoIndex);
+    }
+
+    // Event listeners for lightbox
+    document.querySelectorAll('#lightbox .nav').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dir = btn.classList.contains('prev') ? -1 : 1;
+        navigateLightbox(dir);
+      });
+    });
+
+    document.querySelector('#lightbox .close').addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigateLightbox(-1);
+      if (e.key === 'ArrowRight') navigateLightbox(1);
+    });
+
+    // Close lightbox on overlay click (not on content)
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeLightbox();
+    });
+
+    // Generate photo source based on technique
+    function generatePhotoSrc(technique, size) {
+      const width = size === 'large' ? 1200 : 400;
+      const height = size === 'large' ? 1500 : 500;
+      
+      switch(technique) {
+        case 'svg-gradient':
+          return `data:image/svg+xml;base64,${btoa(generateSVGGradient(width, height))}`;
+        case 'canvas-noise':
+          return `data:image/png;base64,${btoa(generateCanvasNoise(width, height))}`;
+        case 'css-filter':
+          return `data:image/svg+xml;base64,${btoa(generateCSSFilter(width, height))}`;
+        default:
+          return '';
+      }
+    }
+
+    // Generate SVG gradient image with noise
+    function generateSVGGradient(width, height) {
+      const angle = Math.random() * 360;
+      const color1 = `hsl(${Math.random() * 360}, 70%, 55%)`;
+      const color2 = `hsl(${Math.random() * 360}, 70%, 30%)`;
+      
+      // Generate noise pattern as SVG filter
+      const noiseSize = Math.max(1, Math.min(width, height) / 20);
+      const noiseMatrix = [];
+      for (let i = 0; i < 25; i++) {
+        noiseMatrix.push(`<feNodeResult in="turbulence" result="noise${i}"/>`);
+      }
+      
+      const svg = `
+        <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:${color1}"/>
+              <stop offset="100%" style="stop-color:${color2}"/>
+            </linearGradient>
+            <filter id="noiseFilter">
+              <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="3" result="turbulence"/>
+              <feComposite in="SourceGraphic" in2="turbulence" operator="arithmetic"/>
+            </filter>
+          </defs>
+          <rect width="${width}" height="${height}" fill="url(#grad)"/>
+        </svg>
+      `;
+      return btoa(svg.trim());
+    }
+
+    // Generate canvas noise image
+    function generateCanvasNoise(width, height) {
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      
+      // Fill with background
+      ctx.fillStyle = '#0a0a15';
+      ctx.fillRect(0, 0, width, height);
+      
+      // Add noise
+      const imageData = ctx.createImageData(width, height);
+      const data = imageData.data;
+      
+      for (let i = 0; i < data.length; i += 4) {
+        const noise = Math.random() * 50;
+        data[i] = 100 + noise; // R
+        data[i + 1] = 100 + noise; // G
+        data[i + 2] = 130 + noise; // B
+        data[i + 3] = 255; // A
+      }
+      
+      ctx.putImageData(imageData, 0, 0);
+      
+      // Add some subtle shapes
+      ctx.fillStyle = `rgba(255, 255, 255, 0.03)`;
+      const numShapes = 3;
+      for (let i = 0; i < numShapes; i++) {
+        const x = Math.random() * width;
+        const y = Math.random() * height;
+        const w = (Math.random() * 80) + 40;
+        const h = (Math.random() * 80) + 40;
+        ctx.fillRect(x - w/2, y - h/2, w, h);
+      }
+      
+      return canvas.toDataURL('image/png').split(',')[1];
+    }
+
+    // Generate CSS filter image
+    function generateCSSFilter(width, height) {
+      const svg = `
+        <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+          <filter id="noise" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="3" result="turbulence"/>
+            <feComposite in="SourceGraphic" in2="turbulence" operator="arithmetic"/>
+          </filter>
+          <rect width="${width}" height="${height}" filter="url(#noise)"/>
+        </svg>
+      `;
+      return btoa(svg.trim());
+    }
+
+    // Generate EXIF data
+    function generateExif(photoId) {
+      const cameras = ['Sony A7R IV', 'Fujifilm X-T4', 'Nikon Z9'];
+      const lenses = ['24-70mm f/2.8', '35mm f/1.4', '50mm f/1.8'];
+      const apertures = ['f/2.8', 'f/4', 'f/5.6', 'f/8'];
+      const shutters = ['1/125', '1/250', '1/500', '1/1000'];
+      const isos = ['100', '200', '400', '800'];
+      
+      const cam = cameras[photoId % cameras.length];
+      const lens = lenses[photoId % lenses.length];
+      const aperture = apertures[photoId % apertures.length];
+      const shutter = shutters[photoId % shutters.length];
+      const iso = isos[photoId % isos.length];
+      
+      return `<strong>Camera:</strong> ${cam}<br>
+              <strong>Lens:</strong> ${lens}<br>
+              <strong>Aperture:</strong> ${aperture}<br>
+              <strong>Shutter:</strong> ${shutter}<br>
+              <strong>ISO:</strong> ${iso}`;
+    }
+
+    // Filter gallery
+    function filterGallery(category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === category);
+      });
+      
+      document.querySelectorAll('.gallery-tile').forEach(tile => {
+        const tileCategory = tile.dataset.category;
+        if (category === 'all' || tileCategory === category) {
+          tile.style.display = '';
+          tile.style.opacity = '1';
+        } else {
+          tile.style.opacity = '0';
+          setTimeout(() => {
+            if (tile.style.opacity === '0') {
+              tile.style.display = 'none';
+            }
+          }, 300);
+        }
+      });
+    }
+
+    // Init filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterGallery(btn.dataset.filter);
+      });
+    });
+
+    // Featured panel navigation
+    let featuredIndex = 0;
+    const panels = document.querySelectorAll('#featured .panel');
+    const progressFill = document.getElementById('progressFill');
+    const prevPanelBtn = document.querySelector('#featured .nav-btn.prev');
+    const nextPanelBtn = document.querySelector('#featured .nav-btn.next');
+
+    function goToPanel(index) {
+      featuredIndex = Math.max(0, Math.min(index, panels.length - 1));
+      panels.forEach((panel, i) => {
+        panel.classList.toggle('active', i === featuredIndex);
+      });
+      updateFeaturedProgress();
+    }
+
+    function updateFeaturedProgress() {
+      const panelWidth = panels[0] ? panels[0].offsetWidth : 0;
+      const totalWidth = panelWidth * (panels.length - 1);
+      const progress = totalWidth > 0 ? (featuredIndex / (panels.length - 1)) * 100 : 100;
+      progressFill.style.width = `${progress}%`;
+    }
+
+    prevPanelBtn.addEventListener('click', () => {
+      goToPanel(featuredIndex - 1);
+    });
+
+    nextPanelBtn.addEventListener('click', () => {
+      goToPanel(featuredIndex + 1);
+    });
+
+    // Scroll-driven panel advancement
+    function initScrollDrivenPanels() {
+      const panelContainer = document.querySelector('.panel-container');
+      if (!panelContainer) return;
+      
+      let ticking = false;
+      
+      window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        
+        requestAnimationFrame(() => {
+          // Calculate progress based on vertical scroll
+          const scrollY = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const scrollPercent = Math.min(1, scrollY / docHeight);
+          
+          // Map to featured panel index (0-4)
+          const targetIndex = Math.floor(scrollPercent * (panels.length - 1));
+          if (targetIndex !== featuredIndex) {
+            goToPanel(targetIndex);
+          }
+          
+          ticking = false;
+        });
+      }, { passive: true });
+    }
+
+    // Animated number counters
+    function initCounters() {
+      const counters = document.querySelectorAll('.number[data-target]');
+      
+      const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const target = parseInt(entry.target.dataset.target);
+            const duration = 2000;
+            const startTime = performance.now();
+            
+            function updateCounter(currentTime) {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const easeOut = 1 - Math.pow(1 - progress, 3);
+              const current = Math.floor(target * easeOut);
+              
+              entry.target.textContent = current;
+              
+              if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+              }
+            }
+            
+            requestAnimationFrame(updateCounter);
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      counters.forEach(c => counterObserver.observe(c));
+    }
+
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = `${e.clientX}px`;
+      cursor.style.top = `${e.clientY}px`;
+    });
+
+    document.addEventListener('mouseenter', () => {
+      cursor.style.display = 'block';
+    });
+
+    document.addEventListener('mouseleave', () => {
+      cursor.style.display = 'none';
+    });
+
+    // Reduce motion check
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      cursor.style.display = 'none';
+    }
+
+    // Form validation
+    const contactForm = document.getElementById('contactForm');
+    
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      let valid = true;
+      const name = document.getElementById('name');
+      const email = document.getElementById('email');
+      const message = document.getElementById('message');
+      
+      // Name validation
+      if (name.value.trim() === '') {
+        name.parentElement.classList.add('invalid');
+        name.parentElement.classList.remove('valid');
+        document.getElementById('nameError').style.display = 'block';
+        document.getElementById('nameSuccess').style.display = 'none';
+        valid = false;
+      } else {
+        name.parentElement.classList.add('valid');
+        name.parentElement.classList.remove('invalid');
+        document.getElementById('nameError').style.display = 'none';
+        document.getElementById('nameSuccess').style.display = 'block';
+      }
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email.value)) {
+        email.parentElement.classList.add('invalid');
+        email.parentElement.classList.remove('valid');
+        document.getElementById('emailError').style.display = 'block';
+        document.getElementById('emailSuccess').style.display = 'none';
+        valid = false;
+      } else {
+        email.parentElement.classList.add('valid');
+        email.parentElement.classList.remove('invalid');
+        document.getElementById('emailError').style.display = 'none';
+        document.getElementById('emailSuccess').style.display = 'block';
+      }
+      
+      // Message validation
+      if (message.value.trim() === '') {
+        message.parentElement.classList.add('invalid');
+        message.parentElement.classList.remove('valid');
+        document.getElementById('messageError').style.display = 'block';
+        document.getElementById('messageSuccess').style.display = 'none';
+        valid = false;
+      } else {
+        message.parentElement.classList.add('valid');
+        message.parentElement.classList.remove('invalid');
+        document.getElementById('messageError').style.display = 'none';
+        document.getElementById('messageSuccess').style.display = 'block';
+      }
+      
+      if (valid) {
+        contactForm.style.opacity = '0';
+        setTimeout(() => {
+          contactForm.innerHTML = '<p>Thank you! Your message has been sent.</p>';
+        }, 300);
+      }
+    });
+    
+    // Input validation on blur
+    [name, email, message].forEach(input => {
+      input.addEventListener('blur', () => {
+        if (input.value.trim() === '') {
+          input.parentElement.classList.remove('valid');
+        }
+      });
+    });
+
+    // Initialize particles ambient animation
+    function initParticles() {
+      const particlesContainer = document.getElementById('particles');
+      if (!particlesContainer) return;
+      
+      const particleCount = 15;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Random size
+        const size = Math.random() * 3 + 2;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random start position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // Random animation duration and delay
+        const duration = Math.random() * 4 + 6;
+        const delay = Math.random() * 2;
+        particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+        
+        // Add drift animation for some particles
+        if (Math.random() > 0.5) {
+          particle.classList.add('drift');
+          const driftDuration = Math.random() * 4 + 6;
+          particle.style.animation += ` drift ${driftDuration}s ease-in-out ${delay}s infinite`;
+        }
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Parallax scroll transformation
+    function initParallaxTransform() {
+      const parallaxElements = document.querySelectorAll('.parallax-element');
+      
+      if (parallaxElements.length === 0) {
+        // Create a subtle parallax effect on the hero background
+        const hero = document.getElementById('hero');
+        if (hero) {
+          hero.style.setProperty('--parallax-speed', '0.3');
+        }
+        return;
+      }
+      
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        
+        parallaxElements.forEach(el => {
+          const speed = el.dataset.speed || 0.5;
+          const yPos = -(scrollY * speed);
+          el.style.transform = `translateY(${yPos}px)`;
+        });
+      });
+    }
+
+    // Initialize portrait generator for about section
+    function initPortrait() {
+      // Create an SVG portrait-style image for the about section
+      const portraitSvg = `
+        <svg width="400" height="500" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="portGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#1a1a3a"/>
+              <stop offset="100%" style="stop-color:#0f0f23"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="500" fill="url(#portGrad)"/>
+          <!-- Abstract shoulder/head shape -->
+          <path d="M100,100 Q200,50 300,100 L300,400 L100,400 Z" fill="var(--accent)" opacity="0.3"/>
+          <circle cx="200" cy="250" r="80" fill="white" opacity="0.1"/>
+        </svg>
+      `;
+      
+      const portraitImg = document.querySelector('#about .portrait img');
+      if (portraitImg) {
+        portraitImg.src = `data:image/svg+xml;base64,${btoa(portraitSvg.trim())}`;
+        portraitImg.alt = "Portrait of Mara Lindqvist";
+      }
+    }
+
+    // Initialize all components
+    document.addEventListener('DOMContentLoaded', () => {
+      renderGallery();
+      initParticles();
+      initCounters();
+      initScrollDrivenPanels();
+      initPortrait();
+      
+      // Featured panel auto-advance
+      setInterval(() => {
+        goToPanel((featuredIndex + 1) % panels.length);
+      }, 6000);
+      
+      // Initial progress update
+      updateFeaturedProgress();
+    });
+  </script>
+</body>
+</html>
