@@ -158,10 +158,24 @@ $('#q').oninput=render;$('#sort').onchange=render;
 
 (async()=>{
   try{
-    const r=await fetch('submissions/index.json',{cache:'no-cache'});
-    if(!r.ok)throw new Error(r.status);
-    const d=await r.json();
-    items=(d.submissions||[]).sort((a,b)=>String(a.submittedAt).localeCompare(String(b.submittedAt)));
+    // Prefer the current repository manifest. GitHub Pages can lag behind a
+    // submission and its index-build commit, so keep the deployed copy as fallback.
+    const local=fetch('submissions/index.json',{cache:'no-cache'});
+    let d;
+    try{
+      const remote='https://raw.githubusercontent.com/itsnotalwin/Model_tester/main/submissions/index.json?refresh='+Date.now();
+      const r=await fetch(remote,{cache:'no-store'});
+      if(!r.ok)throw new Error('Live manifest HTTP '+r.status);
+      d=await r.json();
+      if(!Array.isArray(d.submissions))throw new Error('Invalid live manifest');
+    }catch(remoteError){
+      const r=await local;
+      if(!r.ok)throw new Error('Deployed manifest HTTP '+r.status);
+      d=await r.json();
+      if(!Array.isArray(d.submissions))throw new Error('Invalid deployed manifest');
+    }
+    items=d.submissions.filter(s=>s&&/^[a-z0-9-]+$/.test(s.slug)&&s.entry==='index.html')
+      .sort((a,b)=>String(a.submittedAt).localeCompare(String(b.submittedAt))||a.slug.localeCompare(b.slug));
     items.forEach((s,i)=>s.n=i+1);
   }catch(e){
     state.hidden=false;
