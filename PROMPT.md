@@ -15,7 +15,8 @@ HARD RULES
 - The file must run correctly when opened directly in a browser (and when served from a subfolder path), with no console errors.
 - Use only relative paths. The site will be served at /submissions/{MODEL_SLUG}/ and must not assume it lives at the domain root.
 - Your page will be displayed inside a sandboxed iframe without same-origin access. Therefore: do not rely on localStorage, sessionStorage, cookies, or IndexedDB (if you touch them, wrap in try/catch and degrade gracefully); do not reference window.parent or window.top; do not open popups; internal links must be #hash links only; the contact form must be handled entirely in JS (preventDefault) with no real submission.
-- Do not use search, plugins, or external resources. Work from your own knowledge and default behavior.
+- Do not search the web, consult other models, browse other submissions, or import external code/assets while making the website. Work independently from the brief.
+- EXCEPTION FOR DELIVERY ONLY: you may use an authorized GitHub connector/API to create, update, and verify files **inside your own submission folder**. This is required to deliver the work. It is not permission to browse the rest of the repository.
 
 FIXED LAYOUT (identical for every submission; do not reorder or rename)
 Use these exact section IDs, in this exact order:
@@ -102,11 +103,18 @@ meta.json schema (valid JSON, no comments; "slug" must equal the folder name exa
   "palette": ["#hex", "#hex", "#hex", "#hex"],
   "techniques": ["<generation techniques you used for the photos>"],
   "entry": "index.html",
-  "thumb": "thumb.png or null",
-  "submittedAt": "<ISO 8601 timestamp>"
+  "thumb": null,
+  "submittedAt": "<the actual current ISO 8601 timestamp with timezone>"
 }
 
-Commit message: "submission: {MODEL_SLUG}". Commit to {BRANCH} of {OWNER}/Model_tester (or open a PR if direct push is not permitted). The dashboard builds its index automatically from the meta.json files, so do NOT register yourself anywhere else.
+For `thumb`, use JSON `null` (WITHOUT quotes) when no real screenshot is available. Only use `"thumb.png"` if that file was actually generated and committed. Do not put `"null"`, `"thumb.png or null"`, or an unfilled placeholder in meta.json.
+
+DELIVERY VERIFICATION (mandatory)
+- Commit message: `submission: {MODEL_SLUG}`. Commit to `{BRANCH}` of `{OWNER}/Model_tester`. If direct push is not permitted, open a PR against `{BRANCH}`. A PR counts as **pending**, not live, until it is merged.
+- Verify the actual GitHub write result (commit SHA or PR URL). Then re-fetch ONLY `submissions/{MODEL_SLUG}/index.html`, `meta.json`, and `AUDIT.md` from your own folder at the destination branch. Never report success merely because you generated the files locally.
+- Verify that `meta.json` is valid JSON, `slug` matches your folder, `entry` is exactly `"index.html"`, `index.html` is not empty, and all required files were committed.
+- Do not edit or register yourself in `submissions/index.json`: the repository's GitHub Action discovers valid `meta.json` files and rebuilds that manifest on `main`. The dashboard also checks the live repository manifest. Allow normal indexing/deployment delay. Do not alter shared scripts, workflows, or dashboard files.
+- If your tool cannot write to the target branch or open a PR, say delivery is blocked rather than falsely reporting a commit or completed audit.
 
 ═══════════════════════════════════════
 PART D: SELF-AUDIT (REQUIRED BEFORE FINISHING)
@@ -150,7 +158,7 @@ If any item is FAIL, FIX it in index.html, then re-audit and update AUDIT.md bef
 FINAL RESPONSE
 ═══════════════════════════════════════
 
-When delivery and audit are complete, reply with ONLY:
+When delivery and audit are complete AND your destination commit/PR has been verified, reply with ONLY:
 - the path of the folder you created,
 - the commit hash or PR link,
 - "AUDIT: complete".
