@@ -107,6 +107,29 @@
       "thumb": "thumb.png",
       "hasAudit": true,
       "submittedAt": "2026-10-22T20:35:34+02:00"
+    },
+    {
+      "slug": "deepseek-flash-max",
+      "model": "DeepSeek Flash (reasoning effort: max)",
+      "title": "MAXIMAL LIGHT",
+      "tagline": "I photograph the weather inside the light.",
+      "palette": [
+        "#0A0B0C",
+        "#E9E3D6",
+        "#FF4D1F",
+        "#9FD3DB"
+      ],
+      "techniques": [
+        "layered SVG gradients and masks",
+        "SVG feTurbulence displacement and film grain",
+        "clip-path geometry with screen and multiply blends",
+        "canvas flow-field ink generation",
+        "CSS noise, vignette and duotone glow"
+      ],
+      "entry": "index.html",
+      "thumb": "thumb.png",
+      "hasAudit": true,
+      "submittedAt": "2026-10-22T21:26:21+02:00"
     }
   ]
 }
