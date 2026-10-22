@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mara Lindqvist — Light From Reykjavík</title>
+<meta name="description" content="Fine-art photography portfolio of Mara Lindqvist, Reykjavík, Iceland. Landscape, portrait, street and abstract photography.">
+<style>
+@font-face{font-family:'Cormorant';font-style:normal;font-weight:300;src:local('Cormorant Garamond'), local('EB Garamond'), local('Georgia');}
+:root{
+  --bg:#0f0f11; --ink:#f2efe9; --gold:#c9a84c; --slate:#4a5568; --gray:#6b6b75; --surface:#16161a; --cream:#f2efe9;
+  --font-serif:'Cormorant Garamond','EB Garamond',Georgia,'Times New Roman',serif;
+  --font-sans:'Inter','Helvetica Neue',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;scroll-padding-top:72px;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);line-height:1.65;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;}
+::selection{background:var(--gold);color:var(--bg);}
+img,canvas,svg{display:block;max-width:100%;}
+a{color:var(--ink);text-decoration:none;letter-spacing:0.02em;transition:color .2s;}
+a:hover{color:var(--gold);}
+button{font-family:inherit;cursor:pointer;border:none;background:transparent;color:inherit;}
+
+/* Navigation */
+#nav{position:fixed;top:0;left:0;width:100%;height:64px;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;background:rgba(15,15,17,0.88);backdrop-filter:blur(14px) saturate(110%);-webkit-backdrop-filter:blur(14px) saturate(110%);border-bottom:1px solid rgba(242,239,233,0.08);}
+#nav .logo{font-family:var(--font-serif);font-weight:300;font-size:1.35rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);}
+#nav .logo span{color:var(--gold);}
+#nav ul{display:flex;gap:2.2rem;list-style:none;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;}
+#nav a{position:relative;padding-bottom:2px;}
+#nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s ease;}
+#nav a:hover::after{width:100%;}
+@media(max-width:768px){#nav{padding:0 1.2rem;}#nav ul{gap:1rem;font-size:0.7rem;}}
+
+/* Hero */
+#hero{position:relative;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem;overflow:hidden;}
+#hero .bg-canvas{position:absolute;inset:0;z-index:0;opacity:0.35;pointer-events:none;}
+#hero .content{position:relative;z-index:1;max-width:900px;animation:fadeUp 1.2s ease both;}
+#hero h1{font-family:var(--font-serif);font-weight:300;font-size:clamp(3.8rem,11vw,9rem);line-height:0.92;letter-spacing:-0.03em;color:var(--ink);text-transform:none;}
+#hero h1 em{font-style:italic;color:var(--gold);}
+#hero .tagline{margin-top:1.5rem;font-size:0.95rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gray);}
+#hero .sub{margin-top:0.75rem;font-family:var(--font-serif);font-style:italic;font-size:1.1rem;color:#9aa3ab;max-width:520px;margin-left:auto;margin-right:auto;}
+#hero .scroll-indicator{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.6rem;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);animation:float 3s ease-in-out infinite;text-decoration:none;}
+#hero .scroll-indicator:hover{color:var(--gold);}
+#hero .scroll-indicator .line{width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* Featured pinned horizontal */
+#featured{position:relative;height:500vh;overflow:hidden;background:var(--bg);}
+#featured .track{position:sticky;top:0;left:0;height:100vh;width:500vw;display:flex;align-items:stretch;will-change:transform;}
+#featured .panel{width:100vw;height:100vh;position:relative;flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-end;padding:3rem 3rem 4rem;overflow:hidden;background:#0a0a0e;}
+#featured .panel .art{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.55);}
+#featured .panel .art > canvas, #featured .panel .art > svg, #featured .panel .art > div {position:absolute;inset:0;width:100%;height:100%;}
+#featured .panel-caption{position:relative;z-index:2;padding:2.5rem 2rem 2rem;background:linear-gradient(to top,rgba(15,15,17,0.92) 0%,rgba(15,15,17,0.55) 60%,transparent 100%);}
+#featured .panel-number{font-family:var(--font-serif);font-size:4rem;line-height:1;color:var(--gold);opacity:0.9;letter-spacing:-0.03em;}
+#featured .panel h3{font-family:var(--font-serif);font-weight:300;font-size:clamp(2rem,3.5vw,3rem);margin-top:0.2rem;letter-spacing:-0.02em;}
+#featured .panel .cat{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-top:0.4rem;}
+@media(max-width:768px){#featured .panel{padding:2rem 1.5rem 3rem;}#featured .panel-caption{padding:1.5rem 1rem 1rem;}#featured .panel-number{font-size:3rem;}}
+
+/* Gallery */
+#gallery{padding:7rem 2rem 5rem;max-width:1440px;margin:0 auto;}
+#gallery h2{font-family:var(--font-serif);font-weight:300;font-size:clamp(2.5rem,6vw,4rem);text-align:center;margin-bottom:3.5rem;letter-spacing:-0.03em;line-height:1.1;}
+.filters{display:flex;justify-content:center;gap:0.6rem;margin-bottom:3.5rem;flex-wrap:wrap;}
+.filters button{background:transparent;border:1px solid rgba(242,239,233,0.18);color:var(--ink);padding:0.55rem 1.3rem;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;transition:all .2s ease;}
+.filters button.active, .filters button:hover{background:var(--gold);color:var(--bg);border-color:var(--gold);}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;}
+.card{position:relative;aspect-ratio:4/5;overflow:hidden;cursor:pointer;background:var(--surface);opacity:0;animation:fadeUp .6s ease both;}
+.card:nth-child(1){animation-delay:0.05s;}
+.card:nth-child(2){animation-delay:0.1s;}
+.card:nth-child(3){animation-delay:0.15s;}
+.card:nth-child(4){animation-delay:0.2s;}
+.card:nth-child(5){animation-delay:0.25s;}
+.card:nth-child(6){animation-delay:0.3s;}
+.card:nth-child(7){animation-delay:0.35s;}
+.card:nth-child(8){animation-delay:0.4s;}
+.card:nth-child(9){animation-delay:0.45s;}
+.card:nth-child(10){animation-delay:0.5s;}
+.card:nth-child(11){animation-delay:0.55s;}
+.card:nth-child(12){animation-delay:0.6s;}
+.card .art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s ease, filter .7s ease;filter:brightness(0.82);}
+.card:hover .art{transform:scale(1.05);filter:brightness(1);}
+.card .overlay{position:absolute;bottom:0;left:0;right:0;padding:2.5rem 1.5rem 1.5rem;background:linear-gradient(to top,rgba(15,15,17,0.9) 0%,rgba(15,15,17,0.35) 70%,transparent 100%);opacity:0;transition:opacity .3s ease;display:flex;flex-direction:column;gap:0.2rem;}
+.card:hover .overlay{opacity:1;}
+.card .overlay h3{font-family:var(--font-serif);font-weight:300;font-size:1.3rem;letter-spacing:-0.01em;}
+.card .overlay span{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);}
+@media(max-width:1024px){.grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){.grid{grid-template-columns:1fr;}}
+
+/* Lightbox */
+#lightbox{position:fixed;inset:0;z-index:3000;background:rgba(15,15,17,0.96);display:none;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;opacity:0;transition:opacity .3s ease;}
+#lightbox.active{display:flex;opacity:1;}
+#lightbox .lb-inner{max-width:1100px;width:100%;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+#lightbox .lb-art{max-height:78vh;max-width:100%;width:100%;display:flex;align-items:center;justify-content:center;background:rgba(10,10,14,0.5);}
+#lightbox .lb-art img, #lightbox .lb-art > div {max-height:78vh;max-width:100%;object-fit:contain;}
+#lightbox .lb-meta{text-align:center;}
+#lightbox .lb-meta h2{font-family:var(--font-serif);font-weight:300;font-size:2rem;letter-spacing:-0.02em;}
+#lightbox .lb-meta .cat{font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-top:0.2rem;}
+#lightbox .lb-meta .exif{font-family:'Courier New',monospace;font-size:0.75rem;color:var(--gray);margin-top:0.5rem;letter-spacing:0.02em;}
+#lightbox .nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--ink);font-family:var(--font-serif);font-size:3rem;line-height:1;padding:1rem 0.8rem;z-index:10;transition:color .2s;}
+#lightbox .nav-btn:hover{color:var(--gold);}
+#lightbox .prev-btn{left:0;}
+#lightbox .next-btn{right:0;}
+#lightbox .close-btn{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;color:var(--ink);font-family:var(--font-serif);font-size:2rem;line-height:1;padding:0.5rem;z-index:10;transition:color .2s;}
+#lightbox .close-btn:hover{color:var(--gold);}
+
+/* About */
+#about{padding:7rem 2rem;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+.about-portrait{position:relative;aspect-ratio:3/4;background:var(--surface);overflow:hidden;}
+.about-portrait canvas{width:100%;height:100%;display:block;}
+.about-portrait::before{content:'';position:absolute;inset:12px;border:1px solid rgba(201,168,76,0.2);z-index:2;pointer-events:none;}
+.about-text h2{font-family:var(--font-serif);font-weight:300;font-size:clamp(2rem,4vw,3rem);letter-spacing:-0.02em;margin-bottom:1.2rem;line-height:1.1;}
+.about-text p{color:#c5c5c5;font-size:0.95rem;margin-bottom:1rem;line-height:1.7;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(242,239,233,0.1);}
+.stat-number{font-family:var(--font-serif);font-size:2.8rem;font-weight:300;color:var(--gold);line-height:1;letter-spacing:-0.03em;}
+.stat-label{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-top:0.4rem;}
+@media(max-width:900px){#about{grid-template-columns:1fr;gap:3rem;}.stats{grid-template-columns:1fr;gap:1.5rem;}}
+
+/* Contact */
+#contact{padding:7rem 2rem;max-width:640px;margin:0 auto;text-align:center;}
+#contact h2{font-family:var(--font-serif);font-weight:300;font-size:clamp(2rem,5vw,3rem);letter-spacing:-0.02em;margin-bottom:0.5rem;}
+#contact .lead{color:var(--gray);font-size:0.95rem;margin-bottom:2.5rem;}
+form{display:flex;flex-direction:column;gap:1rem;text-align:left;}
+form label{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);margin-bottom:0.2rem;}
+form input, form textarea{padding:0.85rem 1rem;background:rgba(242,239,233,0.05);border:1px solid rgba(242,239,233,0.15);color:var(--ink);font-family:inherit;font-size:0.95rem;outline:none;transition:border-color .2s,border-color .2s;}
+form input:focus, form textarea:focus{border-color:var(--gold);}
+form textarea{min-height:140px;resize:vertical;}
+form button{align-self:flex-start;padding:0.9rem 2rem;background:var(--gold);color:var(--bg);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-size:0.85rem;transition:background .2s;}
+form button:hover{background:#b8983b;}
+#form-feedback{margin-top:1rem;font-size:0.9rem;min-height:1.5rem;}
+#form-feedback.ok{color:#7fc77f;}
+#form-feedback.error{color:#e07a5f;}
+
+/* Footer */
+footer{padding:3rem 2rem;border-top:1px solid rgba(242,239,233,0.08);text-align:center;color:var(--gray);font-size:0.75rem;letter-spacing:0.05em;}
+footer a{color:var(--gray);}
+footer a:hover{color:var(--gold);}
+
+/* Utilities */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;}
+  #hero .content{animation:none;}
+  .card{animation:none;opacity:1;}
+  #featured .track{transform:none!important;}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav" aria-label="Primary">
+  <a href="#" class="logo" aria-label="Mara Lindqvist home">Mara <span>Lindqvist</span></a>
+  <ul>
+    <li><a href="#gallery">Work</a></li>
+    <li><a href="#featured">Featured</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<header id="hero" aria-label="Introduction">
+  <canvas id="hero-canvas" class="bg-canvas" aria-hidden="true"></canvas>
+  <div class="content">
+    <h1>Mara <em>Lindqvist</em></h1>
+    <p class="tagline">Fine-art photography from Reykjavík, Iceland</p>
+    <p class="sub">Exploring people, places, atmosphere, movement, light and abstraction.</p>
+  </div>
+  <a href="#featured" class="scroll-indicator" aria-label="View featured work">
+    <span>Explore</span>
+    <div class="line" aria-hidden="true"></div>
+  </a>
+</header>
+
+<section id="featured" aria-label="Featured work — photographs 1 to 5">
+  <div class="track" id="featured-track">
+    <!-- 01 Basalt Dawn -->
+    <article class="panel" aria-label="Basalt Dawn, Landscape, featured panel 1">
+      <canvas id="art-1" class="art" width="800" height="1000" aria-label="Basalt Dawn"></canvas>
+      <div class="panel-caption">
+        <div class="panel-number">01</div>
+        <h3>Basalt Dawn</h3>
+        <p class="cat">Landscape</p>
+      </div>
+    </article>
+    <!-- 02 The Quiet Hour -->
+    <article class="panel" aria-label="The Quiet Hour, Portrait, featured panel 2">
+      <svg id="art-2" class="art" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-label="The Quiet Hour" role="img">
+        <defs>
+          <linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4a3f36"/><stop offset="100%" stop-color="#2a211a"/></linearGradient>
+          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceGraphic" stdDeviation="3"/></filter>
+        </defs>
+        <rect width="400" height="500" fill="#1a1210"/>
+        <ellipse cx="200" cy="230" rx="75" ry="95" fill="url(#gf)" filter="url(#glow)"/>
+        <circle cx="165" cy="210" r="7" fill="#c9a84c" opacity="0.9"/>
+        <path d="M170 270 Q200 300 230 270" stroke="#c45c3e" stroke-width="2.5" fill="none" opacity="0.7"/>
+        <path d="M120 180 Q140 150 170 170" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.4"/>
+        <rect x="0" y="0" width="400" height="500" fill="url(#gf)" opacity="0.05"/>
+      </svg>
+      <div class="panel-caption">
+        <div class="panel-number">02</div>
+        <h3>The Quiet Hour</h3>
+        <p class="cat">Portrait</p>
+      </div>
+    </article>
+    <!-- 03 Neon Tram -->
+    <article class="panel" aria-label="Neon Tram, Street, featured panel 3">
+      <div id="art-3" class="art" aria-label="Neon Tram" role="img" style="background:#0a0a10;position:relative;overflow:hidden;width:100%;height:100%;">
+        <div style="position:absolute;top:30%;left:10%;width:60%;height:25%;background:linear-gradient(90deg,#00ffe1,#ff00aa,#00ffe1);filter:blur(10px);opacity:0.9;"></div>
+        <div style="position:absolute;top:35%;left:15%;width:50%;height:15%;border:2px solid #00ffe1;border-radius:4px;box-shadow:0 0 20px #00ffe1;"></div>
+        <div style="position:absolute;top:38%;left:18%;color:#f2efe9;font-family:var(--font-sans);font-size:1.1rem;letter-spacing:0.3em;text-transform:uppercase;">Line 3</div>
+        <div style="position:absolute;bottom:20%;left:10%;width:30%;height:2px;background:repeating-linear-gradient(90deg,rgba(242,239,233,0.1) 0,rgba(242,239,233,0.1) 10px,transparent 10px,transparent 20px);"></div>
+      </div>
+      <div class="panel-caption">
+        <div class="panel-number">03</div>
+        <h3>Neon Tram</h3>
+        <p class="cat">Street</p>
+      </div>
+    </article>
+    <!-- 04 Fractured Light -->
+    <article class="panel" aria-label="Fractured Light, Abstract, featured panel 4">
+      <canvas id="art-4" class="art" width="800" height="1000" aria-label="Fractured Light"></canvas>
+      <div class="panel-caption">
+        <div class="panel-number">04</div>
+        <h3>Fractured Light</h3>
+        <p class="cat">Abstract</p>
+      </div>
+    </article>
+    <!-- 05 Salt Flats Mirror -->
+    <article class="panel" aria-label="Salt Flats Mirror, Landscape, featured panel 5">
+      <svg id="art-5" class="art" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-label="Salt Flats Mirror" role="img">
+        <defs><linearGradient id="gs" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d8c8b8"/><stop offset="50%" stop-color="#9aa3ab"/><stop offset="100%" stop-color="#4a5568"/></linearGradient></defs>
+        <rect width="400" height="250" fill="url(#gs)"/>
+        <line x1="0" y1="250" x2="400" y2="250" stroke="#f2efe9" stroke-width="1"/>
+        <rect y="250" width="400" height="250" fill="#9aa3ab"/>
+        <rect y="250" width="400" height="250" fill="url(#gs)" opacity="0.3"/>
+        <g fill="#f2efe9" opacity="0.25"><circle cx="60" cy="270" r="1.5"/><circle cx="140" cy="290" r="2"/><circle cx="220" cy="280" r="1"/><circle cx="320" cy="310" r="2.5"/></g>
+      </svg>
+      <div class="panel-caption">
+        <div class="panel-number">05</div>
+        <h3>Salt Flats Mirror</h3>
+        <p class="cat">Landscape</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="gallery" aria-label="Gallery of twelve photographs">
+  <h2>Selected Works</h2>
+  <div class="filters" role="group" aria-label="Filter photographs by category">
+    <button class="active" data-filter="All" onclick="filterGallery(this)">All</button>
+    <button data-filter="Landscape" onclick="filterGallery(this)">Landscape</button>
+    <button data-filter="Portrait" onclick="filterGallery(this)">Portrait</button>
+    <button data-filter="Street" onclick="filterGallery(this)">Street</button>
+    <button data-filter="Abstract" onclick="filterGallery(this)">Abstract</button>
+  </div>
+  <div class="grid" id="gallery-grid" role="list" aria-label="Photograph grid">
+
+    <!-- 1 -->
+    <article class="card" data-id="1" data-category="Landscape" role="listitem" onclick="openLightbox(0)" tabindex="0" aria-label="Basalt Dawn, Landscape" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(0);}">
+      <canvas id="gal-1" class="art" width="400" height="500" aria-label="Basalt Dawn"></canvas>
+      <div class="overlay"><h3>Basalt Dawn</h3><span>Landscape</span></div>
+    </article>
+
+    <!-- 2 -->
+    <article class="card" data-id="2" data-category="Portrait" role="listitem" onclick="openLightbox(1)" tabindex="0" aria-label="The Quiet Hour, Portrait" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(1);}">
+      <svg class="art" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-label="The Quiet Hour" role="img">
+        <defs><linearGradient id="gf2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4a3f36"/><stop offset="100%" stop-color="#2a211a"/></linearGradient><filter id="glow2"><feGaussianBlur in="SourceGraphic" stdDeviation="3"/></filter></defs>
+        <rect width="400" height="500" fill="#1a1210"/><ellipse cx="200" cy="230" rx="75" ry="95" fill="url(#gf2)" filter="url(#glow2)"/><circle cx="165" cy="210" r="7" fill="#c9a84c" opacity="0.9"/><path d="M170 270 Q200 300 230 270" stroke="#c45c3e" stroke-width="2.5" fill="none" opacity="0.7"/><path d="M120 180 Q140 150 170 170" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.4"/><rect width="400" height="500" fill="url(#gf2)" opacity="0.05"/>
+      </svg>
+      <div class="overlay"><h3>The Quiet Hour</h3><span>Portrait</span></div>
+    </article>
+
+    <!-- 3 -->
+    <article class="card" data-id="3" data-category="Street" role="listitem" onclick="openLightbox(2)" tabindex="0" aria-label="Neon Tram, Street" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(2);}">
+      <div class="art" aria-label="Neon Tram" role="img" style="background:#0a0a10;position:relative;overflow:hidden;width:100%;height:100%;"><div style="position:absolute;top:30%;left:10%;width:60%;height:25%;background:linear-gradient(90deg,#00ffe1,#ff00aa,#00ffe1);filter:blur(10px);opacity:0.9;"></div><div style="position:absolute;top:35%;left:15%;width:50%;height:15%;border:2px solid #00ffe1;border-radius:4px;box-shadow:0 0 20px #00ffe1;"></div><div style="position:absolute;top:38%;left:18%;color:#f2efe9;font-family:var(--font-sans);font-size:0.9rem;letter-spacing:0.3em;text-transform:uppercase;">Line 3</div><div style="position:absolute;bottom:20%;left:10%;width:30%;height:2px;background:repeating-linear-gradient(90deg,rgba(242,239,233,0.1) 0,rgba(242,239,233,0.1) 10px,transparent 10px,transparent 20px);"></div></div>
+      <div class="overlay"><h3>Neon Tram</h3><span>Street</span></div>
+    </article>
+
+    <!-- 4 -->
+    <article class="card" data-id="4" data-category="Abstract" role="listitem" onclick="openLightbox(3)" tabindex="0" aria-label="Fractured Light, Abstract" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(3);}">
+      <canvas id="gal-4" class="art" width="400" height="500" aria-label="Fractured Light"></canvas>
+      <div class="overlay"><h3>Fractured Light</h3><span>Abstract</span></div>
+    </article>
+
+    <!-- 5 -->
+    <article class="card" data-id="5" data-category="Landscape" role="listitem" onclick="openLightbox(4)" tabindex="0" aria-label="Salt Flats Mirror, Landscape" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(4);}">
+      <svg class="art" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-label="Salt Flats Mirror" role="img">
+        <defs><linearGradient id="gs2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d8c8b8"/><stop offset="50%" stop-color="#9aa3ab"/><stop offset="100%" stop-color="#4a5568"/></linearGradient></defs>
+        <rect width="400" height="250" fill="url(#gs2)"/><line x1="0" y1="250" x2="400" y2="250" stroke="#f2efe9" stroke-width="1"/><rect y="250" width="400" height="250" fill="#9aa3ab"/><rect y="250" width="400" height="250" fill="url(#gs2)" opacity="0.3"/><g fill="#f2efe9" opacity="0.25"><circle cx="60" cy="270" r="1.5"/><circle cx="140" cy="290" r="2"/><circle cx="220" cy="280" r="1"/><circle cx="320" cy="310" r="2.5"/></g>
+      </svg>
+      <div class="overlay"><h3>Salt Flats Mirror</h3><span>Landscape</span></div>
+    </article>
+
+    <!-- 6 -->
+    <article class="card" data-id="6" data-category="Portrait" role="listitem" onclick="openLightbox(5)" tabindex="0" aria-label="Hands of the Baker, Portrait" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(5);}">
+      <canvas id="gal-6" class="art" width="400" height="500" aria-label="Hands of the Baker"></canvas>
+      <div class="overlay"><h3>Hands of the Baker</h3><span>Portrait</span></div>
+    </article>
+
+    <!-- 7 -->
+    <article class="card" data-id="7" data-category="Street" role="listitem" onclick="openLightbox(6)" tabindex="0" aria-label="Rain on Line 9, Street" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(6);}">
+      <div class="art" aria-label="Rain on Line 9" role="img" style="background:#080810;position:relative;overflow:hidden;width:100%;height:100%;"><div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,0.06) 0,rgba(255,255,255,0.06) 2px,transparent 2px,transparent 8px);"></div><div style="position:absolute;top:40%;left:15%;width:70%;height:20%;border:2px solid #00d2ff;opacity:0.85;box-shadow:0 0 30px #00d2ff;"></div><div style="position:absolute;top:45%;left:20%;color:#00d2ff;font-family:var(--font-sans);font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;">Line 9</div></div>
+      <div class="overlay"><h3>Rain on Line 9</h3><span>Street</span></div>
+    </article>
+
+    <!-- 8 -->
+    <article class="card" data-id="8" data-category="Abstract" role="listitem" onclick="openLightbox(7)" tabindex="0" aria-label="Chromatic Drift, Abstract" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(7);}">
+      <canvas id="gal-8" class="art" width="400" height="500" aria-label="Chromatic Drift"></canvas>
+      <div class="overlay"><h3>Chromatic Drift</h3><span>Abstract</span></div>
+    </article>
+
+    <!-- 9 -->
+    <article class="card" data-id="9" data-category="Landscape" role="listitem" onclick="openLightbox(8)" tabindex="0" aria-label="Glacier Blue, Landscape" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(8);}">
+      <svg class="art" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-label="Glacier Blue" role="img">
+        <defs><linearGradient id="gi2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8dce8"/><stop offset="40%" stop-color="#7aa8c5"/><stop offset="100%" stop-color="#3e4a5c"/></linearGradient></defs>
+        <rect width="400" height="500" fill="url(#gi2)"/><path d="M0 140 L100 120 L160 150 L220 110 L300 130 L400 100 L400 500 L0 500 Z" fill="#e8f0f3" opacity="0.9"/><path d="M0 170 L80 160 L140 190 L240 150 L340 180 L400 160 L400 500 L0 500 Z" fill="#cce3eb" opacity="0.7"/><rect x="0" y="430" width="400" height="70" fill="#0f0f11"/>
+      </svg>
+      <div class="overlay"><h3>Glacier Blue</h3><span>Landscape</span></div>
+    </article>
+
+    <!-- 10 -->
+    <article class="card" data-id="10" data-category="Portrait" role="listitem" onclick="openLightbox(9)" tabindex="0" aria-label="Vera, Portrait" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(9);}">
+      <canvas id="gal-10" class="art" width="400" height="500" aria-label="Vera"></canvas>
+      <div class="overlay"><h3>Vera</h3><span>Portrait</span></div>
+    </article>
+
+    <!-- 11 -->
+    <article class="card" data-id="11" data-category="Street" role="listitem" onclick="openLightbox(10)" tabindex="0" aria-label="Crosswalk Ballet, Street" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(10);}">
+      <div class="art" aria-label="Crosswalk Ballet" role="img" style="background:#0a0a12;position:relative;overflow:hidden;width:100%;height:100%;"><div style="position:absolute;bottom:0;left:0;right:0;height:45%;background:repeating-linear-gradient(90deg,#f2efe9 0,#f2efe9 60px,#0a0a12 60px,#0a0a12 120px);opacity:0.9;"></div><div style="position:absolute;top:15%;left:35%;width:30%;height:70%;background:linear-gradient(to bottom,#2a2a3a,#1a1a2a);clip-path:polygon(50% 0,100% 30%,80% 100%,20% 100%,0% 30%);opacity:0.9;"></div><div style="position:absolute;top:20%;left:40%;width:20%;height:60%;background:#c9a84c;opacity:0.35;filter:blur(10px);border-radius:50%;"></div></div>
+      <div class="overlay"><h3>Crosswalk Ballet</h3><span>Street</span></div>
+    </article>
+
+    <!-- 12 -->
+    <article class="card" data-id="12" data-category="Abstract" role="listitem" onclick="openLightbox(11)" tabindex="0" aria-label="Ink in Water, Abstract" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(11);}">
+      <canvas id="gal-12" class="art" width="400" height="500" aria-label="Ink in Water"></canvas>
+      <div class="overlay"><h3>Ink in Water</h3><span>Abstract</span></div>
+    </article>
+
+  </div>
+</section>
+
+<!-- Lightbox overlay -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" aria-describedby="lb-title lb-cat">
+  <button class="close-btn" onclick="closeLightbox()" aria-label="Close viewer">&times;</button>
+  <button class="nav-btn prev-btn" onclick="changeLightbox(-1)" aria-label="Previous photograph">&#8249;</button>
+  <button class="nav-btn next-btn" onclick="changeLightbox(1)" aria-label="Next photograph">&#8250;</button>
+  <div class="lb-inner">
+    <div class="lb-art" id="lb-art" aria-label="Photograph view"></div>
+    <div class="lb-meta">
+      <h2 id="lb-title">Basalt Dawn</h2>
+      <p id="lb-cat" class="cat">Landscape</p>
+      <p id="lb-exif" class="exif">ISO 100 · f/8 · 1/125 · 35mm</p>
+    </div>
+  </div>
+</div>
+
+<section id="about" aria-label="About Mara Lindqvist">
+  <figure class="about-portrait" aria-label="Portrait of Mara Lindqvist">
+    <canvas id="portrait-canvas" width="600" height="800" aria-label="Portrait style artwork"></canvas>
+  </figure>
+  <div class="about-text">
+    <h2>Mara Lindqvist</h2>
+    <p>Mara Lindqvist is a Reykjavík-based fine-art photographer whose work sits at the Intersection of atmosphere and abstraction. Born in Iceland's capital, she has spent over a decade studying how light behaves at high latitudes — the long goldens of summer, the sharp blues of winter, the mist that lingers between seasons.</p>
+    <p>Her practice embraces portraiture, street observation, landscape and abstract form. She photographs alone and with small groups, often returning to the same locations until the atmosphere reveals something new. Her images have been shown in Reykjavík, Copenhagen, Berlin and Tokyo.</p>
+    <div class="stats" aria-label="Career statistics">
+      <div><div class="stat-number" data-target="18" aria-label="18 years">0</div><div class="stat-label">Years of practice</div></div>
+      <div><div class="stat-number" data-target="47" aria-label="47 exhibitions">0</div><div class="stat-label">Exhibitions worldwide</div></div>
+      <div><div class="stat-number" data-target="12" aria-label="12 countries">0</div><div class="stat-label">Countries documented</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" aria-label="Contact">
+  <h2>Inquiries</h2>
+  <p class="lead">For commissions, prints, or editorial collaboration, write directly.</p>
+  <form id="contact-form" novalidate onsubmit="event.preventDefault(); submitForm();" aria-label="Contact form">
+    <label for="c-name">Name</label>
+    <input type="text" id="c-name" name="name" autocomplete="name" placeholder="Your name" required>
+    <label for="c-email">Email</label>
+    <input type="email" id="c-email" name="email" autocomplete="email" placeholder="you@example.com" required>
+    <label for="c-message">Message</label>
+    <textarea id="c-message" name="message" placeholder="Tell me about your project..." required></textarea>
+    <button type="submit">Send message</button>
+    <div id="form-feedback" role="status" aria-live="polite"></div>
+  </form>
+</section>
+
+<footer aria-label="Footer">
+  <p>&copy; <span id="year"></span> Mara Lindqvist. All artwork generated in-browser.</p>
+  <p style="margin-top:0.5rem;opacity:0.7;">Reykjavík, Iceland — Fine-art photography</p>
+</footer>
+
+<script>
+/* =========== DATA =========== */
+const photos = [
+  {id:1, title:'Basalt Dawn', cat:'Landscape', exif:'ISO 100 · f/8 · 1/125 · 35mm'},
+  {id:2, title:'The Quiet Hour', cat:'Portrait', exif:'ISO 400 · f/2 · 1/60 · 85mm'},
+  {id:3, title:'Neon Tram', cat:'Street', exif:'ISO 800 · f/2.8 · 1/60 · 50mm'},
+  {id:4, title:'Fractured Light', cat:'Abstract', exif:'ISO 200 · f/4 · 2s · 24mm'},
+  {id:5, title:'Salt Flats Mirror', cat:'Landscape', exif:'ISO 100 · f/11 · 1/250 · 100mm'},
+  {id:6, title:'Hands of the Baker', cat:'Portrait', exif:'ISO 1600 · f/1.8 · 1/125 · 85mm'},
+  {id:7, title:'Rain on Line 9', cat:'Street', exif:'ISO 640 · f/2.8 · 1/30 · 50mm'},
+  {id:8, title:'Chromatic Drift', cat:'Abstract', exif:'ISO 400 · f/5.6 · 1/2 · 35mm'},
+  {id:9, title:'Glacier Blue', cat:'Landscape', exif:'ISO 200 · f/8 · 1/250 · 70mm'},
+  {id:10, title:'Vera', cat:'Portrait', exif:'ISO 320 · f/2 · 1/125 · 85mm'},
+  {id:11, title:'Crosswalk Ballet', cat:'Street', exif:'ISO 500 · f/4 · 1/60 · 35mm'},
+  {id:12, title:'Ink in Water', cat:'Abstract', exif:'ISO 100 · f/2.8 · 1/30 · 50mm'},
+];
+let currentIndex = 0;
+
+/* =========== DRAW CANVAS ART =========== */
+function drawBasaltDawn(canvas){
+  const ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
+  const g = ctx.createLinearGradient(0,0,0,h); g.addColorStop(0,'#2a1810'); g.addColorStop(0.55,'#1a1210'); g.addColorStop(1,'#0f0f11');
+  ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+  const lg = ctx.createLinearGradient(0,h*0.35,0,h*0.45); lg.addColorStop(0,'#c9a84c'); lg.addColorStop(1,'transparent');
+  ctx.fillStyle = lg; ctx.fillRect(0,h*0.35,w,h*0.1);
+  ctx.fillStyle = '#16161a';
+  for(let i=0;i<5;i++){ ctx.beginPath(); ctx.moveTo(i*w/5, h); ctx.lineTo(i*w/5+60+Math.random()*40, h*0.75); ctx.lineTo((i+1)*w/5, h); ctx.fill(); }
+  for(let i=0;i<30;i++){ ctx.fillStyle = `rgba(242,239,233,${Math.random()*0.3+0.1})`; ctx.fillRect(Math.random()*w, Math.random()*h*0.4, 1+Math.random(), 1+Math.random()); }
+}
+function drawFracturedLight(canvas){
+  const ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
+  ctx.fillStyle = '#0f0f11'; ctx.fillRect(0,0,w,h);
+  for(let i=0;i<8;i++){ ctx.strokeStyle = `rgba(201,168,76,${0.3+Math.random()*0.5})`; ctx.lineWidth = 1+Math.random()*3; ctx.beginPath(); ctx.moveTo(Math.random()*w,0); ctx.lineTo(Math.random()*w,h); ctx.stroke(); }
+  const beam = ctx.createLinearGradient(0,0,w,h); beam.addColorStop(0,'rgba(201,168,76,0.8)'); beam.addColorStop(0.5,'rgba(201,168,76,0.1)'); beam.addColorStop(1,'transparent');
+  ctx.fillStyle = beam; ctx.beginPath(); ctx.moveTo(w*0.2,0); ctx.lineTo(w*0.8,0); ctx.lineTo(w*0.9,h); ctx.lineTo(w*0.1,h); ctx.fill();
+}
+function drawBakerHands(canvas){
+  const ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
+  ctx.fillStyle = '#f5f0e6'; ctx.fillRect(0,0,w,h);
+  ctx.fillStyle = '#e8dcc8'; ctx.fillRect(0,h*0.6,w,h*0.4);
+  ctx.fillStyle = '#dcbfa0';
+  ctx.beginPath(); ctx.ellipse(w*0.3,h*0.55,w*0.12,h*0.15,-0.2,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(w*0.7,h*0.55,w*0.12,h*0.15,0.2,0,Math.PI*2); ctx.fill();
+  for(let i=0;i<60;i++){ ctx.fillStyle = `rgba(255,255,255,${Math.random()*0.6+0.2})`; ctx.beginPath(); ctx.arc(Math.random()*w, Math.random()*h, 1+Math.random()*2, 0, Math.PI*2); ctx.fill(); }
+}
+function drawChromaticDrift(canvas){
+  const ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
+  ctx.fillStyle = '#0f0f11'; ctx.fillRect(0,0,w,h);
+  const colors = ['#c45c3e','#c9a84c','#4a5568','#a2d2df','#e07a5f'];
+  for(let i=0;i<6;i++){ const cx=Math.random()*w, cy=Math.random()*h, r=60+Math.random()*120; const g=ctx.createRadialGradient(cx,cy,0,cx+Math.random()*20-10,cy+Math.random()*20-10,r); g.addColorStop(0,colors[i]); g.addColorStop(0.5,colors[i]+'66'); g.addColorStop(1,'transparent'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h); }
+}
+function drawVera(canvas){
+  const ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
+  ctx.fillStyle = '#2e3340'; ctx.fillRect(0,0,w,h);
+  const lg = ctx.createLinearGradient(0,0,w*0.35,0); lg.addColorStop(0,'rgba(242,239,233,0.4)'); lg.addColorStop(1,'transparent');
+  ctx.fillStyle = lg; ctx.fillRect(0,0,w*0.35,h);
+  ctx.fillStyle = '#181b22';
+  ctx.beginPath(); ctx.moveTo(w*0.35,h*0.2); ctx.bezierCurveTo(w*0.2,h*0.5,w*0.2,h*0.8,w*0.5,h*0.85); ctx.lineTo(w*0.7,h*0.1); ctx.fill();
+  ctx.fillStyle = '#d8c8b8'; ctx.beginPath(); ctx.ellipse(w*0.5,h*0.55,w*0.15,h*0.2,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#3a3a3a'; ctx.beginPath(); ctx.arc(w*0.45,h*0.52,2,0,Math.PI*2); ctx.fill();
+}
+function drawInkInWater(canvas){
+  const ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
+  ctx.fillStyle = '#0f0f11'; ctx.fillRect(0,0,w,h);
+  const cx = w*0.5, cy = h*0.55;
+  for(let i=0;i<12;i++){ const r = 30+i*12; const g = ctx.createRadialGradient(cx,cy,0,cx+Math.random()*20-10,cy+Math.random()*20-10,r); g.addColorStop(0,`rgba(30,25,40,${0.8-i*0.05})`); g.addColorStop(0.4,`rgba(60,50,70,0.6)`); g.addColorStop(1,'transparent'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h); }
+}
+function drawHeroCanvas(){
+  const c = document.getElementById('hero-canvas');
+  if(!c) return; const ctx = c.getContext('2d'), w = c.width = window.innerWidth, h = c.height = window.innerHeight;
+  const g = ctx.createLinearGradient(0,0,0,h); g.addColorStop(0,'#2a1810'); g.addColorStop(0.6,'#1a1210'); g.addColorStop(1,'#0f0f11');
+  ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+  ctx.fillStyle = '#c9a84c'; for(let i=0;i<60;i++){ ctx.globalAlpha = Math.random()*0.4+0.1; ctx.fillRect(Math.random()*w, Math.random()*h*0.6, 1+Math.random()*3, 1+Math.random()*3); ctx.globalAlpha = 1; }
+  const lg = ctx.createLinearGradient(0,h*0.7,0,h); lg.addColorStop(0,'rgba(201,168,76,0.2)'); lg.addColorStop(1,'transparent');
+  ctx.fillStyle = lg; ctx.fillRect(0,h*0.7,w,h*0.3);
+}
+function drawPortraitCanvas(){
+  const c = document.getElementById('portrait-canvas'); if(!c) return; const ctx = c.getContext('2d'), w = c.width, h = c.height;
+  ctx.fillStyle = '#2e3340'; ctx.fillRect(0,0,w,h);
+  const lg = ctx.createLinearGradient(0,0,w*0.3,0); lg.addColorStop(0,'rgba(242,239,233,0.35)'); lg.addColorStop(1,'transparent');
+  ctx.fillStyle = lg; ctx.fillRect(0,0,w*0.3,h);
+  ctx.fillStyle = '#181b22'; ctx.beginPath(); ctx.moveTo(w*0.3,h*0.15); ctx.bezierCurveTo(w*0.15,h*0.45,w*0.15,h*0.85,w*0.55,h*0.9); ctx.lineTo(w*0.75,h*0.1); ctx.fill();
+  ctx.fillStyle = '#d8c8b8'; ctx.beginPath(); ctx.ellipse(w*0.5,h*0.55,w*0.16,h*0.22,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#3a3a3a'; ctx.beginPath(); ctx.arc(w*0.45,h*0.52,2,0,Math.PI*2); ctx.fill();
+}
+
+/* =========== INIT DRAWINGS =========== */
+function initDrawings(){
+  drawHeroCanvas();
+  window.addEventListener('resize',()=>{drawHeroCanvas();});
+  drawPortraitCanvas();
+  // Featured canvases
+  if(document.getElementById('art-1')) drawBasaltDawn(document.getElementById('art-1'));
+  if(document.getElementById('art-4')) drawFracturedLight(document.getElementById('art-4'));
+  // Gallery canvases
+  if(document.getElementById('gal-1')) drawBasaltDawn(document.getElementById('gal-1'));
+  if(document.getElementById('gal-4')) drawFracturedLight(document.getElementById('gal-4'));
+  if(document.getElementById('gal-6')) drawBakerHands(document.getElementById('gal-6'));
+  if(document.getElementById('gal-8')) drawChromaticDrift(document.getElementById('gal-8'));
+  if(document.getElementById('gal-10')) drawVera(document.getElementById('gal-10'));
+  if(document.getElementById('gal-12')) drawInkInWater(document.getElementById('gal-12'));
+}
+
+/* =========== FEATURED SCROLL PIN =========== */
+function initFeaturedScroll(){
+  const featured = document.getElementById('featured');
+  const track = document.getElementById('featured-track');
+  if(!featured || !track) return;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced) return; // stop sticky translation; static layout acceptable
+  function update(){
+    const rect = featured.getBoundingClientRect();
+    const total = featured.offsetHeight - window.innerHeight;
+    const prog = total > 0 ? Math.max(0, Math.min(1, -rect.top / total)) : 0;
+    track.style.transform = `translateX(${prog * -400}vw)`;
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+}
+
+/* =========== FILTER =========== */
+function filterGallery(btn){
+  document.querySelectorAll('#gallery .filters button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const cat = btn.dataset.filter;
+  document.querySelectorAll('#gallery .card').forEach(card=>{
+    const c = card.dataset.category;
+    if(cat==='All' || c===cat){ card.style.display=''; card.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:400,fill:'both',easing:'ease-out'}); }
+    else { card.style.display='none'; }
+  });
+}
+
+/* =========== LIGHTBOX =========== */
+function openLightbox(index){
+  currentIndex = index;
+  updateLightbox();
+  const lb = document.getElementById('lightbox');
+  lb.classList.add('active');
+  document.body.style.overflow='hidden';
+  // Focus trap not fully implemented but close button and nav are focusable
+  setTimeout(()=>lb.querySelector('.close-btn').focus(),50);
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow='';
+}
+function changeLightbox(delta){
+  currentIndex = (currentIndex + delta + photos.length) % photos.length;
+  updateLightbox();
+}
+function updateLightbox(){
+  const p = photos[currentIndex];
+  document.getElementById('lb-title').textContent = p.title;
+  document.getElementById('lb-cat').textContent = p.cat;
+  document.getElementById('lb-exif').textContent = p.exif;
+  const artContainer = document.getElementById('lb-art');
+  artContainer.innerHTML = '';
+  // Find the artwork element from gallery card
+  const card = document.querySelector('#gallery .card[data-id="'+p.id+'"]');
+  if(card){
+    const art = card.querySelector('.art');
+    if(art){
+      if(art.tagName === 'CANVAS'){
+        // Clone and draw same data? We can just use the existing canvas by moving it temporarily? Better: draw to new img from canvas
+        // Since canvas content is already drawn, we can get data URL from the original canvas (but it's inside card, not moved)
+        const src = art.toDataURL('image/png');
+        const img = document.createElement('img'); img.src = src; img.alt = p.title; img.style.maxHeight='78vh'; img.style.maxWidth='100%'; img.style.objectFit='contain';
+        artContainer.appendChild(img);
+      } else if(art.tagName === 'SVG'){
+        const s = new XMLSerializer().serializeToString(art);
+        const b64 = btoa(unescape(encodeURIComponent(s)));
+        const img = document.createElement('img'); img.src = 'data:image/svg+xml;base64,'+b64; img.alt = p.title; img.style.maxHeight='78vh'; img.style.maxWidth='100%'; img.style.objectFit='contain';
+        artContainer.appendChild(img);
+      } else {
+        // CSS art div: clone
+        const clone = art.cloneNode(true); clone.style.maxHeight='78vh'; clone.style.maxWidth='100%'; clone.style.objectFit='contain';
+        artContainer.appendChild(clone);
+      }
+    }
+  }
+}
+
+/* =========== KEYBOARD =========== */
+document.addEventListener('keydown', e=>{
+  const lb = document.getElementById('lightbox');
+  if(!lb.classList.contains('active')) return;
+  if(e.key==='Escape'){ e.preventDefault(); closeLightbox(); }
+  else if(e.key==='ArrowLeft'){ e.preventDefault(); changeLightbox(-1); }
+  else if(e.key==='ArrowRight'){ e.preventDefault(); changeLightbox(1); }
+});
+
+/* =========== COUNTERS =========== */
+function initCounters(){
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const target = parseInt(el.dataset.target,10);
+        let current = 0;
+        const step = Math.ceil(target/30);
+        const timer = setInterval(()=>{
+          current = Math.min(current+step, target);
+          el.textContent = current;
+          if(current>=target) clearInterval(timer);
+        }, 40);
+        observer.unobserve(el);
+      }
+    });
+  }, {threshold:0.5});
+  document.querySelectorAll('.stat-number').forEach(el=>observer.observe(el));
+}
+
+/* =========== FORM =========== */
+function submitForm(){
+  const name = document.getElementById('c-name').value.trim();
+  const email = document.getElementById('c-email').value.trim();
+  const message = document.getElementById('c-message').value.trim();
+  const fb = document.getElementById('form-feedback');
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!name || !email || !message){ fb.className='error'; fb.textContent='Please complete all fields.'; return; }
+  if(!emailRe.test(email)){ fb.className='error'; fb.textContent='Please enter a valid email address.'; return; }
+  fb.className='ok'; fb.textContent='Message received. Mara will respond within two working days.';
+  document.getElementById('contact-form').reset();
+}
+
+/* =========== YEAR =========== */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* =========== BOOT =========== */
+document.addEventListener('DOMContentLoaded',()=>{
+  initDrawings();
+  initFeaturedScroll();
+  initCounters();
+  // Focus management for cards
+  document.querySelectorAll('#gallery .card').forEach(card=>{
+    card.addEventListener('keydown', e=>{
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); card.click(); }
+    });
+  });
+});
+</script>
+</body>
+</html>
