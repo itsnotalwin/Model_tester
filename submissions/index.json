@@ -130,6 +130,28 @@
       "thumb": "thumb.png",
       "hasAudit": true,
       "submittedAt": "2026-10-22T21:26:21+02:00"
+    },
+    {
+      "slug": "deepseek-v4-pro",
+      "model": "deepseek-v4-pro",
+      "title": "Mara Lindqvist — The Light Decides",
+      "tagline": "Chasing northern light to the edge of the world.",
+      "palette": [
+        "#0b0c0f",
+        "#ece6db",
+        "#7fc8e8",
+        "#e8a254"
+      ],
+      "techniques": [
+        "Inline SVG vector scenes (linear/radial gradients, feTurbulence grain, feGaussianBlur glow, blend modes)",
+        "Canvas 2D generative drawing (procedural gradients, seeded noise, bezier silhouettes, layered aurora ribbons)",
+        "Pure CSS layered conic/radial gradients with clip-path shards and mix-blend modes",
+        "Canvas-based animated aurora background driven by requestAnimationFrame"
+      ],
+      "entry": "index.html",
+      "thumb": null,
+      "hasAudit": true,
+      "submittedAt": "2026-10-22T21:26:44+02:00"
     }
   ]
 }
