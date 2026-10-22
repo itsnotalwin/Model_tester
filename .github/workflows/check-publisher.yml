@@ -1,0 +1,57 @@
+name: Verify blind submission importer
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - publish-submission.mjs
+      - .github/workflows/check-publisher.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test valid, invalid and duplicate imports
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check publish-submission.mjs
+          fixture="$(mktemp -d)"
+          export TEST_ROOT="$fixture"
+          trap 'rm -rf "$fixture" submissions/test-blind-publisher' EXIT
+          node --input-type=module <<'NODE'
+          import { mkdir, writeFile } from 'node:fs/promises';
+          import { join } from 'node:path';
+          const dir = join(process.env.TEST_ROOT, 'test-blind-publisher');
+          await mkdir(dir);
+          await writeFile(join(dir, 'index.html'), '<!doctype html><html><head><title>Test</title></head><body>' + 'Art. '.repeat(200) + '</body></html>');
+          await writeFile(join(dir, 'AUDIT.md'), '# Audit: test-blind-publisher\n\nValid fixture.\n');
+          await writeFile(join(dir, 'meta.json'), JSON.stringify({
+            slug: 'test-blind-publisher',
+            model: 'Fixture Model', title: 'Fixture', tagline: 'A test',
+            palette: ['#112233','#223344','#334455','#445566'],
+            techniques: ['canvas','svg','css'], entry: 'index.html',
+            thumb: null, submittedAt: '2026-10-22T20:00:00+02:00'
+          }));
+          NODE
+          node publish-submission.mjs --check "$fixture/test-blind-publisher"
+          node publish-submission.mjs "$fixture/test-blind-publisher"
+          test -s submissions/test-blind-publisher/index.html
+          if node publish-submission.mjs "$fixture/test-blind-publisher"; then
+            echo "::error::Duplicate submission was accepted"
+            exit 1
+          fi
+          printf 'unexpected' > "$fixture/test-blind-publisher/extra.txt"
+          if node publish-submission.mjs --check "$fixture/test-blind-publisher"; then
+            echo "::error::Unexpected file was accepted"
+            exit 1
+          fi
+          echo "All publisher smoke tests passed."
