@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Model Tester</title>
+<style>
+:root{--ink:#14161a;--sheet:#1d2024;--line:#343a40;--paper:#e7eaec;--mute:#8f979f;--mark:#f2c230;
+--serif:"Iowan Old Style","Palatino Linotype",Georgia,serif;--sans:system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+*{box-sizing:border-box;margin:0}
+body{background:var(--ink);color:var(--paper);font:15px/1.5 var(--sans)}
+body.lock{overflow:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--mark);outline-offset:3px}
+header{padding:56px clamp(20px,5vw,72px) 28px;max-width:1500px;margin:auto}
+h1{font:400 clamp(44px,8vw,104px)/.95 var(--serif);letter-spacing:-.03em}
+header p{max-width:56ch;color:var(--mute);margin-top:18px;font-size:17px}
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:32px}
+input,select,button{font:inherit;color:inherit;background:var(--sheet);border:1px solid var(--line);padding:9px 12px;border-radius:2px}
+input{width:min(320px,100%)}
+#count{color:var(--mute);margin-left:auto}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:28px;padding:12px clamp(20px,5vw,72px) 96px;max-width:1500px;margin:auto}
+.card{display:block;text-decoration:none;background:var(--sheet);padding:10px 10px 16px;transition:outline-offset .15s}
+.card:hover{outline:2px solid var(--mark);outline-offset:4px}
+.thumb{position:relative;aspect-ratio:16/10;overflow:hidden;background:#000;animation:develop .9s ease both;animation-delay:calc(var(--i)*70ms)}
+@keyframes develop{from{filter:brightness(0) contrast(2)}to{filter:none}}
+.thumb iframe{position:absolute;left:0;top:0;width:1440px;height:900px;border:0;transform-origin:0 0;pointer-events:none;background:#fff}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.meta{padding:14px 4px 0;display:grid;gap:4px}
+.row{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.name{font:400 22px/1.2 var(--serif)}
+.no{color:var(--mute);font-size:13px}
+.tag{color:var(--mute);font-size:14px}
+.sw{display:flex;gap:4px;align-items:center;margin-top:8px}
+.sw i{width:16px;height:16px;border:1px solid #fff3}
+.sw span{margin-left:auto;color:var(--mute);font-size:13px}
+#state{padding:40px clamp(20px,5vw,72px) 96px;max-width:1500px;margin:auto;color:var(--mute);font-size:17px;max-width:64ch}
+#viewer{position:fixed;inset:0;z-index:10;background:var(--ink);display:none;grid-template-rows:auto 1fr}
+#viewer.open{display:grid}
+.bar{display:flex;gap:10px;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.bar .who{flex:1;min-width:160px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.who b{font:400 18px var(--serif);margin-right:10px}
+.who span{color:var(--mute)}
+.bar button,.bar a{padding:7px 11px;text-decoration:none;border:1px solid var(--line);background:var(--sheet);border-radius:2px;cursor:pointer;font-size:14px}
+.bar button[aria-pressed=true]{border-color:var(--mark);color:var(--mark)}
+.stage{background:#0b0c0e;display:flex;justify-content:center;min-height:0}
+.stage iframe{width:var(--w,100%);max-width:100%;height:100%;border:0;background:#fff;transition:width .25s}
+@media(prefers-reduced-motion:reduce){.thumb{animation:none}.stage iframe{transition:none}}
+</style>
+</head>
+<body>
+<div id="main">
+<header>
+  <h1>Model Tester</h1>
+  <p>Every model got the same brief and the same twelve photographs, and none could see another's work. Open a frame to explore the site it built.</p>
+  <div class="tools">
+    <input id="q" type="search" placeholder="Search models" aria-label="Search models">
+    <select id="sort" aria-label="Sort frames">
+      <option value="old">Oldest first</option>
+      <option value="new">Newest first</option>
+      <option value="name">Model name</option>
+    </select>
+    <span id="count" aria-live="polite"></span>
+  </div>
+</header>
+<p id="state" hidden></p>
+<main id="grid" aria-label="Submissions"></main>
+</div>
+
+<div id="viewer" role="dialog" aria-modal="true" aria-label="Submission viewer">
+  <div class="bar">
+    <button id="back">Back to all</button>
+    <div class="who"><b id="vname"></b><span id="vtag"></span></div>
+    <span role="group" aria-label="Preview width">
+      <button data-w="100%" aria-pressed="true">Desktop</button>
+      <button data-w="820px" aria-pressed="false">Tablet</button>
+      <button data-w="390px" aria-pressed="false">Phone</button>
+    </span>
+    <button id="prev">Previous</button>
+    <button id="next">Next</button>
+    <a id="vopen" target="_blank" rel="noopener">Open in tab</a>
+    <a id="vaudit" target="_blank" rel="noopener">Audit</a>
+  </div>
+  <div class="stage"><iframe id="frame" title="Submission preview" sandbox="allow-scripts allow-forms"></iframe></div>
+</div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s);
+const grid=$('#grid'),viewer=$('#viewer'),frame=$('#frame'),main=$('#main'),state=$('#state');
+let items=[],cur=-1,lastFocus=null;
+const el=(t,c,x)=>{const n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n};
+const base=s=>'submissions/'+encodeURIComponent(s.slug)+'/';
+const path=(s,f)=>base(s)+f.split('/').map(encodeURIComponent).join('/');
+
+const ro=new ResizeObserver(es=>es.forEach(e=>{const f=e.target.querySelector('iframe');if(f)f.style.transform='scale('+e.contentRect.width/1440+')'}));
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  const f=e.target.querySelector('iframe');if(!f)return;
+  if(e.isIntersecting&&!f.dataset.on){f.dataset.on=1;f.src=f.dataset.src}
+  else if(!e.isIntersecting&&f.dataset.on){delete f.dataset.on;f.src='about:blank'}
+}),{rootMargin:'400px'});
+
+function card(s,i){
+  const a=el('a','card');a.href='#/'+s.slug;a.style.setProperty('--i',i);
+  a.setAttribute('aria-label','Open '+s.model+': '+s.title);
+  const t=el('div','thumb');
+  if(s.thumb){const im=el('img');im.src=path(s,s.thumb);im.alt='';im.loading='lazy';t.append(im)}
+  else{const f=el('iframe');f.dataset.src=path(s,s.entry);f.setAttribute('sandbox','allow-scripts');f.tabIndex=-1;f.setAttribute('aria-hidden','true');f.title='';t.append(f);ro.observe(t);io.observe(t)}
+  const m=el('div','meta'),r=el('div','row');
+  r.append(el('span','name',s.model),el('span','no','Frame '+String(s.n).padStart(2,'0')));
+  const sw=el('div','sw');
+  (s.palette||[]).forEach(c=>{const i=el('i');i.style.background=/^#[0-9a-f]{3,8}$/i.test(c)?c:'#444';i.title=c;sw.append(i)});
+  sw.append(el('span','',(s.techniques||[]).length+' techniques'));
+  m.append(r,el('span','tag',s.tagline||s.title),sw);
+  a.append(t,m);return a;
+}
+
+function render(){
+  const q=$('#q').value.trim().toLowerCase(),o=$('#sort').value;
+  let v=items.filter(s=>!q||[s.model,s.title,s.tagline,s.slug].join(' ').toLowerCase().includes(q));
+  if(o==='new')v.reverse();else if(o==='name')v.sort((a,b)=>a.model.localeCompare(b.model));
+  io.disconnect();ro.disconnect();
+  grid.replaceChildren(...v.map(card));
+  $('#count').textContent=v.length+' of '+items.length+' frames';
+}
+
+function setView(i){
+  cur=(i+items.length)%items.length;const s=items[cur];
+  frame.src=path(s,s.entry);
+  $('#vname').textContent=s.model;$('#vtag').textContent=s.tagline||s.title;
+  $('#vopen').href=path(s,s.entry);
+  const au=$('#vaudit');au.hidden=!s.hasAudit;au.href=base(s)+'AUDIT.md';
+  document.title=s.model+' | Model Tester';
+}
+function route(){
+  const m=location.hash.match(/^#\/([\w-]+)/),i=m?items.findIndex(s=>s.slug===m[1]):-1;
+  if(i<0){
+    if(viewer.classList.contains('open')){viewer.classList.remove('open');frame.src='about:blank';main.inert=false;document.body.classList.remove('lock');document.title='Model Tester';lastFocus&&lastFocus.focus()}
+    return;
+  }
+  if(!viewer.classList.contains('open')){lastFocus=document.activeElement;viewer.classList.add('open');main.inert=true;document.body.classList.add('lock');$('#back').focus()}
+  setView(i);
+}
+const go=d=>{location.hash='#/'+items[(cur+d+items.length)%items.length].slug};
+$('#back').onclick=()=>{history.pushState('',document.title,location.pathname+location.search);route()};
+$('#prev').onclick=()=>go(-1);$('#next').onclick=()=>go(1);
+document.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{
+  viewer.style.setProperty('--w',b.dataset.w);
+  document.querySelectorAll('[data-w]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+});
+addEventListener('keydown',e=>{
+  if(!viewer.classList.contains('open'))return;
+  if(e.key==='Escape')$('#back').click();
+  else if(e.key==='ArrowLeft')go(-1);
+  else if(e.key==='ArrowRight')go(1);
+});
+addEventListener('hashchange',route);
+$('#q').oninput=render;$('#sort').onchange=render;
+
+(async()=>{
+  try{
+    const r=await fetch('submissions/index.json',{cache:'no-cache'});
+    if(!r.ok)throw new Error(r.status);
+    const d=await r.json();
+    items=(d.submissions||[]).sort((a,b)=>String(a.submittedAt).localeCompare(String(b.submittedAt)));
+    items.forEach((s,i)=>s.n=i+1);
+  }catch(e){
+    state.hidden=false;
+    state.textContent='Could not load submissions/index.json. Serve this folder over HTTP (for example with npx serve) or deploy it to GitHub Pages, because browsers block fetch on file:// pages.';
+    return;
+  }
+  if(!items.length){state.hidden=false;state.textContent='No submissions yet. Add a folder under submissions/<slug>/ with a meta.json and push. The index rebuilds on its own.';$('#count').textContent='0 frames';return}
+  render();route();
+})();
+</script>
+</body>
+</html>

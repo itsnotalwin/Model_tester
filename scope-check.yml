@@ -1,0 +1,12 @@
+name: scope-check
+on: pull_request
+jobs:
+  scope:
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'maintainer') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - run: git diff --name-only origin/${{ github.base_ref }}...HEAD | node scripts/check-scope.mjs
