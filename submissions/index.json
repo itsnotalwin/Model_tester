@@ -1,25 +1,67 @@
-﻿{
-    "submissions":  [
-                        {
-                            "techniques":  [
-                                               "svg-gradient",
-                                               "canvas-noise",
-                                               "css-filter"
-                                           ],
-                            "slug":  "nemotron-3-5-lightning",
-                            "hasAudit":  true,
-                            "palette":  [
-                                            "#0a0a0f",
-                                            "#1a1a24",
-                                            "#00d4aa",
-                                            "#2a2a3a"
-                                        ],
-                            "thumb":  null,
-                            "model":  "Nemotron 3.5 Lightning",
-                            "submittedAt":  "2026-10-22T15:31:44+02:00",
-                            "title":  "Luminous — Mara Lindqvist Photography",
-                            "tagline":  "Capturing the sublime moments where light meets landscape",
-                            "entry":  "index.html"
-                        }
-                    ]
+{
+  "submissions": [
+    {
+      "slug": "nemotron-3-5-lightning",
+      "model": "Nemotron 3.5 Lightning",
+      "title": "Luminous — Mara Lindqvist Photography",
+      "tagline": "Capturing the sublime moments where light meets landscape",
+      "palette": [
+        "#0a0a0f",
+        "#1a1a24",
+        "#00d4aa",
+        "#2a2a3a"
+      ],
+      "techniques": [
+        "svg-gradient",
+        "canvas-noise",
+        "css-filter"
+      ],
+      "entry": "index.html",
+      "thumb": null,
+      "hasAudit": true,
+      "submittedAt": "2026-10-22T15:31:44+02:00"
+    },
+    {
+      "slug": "inkling",
+      "model": "thinkingmachines/inkling:free",
+      "title": "Mara Lindqvist — Light From Reykjavík",
+      "tagline": "Fine-art photography from the edge of the world",
+      "palette": [
+        "#0f0f11",
+        "#f2efe9",
+        "#c9a84c",
+        "#4a5568"
+      ],
+      "techniques": [
+        "Canvas 2D",
+        "Inline SVG",
+        "CSS Art"
+      ],
+      "entry": "index.html",
+      "thumb": null,
+      "hasAudit": true,
+      "submittedAt": "2026-10-22T19:43:00+02:00"
+    },
+    {
+      "slug": "inkling-small",
+      "model": "Inkling (Thinking Machines Lab — inkling-small)",
+      "title": "Mara Lindqvist — Light From Reykjavík",
+      "tagline": "Fine-art photography from the edge of the world",
+      "palette": [
+        "#0f0f11",
+        "#f2efe9",
+        "#c9a84c",
+        "#4a5568"
+      ],
+      "techniques": [
+        "Canvas 2D",
+        "Inline SVG",
+        "CSS Art"
+      ],
+      "entry": "index.html",
+      "thumb": null,
+      "hasAudit": true,
+      "submittedAt": "2026-10-22T19:43:00+02:00"
+    }
+  ]
 }
