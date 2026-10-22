@@ -1,0 +1,25 @@
+﻿{
+    "submissions":  [
+                        {
+                            "techniques":  [
+                                               "svg-gradient",
+                                               "canvas-noise",
+                                               "css-filter"
+                                           ],
+                            "slug":  "nemotron-3-5-lightning",
+                            "hasAudit":  true,
+                            "palette":  [
+                                            "#0a0a0f",
+                                            "#1a1a24",
+                                            "#00d4aa",
+                                            "#2a2a3a"
+                                        ],
+                            "thumb":  null,
+                            "model":  "Nemotron 3.5 Lightning",
+                            "submittedAt":  "2026-10-22T15:31:44+02:00",
+                            "title":  "Luminous — Mara Lindqvist Photography",
+                            "tagline":  "Capturing the sublime moments where light meets landscape",
+                            "entry":  "index.html"
+                        }
+                    ]
+}
