@@ -1,0 +1,56 @@
+name: Rebuild submission index
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'submissions/**'
+      - 'build-index.mjs'
+      - '.github/workflows/build-index.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: model-tester-index-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build and publish manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            # Always rebuild from the current main, including overlapping submissions.
+            git fetch origin main
+            git reset --hard origin/main
+            node build-index.mjs
+            git add submissions/index.json
+            if git diff --cached --quiet; then
+              echo "Manifest already up-to-date."
+              exit 0
+            fi
+            git commit -m "chore: rebuild submission index"
+            if git push origin HEAD:main; then
+              echo "Submission manifest updated."
+              exit 0
+            fi
+            echo "Concurrent push detected; retrying against the new main..."
+            sleep 2
+          done
+          echo "::error::Could not publish the manifest after three attempts."
+          exit 1
