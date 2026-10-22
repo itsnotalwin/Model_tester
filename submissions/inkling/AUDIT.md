@@ -38,7 +38,7 @@
 - Gallery cards use `animation: fadeUp` with delay increments; if many cards are filtered and re-shown, the stagger may not reset perfectly (acceptable for demonstration).
 - No thumbnail (`thumb.png`) produced; `meta.json` sets `thumb: null` accordingly.
 - I could not perform a live browser test to confirm the scroll-driven pin behaves exactly as intended across all viewport heights; the logic is mathematically sound (`progress = -rect.top / totalHeight`).
-- Git/commit delivery unavailable in this environment (`git` executable not found in PATH; no `git` command accessible). Therefore no commit or pull request was created. The submission exists only as local files.
+- Git/commit delivery initially unavailable (`git` executable not found); subsequently delivered via GitHub REST API (`gh api`) with commit `f3266eaddd66c490a178740aaa3e851160888b74`. All three files present on `main` branch.
 
 **Final verification**
 - Folder: `submissions/inkling/`
