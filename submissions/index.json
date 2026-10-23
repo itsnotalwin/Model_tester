@@ -152,6 +152,27 @@
       "thumb": null,
       "hasAudit": true,
       "submittedAt": "2026-10-22T21:26:44+02:00"
+    },
+    {
+      "slug": "recursiveflintv10free",
+      "model": "recursive/flint-v1.0:free",
+      "title": "Mara Lindqvist — Northern Noir",
+      "tagline": "Chasing the long blue hour where light becomes memory.",
+      "palette": [
+        "#050b12",
+        "#0b1a26",
+        "#2f7d9c",
+        "#e8f1f2"
+      ],
+      "techniques": [
+        "SVG generative gradients and geometric composition",
+        "Canvas 2D generative radial gradients",
+        "CSS layered gradients"
+      ],
+      "entry": "index.html",
+      "thumb": null,
+      "hasAudit": true,
+      "submittedAt": "2026-10-23T20:00:00+02:00"
     }
   ]
 }
