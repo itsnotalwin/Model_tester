@@ -1,0 +1,2700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mara Lindqvist — Cold Light, Slow Weather</title>
+<meta name="description" content="Mara Lindqvist is a photographer based in Reykjavík. Selected work 2019–2026: basalt, glacier, rain and the people who live between them. Every image on this site is generated in the browser.">
+<meta name="author" content="Mara Lindqvist">
+<meta name="color-scheme" content="dark">
+<style>
+/* ============================================================
+   MARA LINDQVIST — a portfolio of generated light
+   All imagery below is drawn by the browser: SVG, <canvas>, CSS.
+   ============================================================ */
+
+:root{
+  --basalt:#08090b;
+  --basalt-2:#0d0f13;
+  --basalt-3:#14171d;
+  --bone:#efe9df;
+  --bone-dim:#b7b1a6;
+  --ash:#767c85;
+  --ember:#ff4a1c;
+  --ember-soft:#ff8a5e;
+  --glacier:#9ecfdc;
+  --line:rgba(239,233,223,.14);
+  --line-soft:rgba(239,233,223,.07);
+  --pad:clamp(18px,4.2vw,68px);
+  --nav-h:64px;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --font-display:"Iowan Old Style","Hoefler Text",Palatino,"Palatino Linotype","Book Antiqua",Georgia,ui-serif,serif;
+  --font-mono:ui-monospace,"SF Mono","Menlo","Cascadia Mono","Consolas","Liberation Mono",monospace;
+  --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;overflow-x:clip;scroll-behavior:smooth}
+section{scroll-margin-top:var(--nav-h)}
+body{
+  margin:0;background:var(--basalt);color:var(--bone);
+  font-family:var(--font-sans);
+  font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:clip;
+}
+img,svg{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ember);color:#0a0a0a}
+
+/* ---------- shared atoms ---------- */
+.mono{
+  font-family:var(--font-mono);
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  font-weight:500;
+}
+.sr-only{
+  position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+.skip{
+  position:fixed;left:12px;top:12px;z-index:400;padding:10px 16px;
+  background:var(--bone);color:#08090b;font-family:var(--font-mono);
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  transform:translateY(-160%);transition:transform .3s var(--ease-out);
+}
+.skip:focus{transform:none}
+
+:focus-visible{
+  outline:2px solid var(--glacier);
+  outline-offset:3px;
+  border-radius:2px;
+}
+
+/* ---------- ambient layers ---------- */
+#grain{
+  position:fixed;inset:-40%;z-index:60;pointer-events:none;
+  opacity:.30;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:180px 180px;
+  animation:grainDrift 7s steps(6) infinite;
+  will-change:transform;
+}
+@keyframes grainDrift{
+  0%{transform:translate3d(0,0,0)}
+  16%{transform:translate3d(-3%,-2%,0)}
+  33%{transform:translate3d(2%,-4%,0)}
+  50%{transform:translate3d(-2%,3%,0)}
+  66%{transform:translate3d(3%,1%,0)}
+  83%{transform:translate3d(-1%,-3%,0)}
+  100%{transform:translate3d(0,0,0)}
+}
+
+/* ---------- custom cursor ---------- */
+#cursor{
+  position:fixed;left:0;top:0;width:26px;height:26px;margin:-13px 0 0 -13px;
+  border:1px solid rgba(239,233,223,.55);border-radius:50%;
+  z-index:300;pointer-events:none;opacity:0;
+  transition:width .35s var(--ease-out),height .35s var(--ease-out),margin .35s var(--ease-out),
+             background-color .35s var(--ease),border-color .35s var(--ease),opacity .3s linear;
+  will-change:transform;
+  display:grid;place-items:center;
+}
+#cursor.is-on{opacity:1}
+#cursor.is-lg{
+  width:88px;height:88px;margin:-44px 0 0 -44px;
+  background:rgba(255,74,28,.10);border-color:rgba(255,74,28,.65);
+}
+#cursor-label{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  opacity:0;transition:opacity .25s var(--ease);color:var(--bone);white-space:nowrap;
+}
+#cursor.is-lg #cursor-label{opacity:1}
+body.has-cursor,
+body.has-cursor a,body.has-cursor button,body.has-cursor label{cursor:none}
+
+/* ---------- 1. NAV ---------- */
+#nav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:80;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--pad);
+  border-bottom:1px solid transparent;
+  transition:background-color .45s var(--ease),border-color .45s var(--ease),backdrop-filter .45s var(--ease);
+}
+#nav.is-stuck{
+  background:rgba(8,9,11,.74);
+  -webkit-backdrop-filter:blur(16px) saturate(130%);
+  backdrop-filter:blur(16px) saturate(130%);
+  border-bottom-color:var(--line-soft);
+}
+.wordmark{display:flex;align-items:center;gap:12px;padding:6px 0}
+.mark{width:15px;height:15px;flex:none;overflow:visible}
+.mark path{fill:var(--ember)}
+.wm-text{
+  font-family:var(--font-display);font-size:19px;letter-spacing:.005em;
+  line-height:1;color:var(--bone);
+}
+.wm-sub{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--ash);padding-left:11px;margin-left:2px;border-left:1px solid var(--line);
+  line-height:1.4;
+}
+.navlinks{display:flex;align-items:center;gap:clamp(14px,2.4vw,40px)}
+.navlinks a{
+  position:relative;display:inline-block;padding:8px 2px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bone-dim);transition:color .3s var(--ease),transform .5s var(--ease-out);
+  will-change:transform;
+}
+.navlinks a::after{
+  content:"";position:absolute;left:2px;right:2px;bottom:2px;height:1px;
+  background:var(--ember);transform:scaleX(0);transform-origin:left;
+  transition:transform .45s var(--ease-out);
+}
+.navlinks a:hover,.navlinks a:focus-visible,.navlinks a.is-active{color:var(--bone)}
+.navlinks a:hover::after,.navlinks a:focus-visible::after,.navlinks a.is-active::after{transform:scaleX(1)}
+.navlinks a:hover{color:var(--bone)}
+
+/* ---------- 2. HERO ---------- */
+#hero{
+  position:relative;min-height:100vh;min-height:100svh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:calc(var(--nav-h) + 28px) var(--pad) clamp(28px,5vh,56px);
+  overflow:hidden;isolation:isolate;
+}
+#aurora{position:absolute;inset:0;width:100%;height:100%;z-index:-3;opacity:.9}
+.hero-vig{
+  position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 22% 18%,rgba(158,207,220,.10),transparent 55%),
+    radial-gradient(100% 80% at 82% 90%,rgba(255,74,28,.10),transparent 60%),
+    linear-gradient(180deg,rgba(8,9,11,.55) 0%,rgba(8,9,11,.12) 38%,rgba(8,9,11,.92) 100%);
+}
+.hero-rule{
+  position:absolute;left:var(--pad);right:var(--pad);top:calc(var(--nav-h) + 18px);height:1px;
+  background:linear-gradient(90deg,var(--line),transparent 70%);z-index:-1;
+}
+.hero-top{
+  position:absolute;top:calc(var(--nav-h) + 34px);left:var(--pad);right:var(--pad);
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  color:var(--ash);
+}
+.hero-status{display:inline-flex;align-items:center;gap:9px}
+.dot{
+  width:5px;height:5px;border-radius:50%;background:var(--ember);flex:none;
+  box-shadow:0 0 0 0 rgba(255,74,28,.55);animation:pulse 3.4s var(--ease) infinite;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(255,74,28,.5)}
+  70%{box-shadow:0 0 0 9px rgba(255,74,28,0)}
+  100%{box-shadow:0 0 0 0 rgba(255,74,28,0)}
+}
+.hero-name{
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:clamp(56px,12.2vw,178px);
+  line-height:.84;
+  letter-spacing:-.035em;
+  color:var(--bone);
+  will-change:transform,opacity;
+}
+.hero-name .line{display:block;overflow:hidden;padding-bottom:.04em}
+.hero-name .word{
+  display:block;
+  transform:translateY(105%);
+  animation:riseIn 1.5s var(--ease-out) forwards;
+}
+.hero-name .line:nth-child(2) .word{animation-delay:.12s}
+.hero-name .word em{font-style:italic;color:var(--glacier)}
+@keyframes riseIn{to{transform:translateY(0)}}
+.hero-foot{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:clamp(18px,5vw,80px);
+  margin-top:clamp(22px,4vh,44px);padding-top:20px;border-top:1px solid var(--line-soft);
+}
+.hero-tag{
+  margin:0;max-width:46ch;
+  font-family:var(--font-display);font-size:clamp(15px,1.55vw,21px);
+  line-height:1.45;color:var(--bone-dim);font-style:italic;
+  text-wrap:balance;
+}
+.cue{display:flex;align-items:center;gap:12px;color:var(--ash);flex:none;padding:6px 0}
+.cue-line{display:block;width:44px;height:1px;background:var(--line);position:relative;overflow:hidden}
+.cue-line::after{
+  content:"";position:absolute;inset:0;background:var(--ember);
+  transform:translateX(-100%);animation:cueSlide 2.6s var(--ease) infinite;
+}
+@keyframes cueSlide{
+  0%{transform:translateX(-101%)}
+  55%{transform:translateX(0)}
+  100%{transform:translateX(101%)}
+}
+.cue .mono{transition:color .3s var(--ease)}
+.cue:hover .mono{color:var(--bone)}
+
+/* ---------- 3. FEATURED (pinned horizontal) ---------- */
+#featured{position:relative;height:500vh;height:500svh;background:var(--basalt)}
+.featured-pin{
+  position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
+  display:flex;align-items:center;
+}
+.featured-track{
+  display:flex;flex-wrap:nowrap;will-change:transform;
+  backface-visibility:hidden;
+}
+.panel{
+  position:relative;flex:0 0 100vw;width:100vw;height:100vh;height:100svh;
+  overflow:hidden;isolation:isolate;background:#050607;
+}
+.panel-art{position:absolute;inset:-6% -3%;will-change:transform}
+.panel-art svg,.panel-art img,.panel-art > .art{width:100%;height:100%;object-fit:cover}
+.panel-art svg{height:100%}
+.panel-shade{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(6,7,8,.55) 0%,rgba(6,7,8,0) 26%,rgba(6,7,8,0) 44%,rgba(6,7,8,.86) 100%),
+    linear-gradient(90deg,rgba(6,7,8,.55) 0%,transparent 42%);
+}
+.panel-inner{
+  position:absolute;inset:0;padding:calc(var(--nav-h) + 26px) var(--pad) clamp(26px,6vh,56px);
+  display:flex;flex-direction:column;justify-content:space-between;pointer-events:none;
+}
+.panel-kicker{display:flex;justify-content:space-between;color:rgba(239,233,223,.62)}
+.panel-body{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.panel-lead{display:flex;flex-direction:column}
+.panel-num{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.24em;color:var(--ember);
+  display:block;margin-bottom:14px;
+}
+.panel-title{
+  margin:0;font-family:var(--font-display);font-weight:400;
+  font-size:clamp(38px,6.4vw,92px);line-height:.94;letter-spacing:-.03em;
+  max-width:14ch;
+}
+.panel-meta{
+  text-align:right;color:rgba(239,233,223,.66);
+  display:flex;flex-direction:column;gap:7px;align-items:flex-end;
+  padding-bottom:8px;
+}
+.panel-note{
+  max-width:34ch;font-family:var(--font-display);font-style:italic;
+  font-size:clamp(14px,1.15vw,17px);line-height:1.5;color:rgba(239,233,223,.78);
+  text-align:right;
+}
+.featured-hud{
+  position:absolute;left:0;right:0;bottom:0;z-index:4;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:0 var(--pad) clamp(18px,3.2vh,30px);
+  pointer-events:none;color:rgba(239,233,223,.72);
+}
+.hud-right{display:flex;align-items:center;gap:14px}
+.hud-count b{color:var(--ember);font-weight:600}
+.hud-rail{
+  position:relative;width:clamp(90px,16vw,240px);height:2px;background:rgba(239,233,223,.2);
+  overflow:hidden;
+}
+.hud-rail span{
+  position:absolute;inset:0;background:var(--bone);transform-origin:left;transform:scaleX(.2);
+}
+.hud-ticks{display:flex;gap:6px;align-items:center}
+.hud-ticks i{display:block;width:3px;height:3px;border-radius:50%;background:rgba(239,233,223,.28)}
+.hud-ticks i.on{background:var(--ember);transform:scale(1.6)}
+
+/* ---------- 4. GALLERY ---------- */
+#gallery{padding:clamp(70px,12vh,140px) var(--pad) clamp(40px,7vh,80px);position:relative}
+.section-head{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:clamp(20px,3vh,34px);
+}
+.sec-eyebrow{color:var(--ash);margin:0 0 14px}
+.sec-title{
+  margin:0;font-family:var(--font-display);font-weight:400;
+  font-size:clamp(34px,5.4vw,74px);line-height:.95;letter-spacing:-.03em;
+}
+.sec-title em{font-style:italic;color:var(--ash)}
+.sec-meta{margin:0;color:var(--ash);text-align:right;line-height:1.9}
+.filters{display:flex;flex-wrap:wrap;gap:clamp(6px,1vw,10px);margin-bottom:clamp(20px,3.4vh,34px)}
+.flt{
+  position:relative;padding:9px 16px;border:1px solid var(--line);
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bone-dim);border-radius:999px;
+  transition:color .35s var(--ease),border-color .35s var(--ease),background-color .35s var(--ease),transform .4s var(--ease-out);
+}
+.flt sup{font-size:8px;letter-spacing:.06em;margin-left:5px;opacity:.55;top:-.7em}
+.flt:hover{color:var(--bone);border-color:rgba(239,233,223,.4);transform:translateY(-1px)}
+.flt[aria-pressed="true"]{background:var(--bone);border-color:var(--bone);color:#0a0b0d}
+.flt[aria-pressed="true"] sup{opacity:.6}
+
+.grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(12px,1.7vw,26px);position:relative;
+}
+.tile{
+  position:relative;display:block;width:100%;aspect-ratio:4/5;
+  overflow:hidden;background:#0b0d10;text-align:left;
+  border:1px solid rgba(239,233,223,.06);
+  transform-origin:center;
+  transition:border-color .5s var(--ease),box-shadow .6s var(--ease);
+  contain:paint;
+}
+.tile[hidden]{display:none}
+.tile:hover,.tile:focus-visible{border-color:rgba(239,233,223,.22);box-shadow:0 30px 70px -40px rgba(0,0,0,.9)}
+.tile-art{
+  position:absolute;inset:0;overflow:hidden;
+  transition:transform .9s var(--ease-out);
+  will-change:transform;
+}
+.tile-art svg,.tile-art img,.tile-art .art{width:100%;height:100%;object-fit:cover}
+img[data-vera]{
+  opacity:0;transition:opacity .9s var(--ease);
+  background:radial-gradient(58% 48% at 42% 36%,#e2c39f,#7c4c2e 44%,#150e0c 100%);
+}
+.tile:hover .tile-shade{opacity:.68}
+.tile:focus-visible .tile-shade{opacity:.68}
+.tile-shade{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,7,8,.34) 0%,rgba(6,7,8,0) 34%,rgba(6,7,8,0) 52%,rgba(6,7,8,.86) 100%);
+  opacity:.92;transition:opacity .5s var(--ease);
+}
+.tile-idx{
+  position:absolute;top:12px;left:12px;color:rgba(239,233,223,.68);
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;
+}
+.tile-cap{
+  position:absolute;left:0;right:0;bottom:0;padding:14px 15px 15px;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:10px;
+}
+.tile-title{
+  margin:0;font-family:var(--font-display);font-weight:400;
+  font-size:clamp(15px,1.35vw,20px);line-height:1.1;letter-spacing:-.01em;
+  transition:transform .6s var(--ease-out);will-change:transform;
+}
+.tile-cat{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(239,233,223,.55);flex:none;padding-bottom:2px;
+  transition:transform .6s var(--ease-out)
+}
+.tile:hover .tile-title,.tile:hover .tile-cat{transform:translateY(-3px)}
+.tile-open{
+  position:absolute;top:12px;right:12px;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  padding:5px 9px;border:1px solid rgba(239,233,223,.35);color:var(--bone);
+  opacity:0;transform:translateY(-6px);transition:opacity .4s var(--ease),transform .4s var(--ease-out);
+  background:rgba(8,9,11,.35);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+}
+.tile:hover .tile-open,.tile:focus-visible .tile-open{opacity:1;transform:none}
+
+/* ---------- marquee (ambient loop) ---------- */
+.marquee{
+  margin-top:clamp(40px,7vh,80px);padding:18px 0;overflow:hidden;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+}
+.marquee-track{
+  display:flex;gap:0;width:max-content;animation:marq 46s linear infinite;
+  will-change:transform;
+}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-track span{
+  font-family:var(--font-display);font-size:clamp(18px,2.4vw,32px);
+  font-style:italic;color:var(--bone-dim);white-space:nowrap;padding:0 .55em;
+  display:inline-flex;align-items:center;gap:.55em;
+}
+.marquee-track span::after{content:"✳";font-style:normal;font-size:.5em;color:var(--ember);opacity:.9}
+@keyframes marq{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+
+/* ---------- 5. LIGHTBOX ---------- */
+#lightbox{
+  position:fixed;inset:0;z-index:200;
+  display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+  align-items:center;gap:clamp(20px,3vw,54px);
+  padding:clamp(56px,7vh,90px) var(--pad);
+  background:rgba(5,6,7,.94);
+  -webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .55s var(--ease),visibility .55s var(--ease);
+}
+#lightbox.is-open{opacity:1;visibility:visible;pointer-events:auto}
+.lb-frame{
+  position:relative;height:min(80vh,84svh);aspect-ratio:4/5;justify-self:center;
+  overflow:hidden;background:#0a0b0d;
+  box-shadow:0 60px 140px -60px rgba(0,0,0,1);
+  transform:scale(.94);opacity:0;
+  transition:transform .7s var(--ease-out),opacity .5s var(--ease);
+  clip-path:inset(6% 6% 6% 6%);
+}
+#lightbox.is-open .lb-frame{transform:none;opacity:1;clip-path:inset(0 0 0 0);transition-delay:.06s}
+.lb-art{position:absolute;inset:0}
+.lb-art svg,.lb-art img,.lb-art .art{width:100%;height:100%;object-fit:cover}
+.lb-meta{max-width:44ch;transform:translateY(18px);opacity:0;transition:transform .7s var(--ease-out) .12s,opacity .6s var(--ease) .12s}
+#lightbox.is-open .lb-meta{transform:none;opacity:1}
+.lb-index{margin:0 0 16px;color:var(--ember)}
+.lb-title{
+  margin:0 0 10px;font-family:var(--font-display);font-weight:400;
+  font-size:clamp(30px,3.6vw,54px);line-height:1;letter-spacing:-.03em;
+}
+.lb-cat{margin:0 0 clamp(18px,3vh,32px);color:var(--bone-dim);font-family:var(--font-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase}
+.exif{
+  margin:0;display:grid;grid-template-columns:auto 1fr;gap:9px clamp(14px,2vw,28px);
+  border-top:1px solid var(--line);padding-top:18px;
+}
+.exif dt{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);padding-top:2px}
+.exif dd{margin:0;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;color:var(--bone)}
+.lb-note{margin:20px 0 0;font-family:var(--font-display);font-style:italic;color:var(--bone-dim);font-size:14px;line-height:1.5}
+.lb-close{
+  position:absolute;top:clamp(14px,3vh,26px);right:var(--pad);
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bone-dim);padding:10px;transition:color .3s var(--ease)
+}
+.lb-close:hover{color:var(--bone)}
+.lb-close svg{width:12px;height:12px;stroke:currentColor;stroke-width:1.4;fill:none}
+.lb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:46px;height:46px;border:1px solid var(--line);border-radius:50%;
+  display:grid;place-items:center;color:var(--bone-dim);
+  transition:background-color .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease),transform .35s var(--ease-out);
+  background:rgba(8,9,11,.4);
+}
+.lb-nav:hover{background:var(--bone);color:#0a0b0d;border-color:var(--bone)}
+.lb-nav svg{width:15px;height:15px;stroke:currentColor;stroke-width:1.4;fill:none}
+.lb-prev{left:calc(var(--pad) * .5)}
+.lb-next{right:calc(var(--pad) * .5)}
+.panel-hint{
+  position:absolute;right:var(--pad);top:50%;transform:translateY(-50%) rotate(180deg);
+  writing-mode:vertical-rl;font-family:var(--font-mono);font-size:9px;letter-spacing:.32em;
+  text-transform:uppercase;color:rgba(239,233,223,.4);
+}
+
+/* ---------- 6. ABOUT ---------- */
+#about{
+  display:grid;grid-template-columns:1fr 1fr;align-items:center;
+  gap:clamp(28px,5vw,80px);
+  padding:clamp(60px,12vh,140px) var(--pad);
+  border-top:1px solid var(--line-soft);
+}
+.about-media{position:relative;overflow:hidden;aspect-ratio:4/5;background:#0b0d10}
+.about-art{position:absolute;inset:-8% 0;will-change:transform}
+.about-art svg,.about-art img,.about-art .art{width:100%;height:100%;object-fit:cover}
+.about-media::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 0 1px rgba(239,233,223,.1);
+  background:linear-gradient(180deg,rgba(6,7,8,0) 60%,rgba(6,7,8,.5) 100%);
+}
+.about-caption{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;padding:14px 16px;
+  display:flex;justify-content:space-between;color:rgba(239,233,223,.7);
+}
+.about-copy .eyebrow{color:var(--ember);margin:0 0 20px}
+.about-copy h2{
+  margin:0 0 22px;font-family:var(--font-display);font-weight:400;
+  font-size:clamp(28px,3.6vw,50px);line-height:1.02;letter-spacing:-.025em;
+  max-width:18ch;
+}
+.about-copy h2 em{font-style:italic;color:var(--glacier)}
+.about-copy p{
+  margin:0 0 16px;color:var(--bone-dim);font-size:clamp(14.5px,1.12vw,16.5px);
+  line-height:1.66;max-width:52ch;
+}
+.about-copy p strong{color:var(--bone);font-weight:500}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,2vw,26px);
+  margin-top:clamp(24px,4vh,42px);padding-top:22px;border-top:1px solid var(--line);
+}
+.stat{display:flex;flex-direction:column;gap:8px}
+.stat .num{
+  font-family:var(--font-display);font-size:clamp(32px,4.2vw,60px);
+  line-height:.9;letter-spacing:-.03em;color:var(--bone);
+  display:flex;align-items:baseline;gap:2px;
+  font-variant-numeric:tabular-nums;
+}
+.stat .num i{font-style:normal;font-size:.42em;color:var(--ember);transform:translateY(-.35em)}
+.stat .lbl{color:var(--ash);font-size:9.5px;letter-spacing:.18em;line-height:1.5}
+
+/* ---------- 7. CONTACT ---------- */
+#contact{
+  position:relative;padding:clamp(60px,11vh,130px) var(--pad) 0;
+  background:linear-gradient(180deg,var(--basalt) 0%,var(--basalt-2) 60%,#070809 100%);
+  border-top:1px solid var(--line-soft);
+}
+.contact-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:start}
+.contact-left .eyebrow{color:var(--ember);margin:0 0 22px}
+.contact-title{
+  margin:0 0 20px;font-family:var(--font-display);font-weight:400;
+  font-size:clamp(36px,5.2vw,74px);line-height:.95;letter-spacing:-.035em;max-width:12ch;
+}
+.contact-title em{font-style:italic;color:var(--glacier)}
+.contact-sub{margin:0 0 26px;color:var(--bone-dim);max-width:40ch;line-height:1.6;font-size:15px}
+.contact-lines{display:flex;flex-direction:column;gap:9px;color:var(--ash);padding-top:22px;border-top:1px solid var(--line-soft)}
+.contact-lines a{transition:color .3s var(--ease)}
+.contact-lines a:hover{color:var(--bone)}
+
+form{display:flex;flex-direction:column;gap:clamp(20px,3.2vh,30px)}
+form[hidden]{display:none}
+.field{position:relative;display:flex;flex-direction:column}
+.field label{
+  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ash);margin-bottom:9px;transition:color .3s var(--ease);
+}
+.field input,.field textarea{
+  width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);
+  color:var(--bone);font-family:var(--font-display);font-size:clamp(17px,1.4vw,21px);
+  padding:8px 0 12px;border-radius:0;resize:none;
+  transition:border-color .4s var(--ease),background-color .4s var(--ease);
+}
+.field textarea{min-height:96px;line-height:1.45}
+.field input::placeholder,.field textarea::placeholder{color:rgba(183,177,166,.32)}
+.field input:focus,.field textarea:focus{outline:none;border-bottom-color:var(--bone)}
+.field:focus-within label{color:var(--bone)}
+.field .err{
+  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ember);height:0;overflow:hidden;opacity:0;
+  transform:translateY(-4px);
+  transition:height .35s var(--ease-out),opacity .3s var(--ease),transform .35s var(--ease-out);
+}
+.field.invalid input,.field.invalid textarea{border-bottom-color:var(--ember)}
+.field.invalid .err{height:18px;opacity:1;transform:none;margin-top:9px}
+.field.shake{animation:shake .42s var(--ease)}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  18%{transform:translateX(-7px)}
+  38%{transform:translateX(6px)}
+  58%{transform:translateX(-4px)}
+  78%{transform:translateX(2px)}
+}
+.submit{
+  position:relative;align-self:flex-start;display:inline-flex;align-items:center;gap:14px;
+  padding:15px 26px;border:1px solid var(--bone);border-radius:999px;
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--bone);overflow:hidden;
+  transition:color .45s var(--ease),border-color .45s var(--ease);
+}
+.submit span{position:relative;z-index:2}
+.submit::before{
+  content:"";position:absolute;inset:0;background:var(--bone);z-index:1;
+  transform:translateY(101%);transition:transform .5s var(--ease-out);
+}
+.submit:hover,.submit:focus-visible{color:#08090b}
+.submit:hover::before,.submit:focus-visible::before{transform:none}
+.submit svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;position:relative;z-index:2;transition:transform .45s var(--ease-out)}
+.submit:hover svg{transform:translateX(4px)}
+.form-note{margin:-10px 0 0;color:rgba(118,124,133,.85);font-size:9.5px;letter-spacing:.16em;line-height:1.7;max-width:38ch}
+.form-success{
+  display:flex;flex-direction:column;gap:16px;align-items:flex-start;
+  border:1px solid var(--line);padding:clamp(22px,3vw,34px);
+  animation:successIn .8s var(--ease-out) both;
+}
+.form-success[hidden]{display:none}
+@keyframes successIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.form-success .ok{
+  width:42px;height:42px;border-radius:50%;border:1px solid var(--ember);
+  display:grid;place-items:center;
+}
+.form-success .ok svg{width:18px;height:18px;stroke:var(--ember);stroke-width:1.6;fill:none}
+.form-success .ok path{stroke-dasharray:26;stroke-dashoffset:26;animation:draw .8s var(--ease-out) .2s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.form-success h3{margin:0;font-family:var(--font-display);font-weight:400;font-size:26px;letter-spacing:-.02em}
+.form-success p{margin:0;color:var(--bone-dim);font-size:15px;line-height:1.6;max-width:38ch}
+
+footer{
+  margin-top:clamp(50px,9vh,110px);padding:26px 0 30px;border-top:1px solid var(--line-soft);
+  display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  color:var(--ash);
+}
+footer .foot-l{display:flex;align-items:center;gap:12px}
+footer .mark{width:12px;height:12px}
+footer a.to-top{display:inline-flex;align-items:center;gap:8px;transition:color .3s var(--ease)}
+footer a.to-top:hover{color:var(--bone)}
+footer a.to-top svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.5;transition:transform .4s var(--ease-out)}
+footer a.to-top:hover svg{transform:translateY(-3px)}
+
+/* ---------- reveal system ---------- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease-out),transform 1s var(--ease-out);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+.reveal-x{opacity:0;transform:translateX(-18px);transition:opacity .9s var(--ease-out),transform .9s var(--ease-out);transition-delay:var(--d,0s)}
+.reveal-x.in{opacity:1;transform:none}
+
+/* ---------- generated CSS artwork: "Hands of the Baker" ---------- */
+/* one image, no markup but divs: stacked radial gradients, blurred form,
+   flour flecks and an animated drift, held together by mix-blend-mode */
+.art{position:absolute;inset:0;overflow:hidden;background:#0a0705}
+.art-baker{
+  background:
+    radial-gradient(120% 90% at 22% 6%,#52301a 0%,#2a170d 34%,#120b08 62%,#060405 100%);
+}
+.bk-key{
+  position:absolute;left:-16%;top:-18%;width:74%;height:86%;
+  background:
+    radial-gradient(closest-side,rgba(255,222,170,.92),rgba(255,170,92,.42) 46%,rgba(255,120,50,0) 78%);
+  mix-blend-mode:screen;filter:blur(10px);
+  transform:rotate(-8deg);
+}
+.bk-key::after{
+  content:"";position:absolute;left:24%;top:16%;width:52%;height:64%;
+  background:radial-gradient(closest-side,rgba(255,246,226,.85),rgba(255,214,160,0) 72%);
+  filter:blur(6px);
+}
+.bk-beam{
+  position:absolute;left:-6%;top:-10%;width:26%;height:120%;
+  background:linear-gradient(102deg,rgba(255,214,160,.16),rgba(255,214,160,0) 78%);
+  filter:blur(16px);transform:rotate(9deg);
+}
+.bk-table{
+  position:absolute;left:-12%;right:-12%;bottom:-8%;height:46%;
+  background:
+    linear-gradient(180deg,rgba(96,58,28,.55) 0%,rgba(44,25,13,.9) 34%,rgba(9,6,4,.98) 100%);
+  box-shadow:0 -26px 60px rgba(255,176,96,.14) inset,0 -2px 0 rgba(255,205,150,.16) inset;
+}
+.bk-dough{
+  position:absolute;left:50%;bottom:27%;width:52%;aspect-ratio:1/.84;
+  transform:translateX(-50%);
+  border-radius:52% 48% 44% 56%/60% 62% 38% 40%;
+  background:
+    radial-gradient(52% 46% at 30% 22%,#fff6e2 0%,#f0d6ac 22%,#cda878 46%,#8a5f38 72%,#4a2c17 92%,#2a180d 100%);
+  box-shadow:
+    0 30px 54px rgba(0,0,0,.72),
+    0 -10px 26px rgba(255,226,180,.30) inset,
+    0 14px 30px rgba(60,30,12,.5) inset;
+  filter:blur(.5px);
+}
+.bk-dough::before{
+  content:"";position:absolute;left:16%;top:14%;width:34%;height:26%;
+  border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,252,240,.85),rgba(255,240,214,0) 74%);
+  filter:blur(5px);
+}
+.bk-dough::after{
+  content:"";position:absolute;left:12%;right:12%;bottom:6%;height:26%;
+  border-radius:50%;
+  background:radial-gradient(closest-side,rgba(38,18,8,.6),rgba(38,18,8,0) 76%);
+  filter:blur(9px);
+}
+.bk-hand{
+  position:absolute;bottom:19%;width:38%;height:34%;
+  background:
+    radial-gradient(64% 72% at 42% 28%,#f0d0a4 0%,#d9ab74 26%,#a97543 54%,#6b4322 78%,#2c170b 100%);
+  filter:blur(4px);
+  box-shadow:0 18px 40px rgba(0,0,0,.55);
+}
+.bk-hand::after{
+  content:"";position:absolute;top:26%;width:58%;height:44%;
+  background:radial-gradient(closest-side,rgba(255,236,205,.55),rgba(255,236,205,0) 78%);
+  filter:blur(7px);
+}
+.bk-hand--l{left:-8%;transform:rotate(-15deg);border-radius:66% 34% 42% 58%/58% 64% 36% 42%}
+.bk-hand--l::after{right:-6%}
+.bk-hand--r{right:-8%;transform:rotate(13deg);border-radius:34% 66% 58% 42%/64% 58% 42% 36%}
+.bk-hand--r::after{left:-6%}
+.bk-flour{
+  position:absolute;inset:0;
+  background-image:
+    radial-gradient(2.6px 2.6px at 18% 28%,rgba(255,248,232,.92),transparent 62%),
+    radial-gradient(2px 2px at 62% 18%,rgba(255,248,232,.7),transparent 62%),
+    radial-gradient(3px 3px at 76% 42%,rgba(255,248,232,.55),transparent 64%),
+    radial-gradient(1.8px 1.8px at 38% 54%,rgba(255,248,232,.66),transparent 62%),
+    radial-gradient(2.2px 2.2px at 88% 26%,rgba(255,248,232,.5),transparent 62%),
+    radial-gradient(1.6px 1.6px at 28% 12%,rgba(255,248,232,.6),transparent 62%),
+    radial-gradient(1.6px 1.6px at 52% 66%,rgba(255,248,232,.42),transparent 62%),
+    radial-gradient(2.4px 2.4px at 8% 52%,rgba(255,248,232,.36),transparent 62%);
+  mix-blend-mode:screen;opacity:.9;
+  animation:flourDrift 13s ease-in-out infinite alternate;
+}
+@keyframes flourDrift{
+  from{transform:translate3d(0,0,0) rotate(0deg)}
+  to{transform:translate3d(-8px,7px,0) rotate(.6deg)}
+}
+.bk-vig{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(70% 62% at 42% 40%,transparent 26%,rgba(5,3,3,.84) 100%),
+    linear-gradient(200deg,rgba(6,4,3,0) 40%,rgba(6,4,3,.5) 100%);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  #about{gap:34px}
+  .contact-inner{grid-template-columns:1fr;gap:38px}
+  #lightbox{
+    grid-template-columns:1fr;grid-template-rows:auto auto;align-content:center;
+    gap:18px;padding:52px var(--pad) 76px;overflow-y:auto;
+  }
+  .lb-frame{height:auto;width:min(78vw,calc(46svh * 0.8));max-height:none;justify-self:center}
+  .lb-meta{max-width:none;padding-bottom:6px}
+  .exif{grid-template-columns:auto 1fr auto 1fr}
+  .lb-nav{top:auto;bottom:16px;transform:none}
+  .lb-prev{left:calc(50% - 56px)}
+  .lb-next{right:calc(50% - 56px)}
+}
+@media (max-width:900px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  #about{grid-template-columns:1fr;padding-top:clamp(50px,8vh,90px)}
+  .about-media{max-width:520px}
+  .about-copy h2{max-width:none}
+  .panel-note{display:none}
+}
+@media (max-width:640px){
+  :root{--pad:18px}
+  #nav{padding:0 14px}
+  .wm-sub{display:none}
+  .wm-text{font-size:15.5px}
+  .mark{width:13px;height:13px}
+  .navlinks{gap:11px}
+  .navlinks a{font-size:9px;letter-spacing:.1em;padding:9px 1px}
+  .featured-hud{bottom:0;padding-bottom:14px;gap:10px}
+  .featured-hud .mono{font-size:8.5px;letter-spacing:.12em}
+  .hud-right{gap:9px}
+  .hud-rail{width:54px}
+  .grid{grid-template-columns:1fr;gap:14px}
+  .hero-top{flex-direction:column;gap:8px;align-items:flex-start}
+  .hero-status{display:none}
+  .hero-foot{flex-direction:column;align-items:flex-start;gap:20px}
+  .hero-name{font-size:clamp(52px,15.4vw,120px)}
+  .stats{grid-template-columns:1fr 1fr;gap:20px 14px}
+  .stat:nth-child(3){grid-column:1/-1}
+  .exif{grid-template-columns:auto 1fr}
+  .panel-body{flex-direction:column;align-items:flex-start}
+  .panel-meta{text-align:left;align-items:flex-start;padding:0}
+  .hud-ticks{display:none}
+  footer{flex-direction:column;align-items:flex-start;gap:14px}
+  .contact-title{max-width:none}
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important;
+  }
+  #grain{animation:none}
+  .hero-name .word{transform:none;animation:none}
+  .reveal,.reveal-x{opacity:1;transform:none}
+  #featured{height:auto}
+  .featured-pin{position:static;height:auto;display:block}
+  .featured-track{transform:none!important;flex-direction:column;width:100%}
+  .panel{flex:none;width:100vw;height:88vh}
+  .panel-art{inset:0}
+  .featured-hud{position:static;padding:16px var(--pad) 30px}
+  .marquee-track{animation:none}
+  .tile-art{transition:none}
+}
+@media (prefers-reduced-motion:reduce) and (max-width:640px){
+  .panel{flex:none;height:76vh}
+}
+
+/* ---------- print ---------- */
+@media print{
+  #nav,#grain,#cursor,.marquee,#featured{display:none!important}
+  body{background:#fff;color:#111}
+}
+</style>
+<noscript>
+<style>
+  .reveal,.reveal-x{opacity:1!important;transform:none!important}
+  #featured{display:none}
+  .hero-name .word{transform:none}
+  #lightbox{display:none}
+  .marquee{display:none}
+  .nojs{display:block!important}
+</style>
+</noscript>
+</head>
+<body>
+<a class="skip" href="#gallery">Skip to work</a>
+<div id="grain" aria-hidden="true"></div>
+<div id="cursor" aria-hidden="true"><span id="cursor-label">View</span></div>
+
+<!-- ===================== 1. NAV ===================== -->
+<header id="nav">
+  <a class="wordmark" href="#hero" aria-label="Mara Lindqvist — back to top">
+    <svg class="mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M1 14.5 7.2 2.2 10 7.6 12.1 4l3.2 10.5z"/>
+      <path d="M.4 14.9h15.2" style="fill:none;stroke:#ff4a1c;stroke-width:1"/>
+    </svg>
+    <span class="wm-text">Mara Lindqvist</span>
+    <span class="wm-sub">Photographs</span>
+  </a>
+  <nav class="navlinks" aria-label="Primary">
+    <a href="#gallery" data-mag>Work</a>
+    <a href="#featured" data-mag>Featured</a>
+    <a href="#about" data-mag>About</a>
+    <a href="#contact" data-mag>Contact</a>
+  </nav>
+</header>
+
+<main>
+<!-- ===================== 2. HERO ===================== -->
+<section id="hero" aria-label="Introduction">
+  <canvas id="aurora" aria-hidden="true"></canvas>
+  <div class="hero-vig" aria-hidden="true"></div>
+  <div class="hero-rule" aria-hidden="true"></div>
+
+  <div class="hero-top">
+    <p class="mono" style="margin:0">Reykjavík, Ísland · 64°08′N 21°56′W</p>
+    <p class="mono hero-status" style="margin:0"><span class="dot" aria-hidden="true"></span>Field notes 2019—2026</p>
+  </div>
+
+  <h1 class="hero-name">
+    <span class="line"><span class="word">Mara</span></span>
+    <span class="line"><span class="word"><em>Lindqvist</em></span></span>
+  </h1>
+
+  <div class="hero-foot">
+    <p class="hero-tag">Photographs of cold light, slow weather, and the people who wait for it.</p>
+    <a class="cue" href="#featured">
+      <span class="cue-line" aria-hidden="true"></span>
+      <span class="mono">Scroll</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===================== 3. FEATURED ===================== -->
+<section id="featured" aria-label="Featured photographs, a horizontal sequence">
+  <div class="featured-pin">
+    <div class="featured-track" id="featuredTrack"></div>
+    <div class="featured-hud" aria-hidden="true">
+      <span class="mono">Featured — scroll to travel</span>
+      <div class="hud-right">
+        <span class="mono hud-count"><b id="featIdx">01</b> / 05</span>
+        <span class="hud-ticks" id="featTicks"><i class="on"></i><i></i><i></i><i></i><i></i></span>
+        <span class="hud-rail"><span id="featBar"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 4. GALLERY ===================== -->
+<section id="gallery" aria-label="Work">
+  <div class="section-head reveal">
+    <div>
+      <p class="mono sec-eyebrow">01 — The Archive</p>
+      <h2 class="sec-title">Selected <em>Work</em></h2>
+    </div>
+    <p class="mono sec-meta">Twelve frames<br>2019 — 2026</p>
+  </div>
+
+  <div class="filters reveal" role="group" aria-label="Filter photographs by category" style="--d:.1s">
+    <button class="flt" type="button" data-filter="all" aria-pressed="true">All <sup>12</sup></button>
+    <button class="flt" type="button" data-filter="Landscape" aria-pressed="false">Landscape <sup>3</sup></button>
+    <button class="flt" type="button" data-filter="Portrait" aria-pressed="false">Portrait <sup>3</sup></button>
+    <button class="flt" type="button" data-filter="Street" aria-pressed="false">Street <sup>3</sup></button>
+    <button class="flt" type="button" data-filter="Abstract" aria-pressed="false">Abstract <sup>3</sup></button>
+  </div>
+  <p class="sr-only" id="galleryStatus" role="status" aria-live="polite"></p>
+
+  <noscript>
+    <p class="mono nojs" style="display:none;padding:34px;border:1px solid var(--line);color:var(--bone-dim);line-height:2">
+      Every photograph here is drawn by the browser with JavaScript. Enable it to see all twelve frames.
+    </p>
+  </noscript>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+</section>
+
+<!-- ===================== 5. LIGHTBOX ===================== -->
+<section id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lbTitle" aria-describedby="lbCat lbExif" aria-hidden="true">
+  <button class="lb-close" id="lbClose" type="button" aria-label="Close photograph, press Escape">
+    Close
+    <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1 1l10 10M11 1L1 11"/></svg>
+  </button>
+  <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Previous photograph">
+    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M10 2L4 8l6 6"/></svg>
+  </button>
+  <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Next photograph">
+    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2l6 6-6 6"/></svg>
+  </button>
+
+  <div class="lb-frame">
+    <div class="lb-art" id="lbArt"></div>
+  </div>
+
+  <div class="lb-meta">
+    <p class="mono lb-index" id="lbIndex">01 / 12</p>
+    <h3 class="lb-title" id="lbTitle">Basalt Dawn</h3>
+    <p class="lb-cat" id="lbCat">Landscape</p>
+    <dl class="exif" id="lbExif"></dl>
+    <p class="lb-note" id="lbNote"></p>
+  </div>
+</section>
+
+<!-- ===================== 6. ABOUT ===================== -->
+<section id="about" aria-label="About Mara Lindqvist">
+  <div class="about-media reveal">
+    <div class="about-art" id="aboutArt"></div>
+    <div class="about-caption mono"><span>Self-portrait, 2025</span><span>Kodak-free</span></div>
+  </div>
+  <div class="about-copy">
+    <p class="mono eyebrow reveal-x">02 — About</p>
+    <h2 class="reveal-x" style="--d:.06s">I photograph the <em>pause</em> before the weather turns.</h2>
+    <p class="reveal-x" style="--d:.12s">Mara Lindqvist is a photographer working out of a converted fish-drying shed in <strong>Reykjavík</strong>. For eighteen years she has followed the North Atlantic coast — its basalt, its glaciers, its wet streets at 3 a.m. — looking for the moment a landscape stops being scenery and becomes a mood.</p>
+    <p class="reveal-x" style="--d:.18s">She works slowly, mostly in winter, mostly on foot. The portraits are made in kitchens and doorways; the street work is made in rain, because rain is the only honest light in this city. Her prints are editioned by hand and rarely larger than her arm span.</p>
+    <div class="stats reveal" style="--d:.22s">
+      <div class="stat">
+        <span class="num"><span class="count" data-count="18">0</span><i>+</i></span>
+        <span class="lbl mono">Years in<br>the field</span>
+      </div>
+      <div class="stat">
+        <span class="num"><span class="count" data-count="42">0</span><i>°</i></span>
+        <span class="lbl mono">Northern<br>parallels</span>
+      </div>
+      <div class="stat">
+        <span class="num"><span class="count" data-count="6">0</span><i>×</i></span>
+        <span class="lbl mono">Published<br>monographs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 7. CONTACT ===================== -->
+<section id="contact" aria-label="Contact">
+  <div class="contact-inner">
+    <div class="contact-left">
+      <p class="mono eyebrow reveal-x">03 — Contact</p>
+      <h2 class="contact-title reveal-x" style="--d:.06s">Let's make something <em>slow</em>.</h2>
+      <p class="contact-sub reveal-x" style="--d:.12s">Commissions, exhibitions, print enquiries, or a long walk in bad weather. I answer everything within a week — sometimes two, if I'm on the coast.</p>
+      <div class="contact-lines mono reveal-x" style="--d:.18s">
+        <a href="#contact">studio — Grandagarður 17, 101 Reykjavík</a>
+        <a href="#contact">post — mara (at) lindqvist (dot) is</a>
+        <a href="#contact">representation — Hverfisgallerí</a>
+      </div>
+    </div>
+
+    <div class="contact-right reveal">
+      <form id="contactForm" novalidate autocomplete="off">
+        <div class="field" data-field>
+          <label for="cf-name">Your name</label>
+          <input id="cf-name" name="name" type="text" placeholder="Jóhanna Sigurðardóttir" autocomplete="name" aria-describedby="cf-name-err">
+          <span class="err" id="cf-name-err" aria-live="polite"></span>
+        </div>
+        <div class="field" data-field>
+          <label for="cf-email">Email</label>
+          <input id="cf-email" name="email" type="email" placeholder="you@somewhere.is" autocomplete="email" aria-describedby="cf-email-err">
+          <span class="err" id="cf-email-err" aria-live="polite"></span>
+        </div>
+        <div class="field" data-field>
+          <label for="cf-msg">What are we making?</label>
+          <textarea id="cf-msg" name="message" rows="3" placeholder="A series, a show, a bad-weather walk…" aria-describedby="cf-msg-err"></textarea>
+          <span class="err" id="cf-msg-err" aria-live="polite"></span>
+        </div>
+        <button class="submit" type="submit">
+          <span>Send message</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2 8h11M9 4l4 4-4 4"/></svg>
+        </button>
+        <p class="mono form-note">No servers involved. This form validates entirely in your browser and is not transmitted anywhere.</p>
+      </form>
+
+      <div class="form-success" id="formSuccess" hidden role="status">
+        <span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12.5l5.2 5L20 6.5"/></svg></span>
+        <h3>Thank you, <span id="successName">friend</span>.</h3>
+        <p>Your note is held here in the page, not on a server. If the sea allows, I'll write back within a week.</p>
+        <button class="submit" type="button" id="formReset"><span>Write another</span></button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-l mono">
+      <svg class="mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M1 14.5 7.2 2.2 10 7.6 12.1 4l3.2 10.5z"/></svg>
+      <span>© 2026 Mara Lindqvist</span>
+    </div>
+    <span class="mono">Reykjavík · 64°08′N 21°56′W · All images generated in-browser</span>
+    <a class="to-top mono" href="#hero">
+      Top
+      <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 10V2M2.5 5.5L6 2l3.5 3.5"/></svg>
+    </a>
+  </footer>
+</section>
+</main>
+<script>
+(function(){
+'use strict';
+
+/* =========================================================================
+   MARA LINDQVIST — everything visual is authored here.
+   Nine of the twelve photographs are hand-built SVG scenes (layered
+   gradients, generated geometry, procedural turbulence filters), one is a
+   pure CSS/mix-blend-mode light study, one is drawn onto a <canvas> and
+   exported, one is a canvas-driven live sky. No image files are loaded.
+   ========================================================================= */
+
+/* ---------- deterministic pseudo-randomness (identical on every reload) ---------- */
+function makeRng(seed){
+  let s = (seed >>> 0) || 0x9e3779b9;
+  return function(){
+    s ^= s << 13; s >>>= 0;
+    s ^= s >>> 17;
+    s ^= s << 5;  s >>>= 0;
+    return s / 4294967296;
+  };
+}
+var r2 = function(v){ return Math.round(v * 100) / 100; };
+var r1 = function(v){ return Math.round(v * 10) / 10; };
+
+function svgRoot(inner, defs){
+  return '<svg viewBox="0 0 1600 2000" preserveAspectRatio="xMidYMid slice" ' +
+         'xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">' +
+         '<defs>' + defs + '</defs>' + inner + '</svg>';
+}
+function grainFilter(p, seed, freq, oct, opacity){
+  return '<filter id="' + p + 'g" x="0" y="0" width="100%" height="100%">' +
+         '<feTurbulence type="fractalNoise" baseFrequency="' + freq + '" numOctaves="3" seed="' + seed + '" stitchTiles="stitch"/>' +
+         '<feColorMatrix type="saturate" values="0"/></filter>' +
+         '<rect width="1600" height="2000" filter="url(#' + p + 'g)" opacity="' + opacity + '" style="mix-blend-mode:overlay"/>';
+}
+function vignette(p, strength){
+  return '<radialGradient id="' + p + 'v" cx="50%" cy="46%" r="72%">' +
+         '<stop offset="45%" stop-color="#04050700"/>' +
+         '<stop offset="100%" stop-color="#040507" stop-opacity="' + (strength || .8) + '"/></radialGradient>' +
+         '<rect width="1600" height="2000" fill="url(#' + p + 'v)"/>';
+}
+
+/* =========================================================================
+   PHOTO 1 — Basalt Dawn · Landscape
+   SVG: layered vertical gradients + generated column geometry + sea glitter
+   ========================================================================= */
+function artBasalt(p){
+  var R = makeRng(7331), i, x, w, top, tilt, glit = '', cols = '';
+  for(i = 0; i < 10; i++){
+    x = -140 + i * 172 + R() * 50;
+    w = 96 + R() * 104;
+    top = 1120 + R() * 250;
+    tilt = (R() - .5) * 26;
+    var topB = top + R() * 34;
+    cols += '<path d="M' + r2(x) + ',2000 L' + r2(x + tilt) + ',' + r2(top) +
+            ' L' + r2(x + w + tilt) + ',' + r2(topB) + ' L' + r2(x + w) + ',2000 Z" fill="url(#' + p + 'col)"/>' +
+            '<path d="M' + r2(x + tilt) + ',' + r2(top) + ' L' + r2(x + tilt + 3) + ',2000" stroke="#ffbf95" stroke-opacity=".16" stroke-width="2" fill="none"/>' +
+            '<path d="M' + r2(x + tilt) + ',' + r2(top) + ' L' + r2(x + w + tilt) + ',' + r2(topB) + '" stroke="#ffd0ae" stroke-opacity=".26" stroke-width="1.6" fill="none"/>';
+  }
+  for(i = 0; i < 130; i++){
+    var gx = 640 + (R() - .5) * (120 + R() * 620), gy = 1290 + R() * 250;
+    var gw = 6 + R() * 46, ga = .12 + R() * .55;
+    glit += '<ellipse cx="' + r2(gx) + '" cy="' + r2(gy) + '" rx="' + r2(gw) + '" ry="' + r2(1 + R() * 2.4) + '" fill="#ffd7ae" opacity="' + r2(ga) + '"/>';
+  }
+  var defs =
+    '<linearGradient id="' + p + 'sky" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#05070f"/><stop offset=".22" stop-color="#0d1830"/>' +
+      '<stop offset=".44" stop-color="#26364f"/><stop offset=".6" stop-color="#5d4a56"/>' +
+      '<stop offset=".7" stop-color="#a5613f"/><stop offset=".77" stop-color="#e08a45"/>' +
+      '<stop offset=".82" stop-color="#ffc987"/></linearGradient>' +
+    '<linearGradient id="' + p + 'sea" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#6b4a3c"/><stop offset=".12" stop-color="#33262a"/>' +
+      '<stop offset="1" stop-color="#0a0c11"/></linearGradient>' +
+    '<linearGradient id="' + p + 'col" x1="0" y1="0" x2="1" y2="0">' +
+      '<stop offset="0" stop-color="#0b0d12"/><stop offset=".35" stop-color="#191c23"/>' +
+      '<stop offset="1" stop-color="#07080b"/></linearGradient>' +
+    '<radialGradient id="' + p + 'sun" cx="50%" cy="50%" r="50%">' +
+      '<stop offset="0" stop-color="#fff3d8"/><stop offset=".35" stop-color="#ffcf8f" stop-opacity=".95"/>' +
+      '<stop offset="1" stop-color="#ff8a3c" stop-opacity="0"/></radialGradient>' +
+    '<filter id="' + p + 'blur" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="26"/></filter>' +
+    '<filter id="' + p + 'wave" x="-10%" y="-30%" width="120%" height="160%">' +
+      '<feTurbulence type="turbulence" baseFrequency=".006 .028" numOctaves="3" seed="19" result="t"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="t" scale="16" xChannelSelector="R" yChannelSelector="G"/></filter>' +
+    '<filter id="' + p + 'mist" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="34"/></filter>';
+
+  var inner =
+    '<rect width="1600" height="2000" fill="url(#' + p + 'sky)"/>' +
+    '<circle cx="1010" cy="1246" r="330" fill="url(#' + p + 'sun)" opacity=".5"/>' +
+    '<circle cx="1010" cy="1246" r="86" fill="#fff4dd" filter="url(#' + p + 'blur)" opacity=".95"/>' +
+    '<circle cx="1010" cy="1246" r="42" fill="#fffaf0"/>' +
+    '<g opacity=".55" filter="url(#' + p + 'blur)">' +
+      '<ellipse cx="420" cy="330" rx="520" ry="70" fill="#1d2b45"/>' +
+      '<ellipse cx="1180" cy="520" rx="440" ry="52" fill="#33415c" opacity=".8"/>' +
+      '<ellipse cx="760" cy="800" rx="620" ry="46" fill="#7d5c55" opacity=".7"/>' +
+      '<ellipse cx="1280" cy="980" rx="380" ry="34" fill="#c07a4f" opacity=".65"/>' +
+    '</g>' +
+    '<g filter="url(#' + p + 'wave)">' +
+      '<rect x="-40" y="1298" width="1680" height="620" fill="url(#' + p + 'sea)"/>' +
+    '</g>' +
+    '<g>' + glit + '</g>' +
+    '<ellipse cx="800" cy="1300" rx="900" ry="40" fill="#e8b998" opacity=".18" filter="url(#' + p + 'mist)"/>' +
+    '<g>' + cols + '</g>' +
+    '<path d="M0,2000 L0,1690 L240,1560 L420,1700 L760,1600 L980,1730 L1320,1580 L1600,1700 L1600,2000 Z" fill="#05060a"/>' +
+    '<ellipse cx="700" cy="1600" rx="820" ry="70" fill="#0a0c12" opacity=".85" filter="url(#' + p + 'mist)"/>' +
+    grainFilter(p, 12, '.85', 4, .16) +
+    vignette(p, .78);
+
+  return svgRoot(inner, defs);
+}
+
+/* =========================================================================
+   PHOTO 2 — The Quiet Hour · Portrait
+   SVG: profile built from a bezier silhouette, rim-light gradients, window bars
+   ========================================================================= */
+function artQuietHour(p){
+  var defs =
+    '<linearGradient id="' + p + 'bg" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#232019"/><stop offset=".5" stop-color="#15130f"/><stop offset="1" stop-color="#08080a"/></linearGradient>' +
+    '<linearGradient id="' + p + 'skin" x1="0" y1=".2" x2="1" y2=".9">' +
+      '<stop offset="0" stop-color="#f0d7b8"/><stop offset=".26" stop-color="#c8a482"/>' +
+      '<stop offset=".55" stop-color="#7a5942"/><stop offset=".82" stop-color="#33241c"/>' +
+      '<stop offset="1" stop-color="#17100d"/></linearGradient>' +
+    '<linearGradient id="' + p + 'hair" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#241b15"/><stop offset=".55" stop-color="#100c0a"/><stop offset="1" stop-color="#060506"/></linearGradient>' +
+    '<linearGradient id="' + p + 'bar" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#ffdcae" stop-opacity="0"/><stop offset=".4" stop-color="#ffd6a3" stop-opacity=".5"/>' +
+      '<stop offset="1" stop-color="#ffc98f" stop-opacity="0"/></linearGradient>' +
+    '<radialGradient id="' + p + 'rim" cx="24%" cy="34%" r="30%">' +
+      '<stop offset="0" stop-color="#ffe2bd" stop-opacity=".55"/><stop offset="1" stop-color="#ffe2bd" stop-opacity="0"/></radialGradient>' +
+    '<filter id="' + p + 'soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="22"/></filter>' +
+    '<filter id="' + p + 'skintex" x="-10%" y="-10%" width="120%" height="120%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" result="t"/>' +
+      '<feColorMatrix in="t" type="saturate" values="0" result="d"/>' +
+      '<feComposite in="SourceGraphic" in2="d" operator="in" result="m"/>' +
+      '<feBlend in="SourceGraphic" in2="m" mode="overlay"/></filter>';
+
+  var face = 'M930,286 C742,268 600,376 578,540 C566,616 548,652 522,690 ' +
+             'C500,720 470,748 494,772 C516,792 546,786 546,812 ' +
+             'C546,842 520,852 522,882 C526,912 556,918 560,948 ' +
+             'C564,986 542,1010 574,1060 C618,1128 706,1152 806,1146 ' +
+             'L900,1180 L900,1330 C1040,1360 1130,1420 1160,1750 ' +
+             'L1180,1750 L1180,286 Z';
+
+  var inner =
+    '<rect width="1600" height="2000" fill="url(#' + p + 'bg)"/>' +
+    '<g opacity=".5">' +
+      '<rect x="-180" y="180" width="130" height="1500" fill="url(#' + p + 'bar)" transform="rotate(-9 0 0)"/>' +
+      '<rect x="60" y="180" width="46" height="1500" fill="url(#' + p + 'bar)" transform="rotate(-9 0 0)" opacity=".7"/>' +
+      '<rect x="210" y="180" width="18" height="1500" fill="url(#' + p + 'bar)" transform="rotate(-9 0 0)" opacity=".5"/>' +
+    '</g>' +
+    '<ellipse cx="380" cy="620" rx="300" ry="420" fill="url(#' + p + 'rim)"/>' +
+    '<g filter="url(#' + p + 'skintex)">' +
+      '<path d="' + face + '" fill="url(#' + p + 'skin)"/>' +
+    '</g>' +
+    /* hair mass sweeping behind the head */
+    '<path d="M1720,240 C980,258 880,300 846,420 C820,520 860,600 900,660 C950,740 980,860 960,980 C940,1100 980,1180 1720,1230 Z" fill="url(#' + p + 'hair)"/>' +
+    '<path d="M846,420 C810,520 852,610 892,668 C940,742 972,862 952,986" stroke="#3c2c22" stroke-width="3" fill="none" opacity=".55"/>' +
+    '<path d="M880,360 C830,470 870,570 906,640" stroke="#4a3629" stroke-width="2" fill="none" opacity=".4"/>' +
+    /* brow, eye, nostril, lips, earlobe — small marks that make it a face */
+    '<path d="M596,646 C626,626 672,626 700,640" stroke="#2a1c14" stroke-width="9" stroke-linecap="round" fill="none" opacity=".85"/>' +
+    '<path d="M604,706 C628,690 668,690 690,704 C670,722 626,722 604,706 Z" fill="#f6e6cf" opacity=".5"/>' +
+    '<circle cx="646" cy="705" r="9" fill="#1b120c"/>' +
+    '<circle cx="649" cy="702" r="2.6" fill="#fff8ec" opacity=".8"/>' +
+    '<path d="M600,708 C626,724 668,724 692,706" stroke="#22160f" stroke-width="3" fill="none" opacity=".7"/>' +
+    '<path d="M520,760 C536,776 550,776 556,766" stroke="#3a2418" stroke-width="4" fill="none" opacity=".55"/>' +
+    '<path d="M524,884 C546,874 566,876 578,886 C562,900 540,900 526,892 Z" fill="#8e4b42" opacity=".55"/>' +
+    '<path d="M528,918 C548,912 566,914 576,922" stroke="#3a1e18" stroke-width="3" fill="none" opacity=".6"/>' +
+    '<path d="M900,700 C930,760 940,860 916,940" stroke="#000" stroke-width="1.4" fill="none" opacity=".35"/>' +
+    '<ellipse cx="700" cy="620" rx="230" ry="330" fill="#000" opacity=".14" filter="url(#' + p + 'soft)"/>' +
+    '<rect width="1600" height="2000" fill="#ffb877" opacity=".05" style="mix-blend-mode:screen"/>' +
+    grainFilter(p, 31, '.9', 3, .2) +
+    vignette(p, .86);
+
+  return svgRoot(inner, defs);
+}
+
+/* =========================================================================
+   PHOTO 3 — Neon Tram · Street
+   SVG: blurred neon bloom, window gradients, mirrored wet-road reflection
+   ========================================================================= */
+function artTram(p){
+  var R = makeRng(4242), i, rain = '', drops = '', refl = '';
+  for(i = 0; i < 240; i++){
+    var rx = R() * 1700 - 50, ry = R() * 2000, rl = 20 + R() * 90;
+    rain += '<line x1="' + r1(rx) + '" y1="' + r1(ry) + '" x2="' + r1(rx - 14) + '" y2="' + r1(ry + rl) +
+            '" stroke="#cfe4ee" stroke-opacity="' + r2(.05 + R() * .16) + '" stroke-width="' + r2(.7 + R() * 1.4) + '"/>';
+  }
+  for(i = 0; i < 34; i++){
+    var dx = R() * 1600, dy = R() * 2000, dr = 2 + R() * 7;
+    drops += '<circle cx="' + r2(dx) + '" cy="' + r2(dy) + '" r="' + r2(dr) + '" fill="#eaf6ff" opacity="' + r2(.06 + R() * .16) + '"/>';
+  }
+  var wins = [
+    [200, 700, 300, 330], [560, 700, 300, 330], [920, 700, 300, 330], [1280, 700, 230, 330]
+  ];
+  for(i = 0; i < wins.length; i++){
+    var w = wins[i];
+    refl += '<rect x="' + w[0] + '" y="' + (1710) + '" width="' + w[2] + '" height="' + 170 +
+            '" rx="14" fill="url(#' + p + 'win)" opacity=".26"/>';
+  }
+
+  var defs =
+    '<linearGradient id="' + p + 'bg" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#0a0c14"/><stop offset=".45" stop-color="#11131c"/><stop offset="1" stop-color="#05060a"/></linearGradient>' +
+    '<linearGradient id="' + p + 'body" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#2a2e37"/><stop offset=".18" stop-color="#171a21"/><stop offset="1" stop-color="#0b0d12"/></linearGradient>' +
+    '<linearGradient id="' + p + 'win" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#ffe0ae"/><stop offset=".45" stop-color="#ffb264"/><stop offset="1" stop-color="#ff7a2f"/></linearGradient>' +
+    '<linearGradient id="' + p + 'road" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#151820"/><stop offset="1" stop-color="#04050a"/></linearGradient>' +
+    '<filter id="' + p + 'bloom" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="46"/></filter>' +
+    '<filter id="' + p + 'glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="14"/></filter>' +
+    '<filter id="' + p + 'wetblur" x="-20%" y="-40%" width="140%" height="180%">' +
+      '<feGaussianBlur stdDeviation="6 16"/></filter>' +
+    '<linearGradient id="' + p + 'fade" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+    '<mask id="' + p + 'fademask"><rect x="0" y="1700" width="1600" height="300" fill="url(#' + p + 'fade)"/></mask>';
+
+  var inner =
+    '<rect width="1600" height="2000" fill="url(#' + p + 'bg)"/>' +
+    /* distant neon + shopfronts */
+    '<g filter="url(#' + p + 'bloom)" opacity=".85">' +
+      '<rect x="60" y="240" width="26" height="420" fill="#ff4a1c"/>' +
+      '<rect x="120" y="300" width="14" height="280" fill="#9ecfdc"/>' +
+      '<ellipse cx="180" cy="520" rx="90" ry="160" fill="#ff6a2a" opacity=".7"/>' +
+      '<rect x="1400" y="180" width="30" height="520" fill="#6fd3e0" opacity=".8"/>' +
+      '<ellipse cx="1320" cy="620" rx="120" ry="180" fill="#3fa8c0" opacity=".55"/>' +
+      '<ellipse cx="820" cy="360" rx="180" ry="90" fill="#c8340f" opacity=".5"/>' +
+    '</g>' +
+    '<rect x="0" y="620" width="1600" height="40" fill="#1a1d25" opacity=".8"/>' +
+    /* tram body */
+    '<g>' +
+      '<rect x="130" y="640" width="1420" height="700" rx="26" fill="url(#' + p + 'body)"/>' +
+      '<rect x="130" y="640" width="1420" height="26" rx="13" fill="#3d434f" opacity=".8"/>' +
+      '<rect x="130" y="1290" width="1420" height="50" fill="#0a0c11"/>' +
+    '</g>' +
+    '<g>' + wins.map(function(w){
+        return '<rect x="' + w[0] + '" y="' + w[1] + '" width="' + w[2] + '" height="' + w[3] + '" rx="12" fill="url(#' + p + 'win)" opacity=".92"/>' +
+               '<path d="M' + w[0] + ',' + (w[1] + w[3]) + ' L' + (w[0] + w[2] * .7) + ',' + w[1] + ' L' + (w[0] + w[2]) + ',' + w[1] +
+               ' L' + (w[0] + w[2]) + ',' + (w[1] + w[3] * .3) + ' Z" fill="#fff" opacity=".13"/>';
+      }).join('') + '</g>' +
+    /* passengers, blurred by dirty glass */
+    '<g filter="url(#' + p + 'glow)" opacity=".9">' +
+      '<ellipse cx="330" cy="1010" rx="96" ry="130" fill="#120b06"/>' +
+      '<circle cx="330" cy="880" r="62" fill="#150d07"/>' +
+      '<ellipse cx="700" cy="1040" rx="80" ry="120" fill="#120b06"/>' +
+      '<circle cx="706" cy="920" r="56" fill="#150d07"/>' +
+      '<ellipse cx="1060" cy="1030" rx="86" ry="124" fill="#120b06"/>' +
+      '<circle cx="1054" cy="906" r="58" fill="#150d07"/>' +
+    '</g>' +
+    '<circle cx="1528" cy="1120" r="26" fill="#fff6e2" opacity=".92" filter="url(#' + p + 'glow)"/>' +
+    /* road + wet reflection */
+    '<rect x="0" y="1340" width="1600" height="660" fill="url(#' + p + 'road)"/>' +
+    '<g mask="url(#' + p + 'fademask)" filter="url(#' + p + 'wetblur)" opacity=".9">' + refl + '</g>' +
+    '<g mask="url(#' + p + 'fademask)" filter="url(#' + p + 'wetblur)" opacity=".5">' +
+      '<ellipse cx="1528" cy="1900" rx="90" ry="330" fill="#ffd9a8"/>' +
+      '<ellipse cx="180" cy="1860" rx="120" ry="360" fill="#ff6a2a" opacity=".7"/>' +
+      '<ellipse cx="1320" cy="1880" rx="110" ry="340" fill="#3fa8c0" opacity=".55"/>' +
+    '</g>' +
+    '<path d="M300,1560 L1300,1520" stroke="#8f9aa8" stroke-opacity=".25" stroke-width="6" stroke-dasharray="90 70"/>' +
+    '<g>' + rain + '</g><g>' + drops + '</g>' +
+    '<rect width="1600" height="2000" fill="#0a1220" opacity=".16" style="mix-blend-mode:multiply"/>' +
+    grainFilter(p, 5, '.75', 4, .2) +
+    vignette(p, .9);
+
+  return svgRoot(inner, defs);
+}
+
+/* =========================================================================
+   PHOTO 4 — Fractured Light · Abstract
+   SVG: generated triangle mesh, per-facet gradients, displacement refraction
+   ========================================================================= */
+function artFractured(p){
+  var R = makeRng(90210), gw = 5, gh = 6, pts = [], i, j, frag = '', lines = '';
+  for(j = 0; j <= gh; j++){
+    for(i = 0; i <= gw; i++){
+      var px = -100 + i * (1800 / gw) + (i > 0 && i < gw ? (R() - .5) * 190 : 0);
+      var py = -100 + j * (2200 / gh) + (j > 0 && j < gh ? (R() - .5) * 190 : 0);
+      pts.push([px, py]);
+    }
+  }
+  var cols = ['#ff4a1c', '#ffb26b', '#9ecfdc', '#5f7fd8', '#efe9df', '#c4331a', '#2a3b6b'];
+  var idx = function(a, b){ return pts[b * (gw + 1) + a]; };
+  for(j = 0; j < gh; j++){
+    for(i = 0; i < gw; i++){
+      var a = idx(i, j), b = idx(i + 1, j), c = idx(i + 1, j + 1), d = idx(i, j + 1);
+      var tris = (i + j) % 2 ? [[a, b, c], [a, c, d]] : [[a, b, d], [b, c, d]];
+      for(var t = 0; t < 2; t++){
+        var tri = tris[t];
+        var c1 = cols[Math.floor(R() * cols.length)], c2 = cols[Math.floor(R() * cols.length)];
+        var op = .22 + R() * .6;
+        frag += '<path d="M' + r2(tri[0][0]) + ',' + r2(tri[0][1]) + ' L' + r2(tri[1][0]) + ',' + r2(tri[1][1]) +
+                ' L' + r2(tri[2][0]) + ',' + r2(tri[2][1]) + ' Z" fill="' + c1 + '" opacity="' + r2(op) + '"/>';
+        frag += '<path d="M' + r2(tri[0][0]) + ',' + r2(tri[0][1]) + ' L' + r2(tri[1][0]) + ',' + r2(tri[1][1]) +
+                ' L' + r2(tri[2][0]) + ',' + r2(tri[2][1]) + ' Z" fill="' + c2 + '" opacity="' + r2(op * .55) + '" style="mix-blend-mode:screen"/>';
+        lines += '<path d="M' + r2(tri[0][0]) + ',' + r2(tri[0][1]) + ' L' + r2(tri[1][0]) + ',' + r2(tri[1][1]) +
+                 ' L' + r2(tri[2][0]) + ',' + r2(tri[2][1]) + ' Z" fill="none" stroke="#fff3e2" stroke-opacity="' +
+                 r2(.05 + R() * .22) + '" stroke-width="' + r2(.8 + R() * 2.2) + '"/>';
+      }
+    }
+  }
+  var defs =
+    '<radialGradient id="' + p + 'glow" cx="50%" cy="42%" r="60%">' +
+      '<stop offset="0" stop-color="#4a2418"/><stop offset=".55" stop-color="#170d10"/><stop offset="1" stop-color="#05060a"/></radialGradient>' +
+    '<filter id="' + p + 'refract" x="-15%" y="-15%" width="130%" height="130%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency=".0035" numOctaves="3" seed="88" result="t"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="t" scale="150" xChannelSelector="R" yChannelSelector="G"/>' +
+      '<feGaussianBlur stdDeviation="3"/></filter>' +
+    '<filter id="' + p + 'caustic" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="26"/></filter>';
+
+  var inner =
+    '<rect width="1600" height="2000" fill="url(#' + p + 'glow)"/>' +
+    '<g filter="url(#' + p + 'refract)" opacity=".96">' + frag + '</g>' +
+    '<g filter="url(#' + p + 'refract)" opacity=".55">' + lines + '</g>' +
+    '<ellipse cx="1180" cy="520" rx="620" ry="140" fill="#ffe6cc" opacity=".16" filter="url(#' + p + 'caustic)" transform="rotate(-32 1180 520)"/>' +
+    '<ellipse cx="460" cy="1560" rx="520" ry="120" fill="#ffb98a" opacity=".14" filter="url(#' + p + 'caustic)" transform="rotate(-32 460 1560)"/>' +
+    '<ellipse cx="700" cy="760" rx="420" ry="300" fill="#ffd9b0" opacity=".22" filter="url(#' + p + 'caustic)"/>' +
+    '<ellipse cx="1120" cy="1500" rx="380" ry="260" fill="#9ecfdc" opacity=".18" filter="url(#' + p + 'caustic)"/>' +
+    grainFilter(p, 44, '.8', 4, .22) +
+    vignette(p, .82);
+
+  return svgRoot(inner, defs);
+}
+
+/* =========================================================================
+   PHOTO 5 — Salt Flats Mirror · Landscape
+   SVG: mirrored group (scale 1,-1), ripple bands, randomly walked crack field
+   ========================================================================= */
+function artSaltFlats(p){
+  var R = makeRng(6060), i, j, cracks = '', ripples = '';
+  for(i = 0; i < 15; i++){
+    var sx = R() * 1700 - 50, sy = 1180 + R() * 820, d = 'M' + r2(sx) + ',' + r2(sy);
+    for(j = 0; j < 5; j++){
+      sx += (R() - .5) * 260; sy += 20 + R() * 120;
+      d += ' L' + r2(sx) + ',' + r2(sy);
+    }
+    cracks += '<path d="' + d + '" fill="none" stroke="#f7e9d8" stroke-opacity="' + r2(.04 + R() * .1) + '" stroke-width="' + r2(.8 + R() * 1.6) + '"/>';
+  }
+  for(i = 0; i < 26; i++){
+    var ry = 940 + Math.pow(i / 26, 1.9) * 1020;
+    ripples += '<rect x="0" y="' + r2(ry) + '" width="1600" height="' + r2(1 + R() * 3.4) + '" fill="#ffe8d2" opacity="' + r2(.03 + R() * .1) + '"/>';
+  }
+  var ridge = 'M-40,905 L120,860 L240,884 L360,842 L500,880 L640,846 L760,872 L900,838 L1040,878 L1180,846 L1320,886 L1460,856 L1640,894 L1640,940 L-40,940 Z';
+  var skyGroup =
+    '<rect width="1600" height="940" fill="url(#' + p + 'sky)"/>' +
+    '<circle cx="520" cy="880" r="240" fill="url(#' + p + 'sun)" opacity=".55"/>' +
+    '<circle cx="520" cy="884" r="62" fill="#fff2d6" opacity=".95"/>' +
+    '<g opacity=".4"><ellipse cx="300" cy="330" rx="420" ry="28" fill="#ffd0b0"/><ellipse cx="1150" cy="500" rx="520" ry="24" fill="#ffc7ad" opacity=".7"/><ellipse cx="800" cy="700" rx="620" ry="20" fill="#ffe1c6" opacity=".55"/></g>' +
+    '<path d="' + ridge + '" fill="url(#' + p + 'ridge)" opacity=".92"/>' +
+    '<g opacity=".5"><path d="' + ridge + '" fill="none" stroke="#ffd9b8" stroke-opacity=".35" stroke-width="2"/></g>' +
+    /* lone walker on the salt */
+    '<g fill="#1b1510" opacity=".9">' +
+      '<ellipse cx="1058" cy="922" rx="15" ry="5"/>' +
+      '<path d="M1048,918 q-2,-40 4,-52 q4,-8 8,-2 q6,10 6,32 q0,14 -4,22 z"/>' +
+      '<circle cx="1054" cy="858" r="10"/>' +
+    '</g>';
+
+  var defs =
+    '<linearGradient id="' + p + 'sky" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#1b2b47"/><stop offset=".28" stop-color="#4c4f6b"/>' +
+      '<stop offset=".55" stop-color="#a3747a"/><stop offset=".76" stop-color="#e4a077"/>' +
+      '<stop offset=".92" stop-color="#ffd9ab"/></linearGradient>' +
+    '<linearGradient id="' + p + 'salt" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#f3d3b8"/><stop offset=".22" stop-color="#d9c3b6"/>' +
+      '<stop offset=".6" stop-color="#a9a8b4"/><stop offset="1" stop-color="#4b4f60"/></linearGradient>' +
+    '<linearGradient id="' + p + 'ridge" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#6f5a68"/><stop offset="1" stop-color="#8f7381"/></linearGradient>' +
+    '<radialGradient id="' + p + 'sun" cx="50%" cy="50%" r="50%">' +
+      '<stop offset="0" stop-color="#fff6e2" stop-opacity=".95"/><stop offset=".4" stop-color="#ffc68f" stop-opacity=".6"/>' +
+      '<stop offset="1" stop-color="#ff9a5a" stop-opacity="0"/></radialGradient>' +
+    '<linearGradient id="' + p + 'reffade" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset=".55" stop-color="#fff" stop-opacity=".35"/>' +
+      '<stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+    '<mask id="' + p + 'refmask"><rect x="0" y="940" width="1600" height="1060" fill="url(#' + p + 'reffade)"/></mask>' +
+    '<filter id="' + p + 'ripple" x="-10%" y="-10%" width="120%" height="120%">' +
+      '<feTurbulence type="turbulence" baseFrequency=".004 .02" numOctaves="2" seed="31" result="t"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="t" scale="26" xChannelSelector="R" yChannelSelector="G"/>' +
+      '<feGaussianBlur stdDeviation="2.5"/></filter>';
+
+  var shimmer = '', s2;
+  for(s2 = 0; s2 < 60; s2++){
+    var shy = 950 + s2 * 16, shw = 10 + R() * 120;
+    shimmer += '<ellipse cx="' + r2(520 + (R() - .5) * 90) + '" cy="' + r2(shy) + '" rx="' + r2(shw) + '" ry="' + r2(1 + R() * 2.6) +
+               '" fill="#ffe9c8" opacity="' + r2(.05 + R() * .22) + '"/>';
+  }
+  var inner =
+    '<rect width="1600" height="2000" fill="#1b1a24"/>' +
+    skyGroup +
+    '<g mask="url(#' + p + 'refmask)">' +
+      '<g transform="translate(0,1880) scale(1,-1)" filter="url(#' + p + 'ripple)" opacity=".8">' + skyGroup + '</g>' +
+    '</g>' +
+    '<rect x="0" y="936" width="1600" height="1064" fill="url(#' + p + 'salt)" opacity=".34"/>' +
+    '<g filter="url(#' + p + 'ripple)" opacity=".9">' + shimmer + '</g>' +
+    '<g>' + cracks + '</g>' +
+    '<g>' + ripples + '</g>' +
+    '<rect x="0" y="932" width="1600" height="8" fill="#ffe9d4" opacity=".5"/>' +
+    grainFilter(p, 77, '.9', 4, .18) +
+    vignette(p, .7);
+
+  return svgRoot(inner, defs);
+}
+
+/* =========================================================================
+   PHOTO 7 — Rain on Line 9 · Street
+   SVG: bokeh gradient circles, condensation turbulence, glass reflection
+   ========================================================================= */
+function artRainLine9(p){
+  var R = makeRng(5150), i, bokeh = '', beads = '', rays = '';
+  for(i = 0; i < 26; i++){
+    var bx = R() * 1600, by = R() * 1900, br = 26 + R() * 150;
+    var warm = R() > .28;
+    bokeh += '<circle cx="' + r2(bx) + '" cy="' + r2(by) + '" r="' + r2(br) +
+             '" fill="url(#' + (warm ? p + 'warm' : p + 'cool') + ')" opacity="' + r2(.18 + R() * .5) + '"/>';
+  }
+  for(i = 0; i < 150; i++){
+    var dx = R() * 1600, dy = R() * 2000, dr = 1.4 + R() * 6;
+    beads += '<circle cx="' + r2(dx) + '" cy="' + r2(dy) + '" r="' + r2(dr) + '" fill="#e9f4ff" opacity="' + r2(.05 + R() * .2) + '"/>' +
+             '<circle cx="' + r2(dx - dr * .3) + '" cy="' + r2(dy - dr * .35) + '" r="' + r2(dr * .3) + '" fill="#fff" opacity="' + r2(.2 + R() * .45) + '"/>';
+  }
+  for(i = 0; i < 58; i++){
+    var x1 = R() * 1900 - 150, y1 = -100;
+    rays += '<line x1="' + r2(x1) + '" y1="' + r2(y1) + '" x2="' + r2(x1 - 210) + '" y2="' + r2(y1 + 2300) +
+            '" stroke="#dceaf5" stroke-opacity="' + r2(.03 + R() * .07) + '" stroke-width="' + r2(1 + R() * 2.2) + '"/>';
+  }
+  var defs =
+    '<linearGradient id="' + p + 'bg" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#0d1620"/><stop offset=".5" stop-color="#101a20"/><stop offset="1" stop-color="#1d1410"/></linearGradient>' +
+    '<radialGradient id="' + p + 'warm" cx="50%" cy="50%" r="50%">' +
+      '<stop offset="0" stop-color="#ffd9a4" stop-opacity=".95"/><stop offset=".55" stop-color="#ff9a4a" stop-opacity=".35"/>' +
+      '<stop offset="1" stop-color="#ff6a1a" stop-opacity="0"/></radialGradient>' +
+    '<radialGradient id="' + p + 'cool" cx="50%" cy="50%" r="50%">' +
+      '<stop offset="0" stop-color="#bfe9f4" stop-opacity=".85"/><stop offset=".55" stop-color="#4f9fb8" stop-opacity=".28"/>' +
+      '<stop offset="1" stop-color="#2a6a85" stop-opacity="0"/></radialGradient>' +
+    '<filter id="' + p + 'b1" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="28"/></filter>' +
+    '<filter id="' + p + 'b2" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>' +
+    '<filter id="' + p + 'rainblur" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.7"/></filter>' +
+    '<filter id="' + p + 'cond" x="0" y="0" width="100%" height="100%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="4" seed="14" result="t"/>' +
+      '<feColorMatrix in="t" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  .6 0 0 0 -.32"/>' +
+      '<feGaussianBlur stdDeviation="1.4"/></filter>' +
+    '<linearGradient id="' + p + 'glass" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#fff" stop-opacity=".10"/><stop offset=".5" stop-color="#fff" stop-opacity=".02"/>' +
+      '<stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>';
+
+  var inner =
+    '<rect width="1600" height="2000" fill="url(#' + p + 'bg)"/>' +
+    '<g filter="url(#' + p + 'b1)" style="mix-blend-mode:screen">' + bokeh + '</g>' +
+    '<g filter="url(#' + p + 'b2)" style="mix-blend-mode:screen" opacity=".7">' +
+      '<circle cx="380" cy="1420" r="54" fill="#ffc98a"/><circle cx="1120" cy="1260" r="40" fill="#9fe0f0"/>' +
+      '<circle cx="1450" cy="1620" r="70" fill="#ff8a3c"/><circle cx="180" cy="820" r="34" fill="#bfe9f4"/>' +
+    '</g>' +
+    /* bus window frame */
+    '<rect x="80" y="200" width="1440" height="1620" rx="34" fill="#0a0f14" opacity=".55"/>' +
+    '<rect x="96" y="216" width="1408" height="1588" rx="26" fill="url(#' + p + 'glass)"/>' +
+    '<rect x="96" y="216" width="1408" height="1588" rx="26" fill="none" stroke="#dfeaf2" stroke-opacity=".22" stroke-width="3"/>' +
+    '<path d="M96,1620 L900,216 L1130,216 L96,1840 Z" fill="#eaf6ff" opacity=".05"/>' +
+    '<path d="M1180,216 L1504,216 L1504,700 Z" fill="#fff" opacity=".04"/>' +
+    /* heads of the late-night passengers, soft through wet glass */
+    '<g filter="url(#' + p + 'b2)" opacity=".85" fill="#05090d">' +
+      '<ellipse cx="330" cy="1660" rx="120" ry="150"/><circle cx="330" cy="1470" r="76"/>' +
+      '<ellipse cx="760" cy="1700" rx="104" ry="140"/><circle cx="762" cy="1520" r="64"/>' +
+      '<ellipse cx="1240" cy="1650" rx="130" ry="160"/><circle cx="1246" cy="1450" r="80"/>' +
+    '</g>' +
+    '<rect x="0" y="0" width="1600" height="2000" filter="url(#' + p + 'cond)" opacity=".16"/>' +
+    '<g filter="url(#' + p + 'b2)" opacity=".55">' + beads + '</g>' +
+    '<g opacity=".8" filter="url(#' + p + 'rainblur)">' + rays + '</g>' +
+    '<rect x="0" y="1420" width="1600" height="80" fill="#ffb066" opacity=".16" filter="url(#' + p + 'b1)"/>' +
+    '<ellipse cx="800" cy="1960" rx="900" ry="220" fill="#ff8a3c" opacity=".14" filter="url(#' + p + 'b1)"/>' +
+    grainFilter(p, 9, '.7', 4, .22) +
+    vignette(p, .92);
+
+  return svgRoot(inner, defs);
+}
+
+/* =========================================================================
+   PHOTO 8 — Chromatic Drift · Abstract
+   SVG: stacked wave bands warped by a single displacement filter, screen blend
+   ========================================================================= */
+function artChromatic(p){
+  var R = makeRng(3333), i, bands = '', glints = '';
+  var pal = [
+    ['#ff4a1c', '#5b1030'], ['#9ecfdc', '#123a5e'], ['#f4d7a8', '#6b2b12'],
+    ['#7d6bd8', '#1a1540'], ['#ff9a5e', '#2b0c18'], ['#4fd8c4', '#0b2b33'],
+    ['#efe9df', '#2a2118']
+  ];
+  for(i = 0; i < 7; i++){
+    var y0 = 120 + i * 260, amp = 60 + R() * 200;
+    var c = pal[i];
+    bands += '<path d="M-100,' + r2(y0) + ' C300,' + r2(y0 - amp) + ' 620,' + r2(y0 + amp) + ' 900,' + r2(y0 - amp * .4) +
+             ' S1400,' + r2(y0 + amp * .8) + ' 1700,' + r2(y0 - amp * .3) + ' L1700,' + r2(y0 + 300) +
+             ' C1400,' + r2(y0 + amp * .8 + 300) + ' 900,' + r2(y0 - amp * .4 + 280) + ' 300,' + r2(y0 + amp + 300) +
+             ' L-100,' + r2(y0 + 260) + ' Z" fill="' + c[0] + '" opacity="' + r2(.22 + R() * .38) +
+             '" style="mix-blend-mode:screen"/>';
+    bands += '<path d="M-100,' + r2(y0 + 90) + ' C400,' + r2(y0 + amp * .6) + ' 780,' + r2(y0 - amp * .5) + ' 1700,' + r2(y0 + 120) +
+             '" stroke="' + c[1] + '" stroke-opacity=".55" stroke-width="' + r2(10 + R() * 60) + '" fill="none" style="mix-blend-mode:screen"/>';
+  }
+  for(i = 0; i < 30; i++){
+    glints += '<ellipse cx="' + r2(R() * 1600) + '" cy="' + r2(R() * 2000) + '" rx="' + r2(20 + R() * 140) +
+              '" ry="' + r2(2 + R() * 12) + '" fill="#fff2e0" opacity="' + r2(.05 + R() * .3) + '"/>';
+  }
+  var defs =
+    '<linearGradient id="' + p + 'bg" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#0a0b12"/><stop offset=".5" stop-color="#140f18"/><stop offset="1" stop-color="#05070c"/></linearGradient>' +
+    '<filter id="' + p + 'warp" x="-25%" y="-25%" width="150%" height="150%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency=".0028 .0055" numOctaves="4" seed="61" result="t"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="t" scale="220" xChannelSelector="R" yChannelSelector="B"/>' +
+      '<feGaussianBlur stdDeviation="7"/></filter>' +
+    '<filter id="' + p + 'soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="40"/></filter>';
+  var inner =
+    '<rect width="1600" height="2000" fill="url(#' + p + 'bg)"/>' +
+    '<g filter="url(#' + p + 'soft)" opacity=".8">' +
+      '<ellipse cx="380" cy="520" rx="420" ry="360" fill="#ff4a1c" opacity=".5"/>' +
+      '<ellipse cx="1200" cy="1400" rx="500" ry="380" fill="#3f7fd8" opacity=".45"/>' +
+      '<ellipse cx="860" cy="900" rx="360" ry="300" fill="#ffcf9e" opacity=".3"/>' +
+    '</g>' +
+    '<g filter="url(#' + p + 'warp)">' + bands + '</g>' +
+    '<g opacity=".55">' + glints + '</g>' +
+    grainFilter(p, 23, '.65', 4, .26) +
+    vignette(p, .8);
+  return svgRoot(inner, defs);
+}
+
+/* =========================================================================
+   PHOTO 9 — Glacier Blue · Landscape
+   SVG: faceted ice wall, randomly walked crevasse network, turbulence texture
+   ========================================================================= */
+function artGlacier(p){
+  var R = makeRng(8888), i, j, cre = '', dust = '';
+  for(i = 0; i < 30; i++){
+    var x = R() * 1600, y = 600 + R() * 700, d = 'M' + r2(x) + ',' + r2(y);
+    for(j = 0; j < 6; j++){
+      x += (R() - .5) * 130; y += 40 + R() * 130;
+      d += ' L' + r2(x) + ',' + r2(y);
+    }
+    var wdt = r2(1.5 + R() * 12);
+    cre += '<path d="' + d + '" fill="none" stroke="#052a3a" stroke-opacity="' + r2(.35 + R() * .5) + '" stroke-width="' + wdt + '" stroke-linecap="round"/>' +
+           '<path d="' + d + '" fill="none" stroke="#cfeff5" stroke-opacity="' + r2(.12 + R() * .3) + '" stroke-width="' + r2(wdt * .35) + '"/>';
+  }
+  for(i = 0; i < 90; i++){
+    dust += '<circle cx="' + r2(R() * 1600) + '" cy="' + r2(R() * 2000) + '" r="' + r2(.6 + R() * 2.4) +
+            '" fill="#eafbff" opacity="' + r2(.1 + R() * .5) + '"/>';
+  }
+  var defs =
+    '<linearGradient id="' + p + 'sky" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#071019"/><stop offset=".35" stop-color="#123040"/>' +
+      '<stop offset=".62" stop-color="#2f6d84"/><stop offset=".82" stop-color="#8ec6d6"/></linearGradient>' +
+    '<linearGradient id="' + p + 'wall" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#bfe6ee"/><stop offset=".3" stop-color="#63a9c0"/>' +
+      '<stop offset=".62" stop-color="#1d6684"/><stop offset="1" stop-color="#07222f"/></linearGradient>' +
+    '<linearGradient id="' + p + 'facet" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#e6f8fc" stop-opacity=".55"/><stop offset="1" stop-color="#0a3a4d" stop-opacity=".2"/></linearGradient>' +
+    '<linearGradient id="' + p + 'fg" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#0b2734"/><stop offset="1" stop-color="#030d13"/></linearGradient>' +
+    '<filter id="' + p + 'ice" x="-10%" y="-10%" width="120%" height="120%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency=".008 .02" numOctaves="4" seed="17" result="t"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="t" scale="22" xChannelSelector="R" yChannelSelector="G"/></filter>' +
+    '<filter id="' + p + 'haze" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="30"/></filter>';
+
+  var inner =
+    '<rect width="1600" height="2000" fill="url(#' + p + 'sky)"/>' +
+    '<g opacity=".5" filter="url(#' + p + 'haze)">' +
+      '<path d="M-100,760 L260,380 L520,760 Z" fill="#a9d8e4"/>' +
+      '<path d="M420,780 L820,300 L1200,780 Z" fill="#bfe4ee" opacity=".8"/>' +
+      '<path d="M1080,780 L1420,420 L1700,780 Z" fill="#8cc4d4" opacity=".7"/>' +
+    '</g>' +
+    '<path d="M-50,2000 L-50,860 L180,700 L430,880 L700,660 L980,900 L1230,720 L1500,900 L1650,780 L1650,2000 Z" fill="url(#' + p + 'wall)" filter="url(#' + p + 'ice)"/>' +
+    '<g opacity=".8">' +
+      '<path d="M-50,860 L430,880 L700,660 L520,1080 Z" fill="url(#' + p + 'facet)"/>' +
+      '<path d="M700,660 L980,900 L830,1240 Z" fill="#ffffff" opacity=".12"/>' +
+      '<path d="M1230,720 L1500,900 L1650,780 L1650,1180 Z" fill="url(#' + p + 'facet)" opacity=".7"/>' +
+      '<path d="M180,700 L430,880 L300,1220 Z" fill="#dff6fb" opacity=".1"/>' +
+    '</g>' +
+    '<g>' + cre + '</g>' +
+    '<g>' + dust + '</g>' +
+    '<ellipse cx="700" cy="1000" rx="700" ry="240" fill="#9fdbe8" opacity=".12" filter="url(#' + p + 'haze)"/>' +
+    '<path d="M-50,2000 L-50,1560 L260,1480 L520,1620 L820,1500 L1120,1640 L1450,1520 L1650,1600 L1650,2000 Z" fill="url(#' + p + 'fg)"/>' +
+    '<path d="M-50,1560 L260,1480 L520,1620 L820,1500 L1120,1640 L1450,1520 L1650,1600" fill="none" stroke="#bfeef7" stroke-opacity=".3" stroke-width="2.5"/>' +
+    grainFilter(p, 53, '.85', 4, .18) +
+    vignette(p, .72);
+  return svgRoot(inner, defs);
+}
+
+/* =========================================================================
+   PHOTO 11 — Crosswalk Ballet · Street
+   SVG: perspective-striped geometry, skewed shadow shapes, wet-sheen gradient
+   ========================================================================= */
+function artCrosswalk(p){
+  var cx = 800, i, stripes = '', shadows = '', figs = '';
+  function halfW(y){ return 190 + (y - 200) * 0.52; }
+  for(i = 0; i < 9; i++){
+    var y0 = 240 + i * 190, y1 = y0 + 110;
+    stripes += '<path d="M' + r2(cx - halfW(y0)) + ',' + y0 + ' L' + r2(cx + halfW(y0)) + ',' + y0 +
+               ' L' + r2(cx + halfW(y1)) + ',' + y1 + ' L' + r2(cx - halfW(y1)) + ',' + y1 + ' Z" fill="#e9eef2" opacity="' + r2(.5 + (i % 3) * .12) + '"/>';
+  }
+  var people = [
+    [430, 780, 1.0, -14], [980, 640, .82, 9], [640, 1220, 1.25, -6], [1180, 1460, 1.5, 16], [300, 1620, 1.8, -18]
+  ];
+  for(i = 0; i < people.length; i++){
+    var q = people[i], s = q[2], x = q[0], y = q[1];
+    shadows += '<ellipse cx="' + (x + 90 * s) + '" cy="' + (y + 250 * s) + '" rx="' + r2(34 * s) + '" ry="' + r2(250 * s) +
+               '" fill="#070c12" opacity=".5" transform="rotate(' + q[3] + ' ' + x + ' ' + y + ')"/>';
+    figs += '<g transform="rotate(' + q[3] + ' ' + x + ' ' + y + ')">' +
+              '<ellipse cx="' + x + '" cy="' + (y + 60 * s) + '" rx="' + r2(44 * s) + '" ry="' + r2(62 * s) + '" fill="#0b1016" stroke="#cfe3ef" stroke-opacity=".16" stroke-width="' + r2(1.6 * s) + '"/>' +
+              '<ellipse cx="' + x + '" cy="' + (y - 46 * s) + '" rx="' + r2(30 * s) + '" ry="' + r2(36 * s) + '" fill="#0d131a" stroke="#cfe3ef" stroke-opacity=".2" stroke-width="' + r2(1.6 * s) + '"/>' +
+              '<rect x="' + (x - 26 * s) + '" y="' + (y + 108 * s) + '" width="' + r2(18 * s) + '" height="' + r2(78 * s) + '" fill="#0b1016" rx="' + r2(8 * s) + '"/>' +
+              '<rect x="' + (x + 10 * s) + '" y="' + (y + 108 * s) + '" width="' + r2(18 * s) + '" height="' + r2(78 * s) + '" fill="#0b1016" rx="' + r2(8 * s) + '"/>' +
+            '</g>';
+  }
+  var defs =
+    '<linearGradient id="' + p + 'road" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#2a3340"/><stop offset=".45" stop-color="#18202a"/><stop offset="1" stop-color="#0a0e14"/></linearGradient>' +
+    '<linearGradient id="' + p + 'sheen" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#bfe0f0" stop-opacity=".22"/><stop offset=".5" stop-color="#ffffff" stop-opacity="0"/>' +
+      '<stop offset="1" stop-color="#ffd0a8" stop-opacity=".16"/></linearGradient>' +
+    '<radialGradient id="' + p + 'puddle" cx="50%" cy="50%" r="50%">' +
+      '<stop offset="0" stop-color="#cfe6f2" stop-opacity=".5"/><stop offset=".7" stop-color="#6d90a8" stop-opacity=".18"/>' +
+      '<stop offset="1" stop-color="#24404f" stop-opacity="0"/></radialGradient>' +
+    '<filter id="' + p + 'wetshadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter>' +
+    '<filter id="' + p + 'sheenblur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18"/></filter>';
+
+  var inner =
+    '<rect width="1600" height="2000" fill="url(#' + p + 'road)"/>' +
+    '<g filter="url(#' + p + 'sheenblur)" opacity=".9">' +
+      '<path d="M-100,0 L700,0 L120,2000 L-100,2000 Z" fill="url(#' + p + 'sheen)"/>' +
+      '<ellipse cx="1300" cy="900" rx="420" ry="300" fill="url(#' + p + 'puddle)"/>' +
+      '<ellipse cx="380" cy="1500" rx="360" ry="240" fill="url(#' + p + 'puddle)" opacity=".8"/>' +
+    '</g>' +
+    '<g opacity=".92">' + stripes + '</g>' +
+    '<rect x="' + r2(cx - 6) + '" y="0" width="12" height="2000" fill="#f2e6d2" opacity=".28"/>' +
+    '<g filter="url(#' + p + 'wetshadow)">' + shadows + '</g>' +
+    '<g>' + figs + '</g>' +
+    '<ellipse cx="1180" cy="1460" rx="60" ry="26" fill="#ff4a1c" opacity=".9" transform="rotate(16 1180 1460)"/>' +
+    '<ellipse cx="1180" cy="1452" rx="46" ry="18" fill="#ff8a5e" opacity=".55" transform="rotate(16 1180 1452)"/>' +
+    grainFilter(p, 71, '.8', 4, .24) +
+    vignette(p, .88);
+  return svgRoot(inner, defs);
+}
+
+/* =========================================================================
+   PHOTO 12 — Ink in Water · Abstract
+   SVG: turbulence displacement over radial plumes + hand-drawn filaments
+   ========================================================================= */
+function artInk(p){
+  var R = makeRng(1234), i, j, plume = '', fil = '';
+  var pc = [['#ff4a1c', 420, 640], ['#9ecfdc', 1120, 980], ['#efe9df', 760, 1420], ['#ff8a5e', 1180, 460], ['#4f9fb8', 360, 1460]];
+  for(i = 0; i < pc.length; i++){
+    for(j = 0; j < 5; j++){
+      plume += '<circle cx="' + (pc[i][1] + (R() - .5) * 220) + '" cy="' + (pc[i][2] + (R() - .5) * 220) +
+               '" r="' + r2(110 + R() * 260) + '" fill="' + pc[i][0] + '" opacity="' + r2(.24 + R() * .4) + '"/>';
+    }
+  }
+  for(i = 0; i < 46; i++){
+    var x = R() * 1600, y = R() * 2000, d = 'M' + r2(x) + ',' + r2(y);
+    for(j = 0; j < 7; j++){
+      x += (R() - .5) * 300; y += (R() - .5) * 300;
+      d += ' Q' + r2(x + (R() - .5) * 160) + ',' + r2(y + (R() - .5) * 160) + ' ' + r2(x) + ',' + r2(y);
+    }
+    fil += '<path d="' + d + '" fill="none" stroke="' + (R() > .5 ? '#ffd2b8' : '#cfeef5') +
+           '" stroke-opacity="' + r2(.06 + R() * .22) + '" stroke-width="' + r2(.7 + R() * 3.4) + '"/>';
+  }
+  var defs =
+    '<radialGradient id="' + p + 'bg" cx="50%" cy="45%" r="70%">' +
+      '<stop offset="0" stop-color="#0e1420"/><stop offset=".55" stop-color="#080a11"/><stop offset="1" stop-color="#040407"/></radialGradient>' +
+    '<filter id="' + p + 'ink" x="-30%" y="-30%" width="160%" height="160%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency=".0042" numOctaves="5" seed="151" result="t"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="t" scale="260" xChannelSelector="R" yChannelSelector="G"/>' +
+      '<feGaussianBlur stdDeviation="9"/></filter>' +
+    '<filter id="' + p + 'ink2" x="-30%" y="-30%" width="160%" height="160%">' +
+      '<feTurbulence type="turbulence" baseFrequency=".0075" numOctaves="4" seed="42" result="t"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="t" scale="180" xChannelSelector="G" yChannelSelector="B"/>' +
+      '<feGaussianBlur stdDeviation="3"/></filter>' +
+    '<filter id="' + p + 'haze" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="44"/></filter>';
+  var inner =
+    '<rect width="1600" height="2000" fill="url(#' + p + 'bg)"/>' +
+    '<g filter="url(#' + p + 'ink)" style="mix-blend-mode:screen">' + plume + '</g>' +
+    '<g filter="url(#' + p + 'ink2)" opacity=".85" style="mix-blend-mode:screen">' + fil + '</g>' +
+    '<ellipse cx="700" cy="1000" rx="420" ry="520" fill="#ff7a3c" opacity=".14" filter="url(#' + p + 'haze)"/>' +
+    '<ellipse cx="1150" cy="700" rx="300" ry="340" fill="#7fd4e4" opacity=".12" filter="url(#' + p + 'haze)"/>' +
+    grainFilter(p, 97, '.9', 4, .24) +
+    vignette(p, .9);
+  return svgRoot(inner, defs);
+}
+
+/* =========================================================================
+   PHOTO 6 — Hands of the Baker · Portrait
+   Pure CSS: stacked radial gradients, mix-blend-mode, animated flour drift
+   ========================================================================= */
+function artBakerCSS(){
+  return '<div class="art art-baker" aria-hidden="true">' +
+           '<div class="bk-key"></div>' +
+           '<div class="bk-table"></div>' +
+           '<div class="bk-hand bk-hand--l"></div>' +
+           '<div class="bk-hand bk-hand--r"></div>' +
+           '<div class="bk-dough"></div>' +
+           '<div class="bk-flour"></div>' +
+           '<div class="bk-vig"></div>' +
+         '</div>';
+}
+
+/* =========================================================================
+   PHOTO 10 — Vera · Portrait
+   <canvas>: ~40,000 short hatch strokes whose density follows an analytic
+   face-and-hair field, then pen-drawn features, rim light and vignette.
+   Rendered once, exported to a data URL, reused everywhere.
+   ========================================================================= */
+var veraCache = null;
+function buildVera(){
+  if(veraCache) return veraCache;
+  var W = 760, H = 950;
+  var cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  var g = cv.getContext('2d');
+  if(!g){ veraCache = ''; return ''; }
+  var R = makeRng(90210);
+  var i, x, y, px, py;
+
+  /* ---------- analytic face field: gaussian height bumps read as a skull ---------- */
+  var bumps = [
+    [0.470,0.300,0.100,0.078, 0.34], [0.392,0.358,0.052,0.024, 0.18],
+    [0.552,0.356,0.052,0.024, 0.15], [0.396,0.396,0.048,0.026,-0.42],
+    [0.552,0.394,0.048,0.026,-0.36], [0.470,0.402,0.019,0.060, 0.38],
+    [0.468,0.464,0.032,0.026, 0.60], [0.448,0.486,0.018,0.012,-0.34],
+    [0.492,0.486,0.018,0.012,-0.34], [0.344,0.460,0.064,0.070, 0.40],
+    [0.594,0.454,0.064,0.070, 0.30], [0.460,0.524,0.052,0.014, 0.30],
+    [0.460,0.538,0.052,0.007,-0.40], [0.460,0.556,0.046,0.014, 0.32],
+    [0.458,0.610,0.056,0.034, 0.36], [0.462,0.508,0.026,0.008,-0.18]
+  ];
+  var height = new Float32Array(W * H);
+  for(i = 0; i < bumps.length; i++){
+    var b = bumps[i];
+    var cx = b[0] * W, cy = b[1] * H, sx = b[2] * W, sy = b[3] * H, amp = b[4];
+    var bx0 = Math.max(0, Math.floor(cx - sx * 3)), bx1 = Math.min(W, Math.ceil(cx + sx * 3));
+    var by0 = Math.max(0, Math.floor(cy - sy * 3)), by1 = Math.min(H, Math.ceil(cy + sy * 3));
+    for(y = by0; y < by1; y++){
+      var gy = (y - cy) / sy;
+      var rowBase = y * W;
+      for(x = bx0; x < bx1; x++){
+        var gx = (x - cx) / sx;
+        height[rowBase + x] += amp * Math.exp(-(gx * gx + gy * gy) * 0.5);
+      }
+    }
+  }
+
+  /* jaw-tapered oval mask + lambert shading from a high, cold window */
+  var face = new Float32Array(W * H);
+  var lum = new Float32Array(W * H);
+  for(y = 0; y < H; y++){
+    var ny = y / H;
+    var ww = 0.182 - 0.072 * Math.min(1, Math.max(0, (ny - 0.46) / 0.16)) +
+             0.012 * Math.min(1, Math.max(0, (0.46 - ny) / 0.16));
+    for(x = 0; x < W; x++){
+      var nx = x / W;
+      var oval = 1 - (Math.pow((nx - 0.470) / ww, 2) + Math.pow((ny - 0.402) / 0.202, 2));
+      face[y * W + x] = Math.min(1, Math.max(0, oval * 7));
+    }
+  }
+  for(y = 0; y < H; y++){
+    for(x = 0; x < W; x++){
+      var k = y * W + x;
+      var hL = height[k - (x > 0 ? 1 : 0)], hR = height[k + (x < W - 1 ? 1 : 0)];
+      var hU = height[k - (y > 0 ? W : 0)], hD = height[k + (y < H - 1 ? W : 0)];
+      var gx2 = (hR - hL) * 0.5, gy2 = (hD - hU) * 0.5;
+      var nxv = -gx2, nyv = -gy2, nzv = 0.040;
+      var len = Math.sqrt(nxv * nxv + nyv * nyv + nzv * nzv) || 1;
+      var l = (nxv * -0.50 + nyv * -0.58 + nzv * 0.64) / len;
+      l = Math.min(1, Math.max(0, (l + 0.16) / 1.16));
+      lum[k] = Math.min(1, Math.max(0, (l - 0.45) * 2.0 + 0.45)) * face[k];
+    }
+  }
+
+  /* ---------- ground: cool dark room + warm back light ---------- */
+  var bgGrad = g.createLinearGradient(0, 0, 0, H);
+  bgGrad.addColorStop(0, '#131319'); bgGrad.addColorStop(0.55, '#111116'); bgGrad.addColorStop(1, '#0d0e13');
+  g.fillStyle = bgGrad; g.fillRect(0, 0, W, H);
+  var halo = g.createRadialGradient(W * 0.82, H * 0.24, 0, W * 0.82, H * 0.24, W * 0.86);
+  halo.addColorStop(0, 'rgba(236,150,86,.34)');
+  halo.addColorStop(0.35, 'rgba(190,110,60,.16)');
+  halo.addColorStop(0.7, 'rgba(90,55,40,.05)');
+  halo.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = halo; g.fillRect(0, 0, W, H);
+
+  /* ---------- hair, body and neck as one soft dark mass ---------- */
+  var sil = document.createElement('canvas');
+  sil.width = W; sil.height = H;
+  var sg = sil.getContext('2d');
+  if(!sg){ veraCache = ''; return ''; }
+  try { sg.filter = 'blur(7px)'; } catch(errF){ /* no canvas filters: keep hard edge */ }
+  sg.fillStyle = '#0b0a0c';
+  sg.beginPath();
+  sg.ellipse(W * 0.470, H * 0.360, W * 0.225, H * 0.225, 0, 0, Math.PI * 2);
+  sg.fill();
+  sg.beginPath();
+  sg.moveTo(W * 0.30, H * 0.55); sg.lineTo(W * 0.25, H * 1.08);
+  sg.lineTo(W * 0.73, H * 1.08); sg.lineTo(W * 0.69, H * 0.52);
+  sg.closePath(); sg.fill();
+  sg.fillRect(W * 0.428, H * 0.58, W * 0.104, H * 0.22);
+  g.drawImage(sil, 0, 0);
+
+  var silData = null;
+  try { silData = sg.getImageData(0, 0, W, H).data; } catch(errP){ silData = null; }
+
+  /* ---------- hair strands, lit on the window side ---------- */
+  for(i = 0; i < 2400; i++){
+    px = R() * W; py = R() * H;
+    var mk = ((py | 0) * W + (px | 0)) * 4;
+    if(silData && silData[mk + 3] < 120) continue;
+    var lnS = 8 + R() * 36, angS = (R() - 0.5) * 0.5;
+    var lit = Math.max(0, (0.44 - px / W)) * 2.4 * R();
+    var v = Math.round(14 + 70 * lit);
+    g.strokeStyle = 'rgb(' + (v + 8) + ',' + (v + 3) + ',' + v + ')';
+    g.lineWidth = 1;
+    g.beginPath();
+    g.moveTo(px, py);
+    g.lineTo(px + Math.sin(angS) * lnS, py + Math.cos(angS) * lnS);
+    g.stroke();
+  }
+
+  /* ---------- the face, shaded in warm skin tones ---------- */
+  var fc = document.createElement('canvas');
+  fc.width = W; fc.height = H;
+  var fg = fc.getContext('2d');
+  if(!fg){ veraCache = ''; return ''; }
+  var fimg = fg.createImageData(W, H);
+  var fd = fimg.data;
+  for(y = 0; y < H; y++){
+    for(x = 0; x < W; x++){
+      var kk = y * W + x;
+      var a = face[kk];
+      if(a <= 0.01) continue;
+      var t = lum[kk];
+      var fall = Math.min(1.25, Math.max(0.14, 1.25 - 2.05 * Math.pow(Math.min(1, Math.max(0, (x / W - 0.40) / 0.34)), 1.15)));
+      var rC, gC, bC, u;
+      if(t < 0.5){
+        rC = 14 + (118 - 14) * (t / 0.5);
+        gC = 11 + (88 - 11) * (t / 0.5);
+        bC = 10 + (70 - 10) * (t / 0.5);
+      } else {
+        u = (t - 0.5) / 0.5;
+        rC = 118 + (246 - 118) * u;
+        gC = 88 + (222 - 88) * u;
+        bC = 70 + (192 - 70) * u;
+      }
+      var o = kk * 4;
+      fd[o] = Math.min(255, rC * fall);
+      fd[o + 1] = Math.min(255, gC * fall);
+      fd[o + 2] = Math.min(255, bC * fall);
+      fd[o + 3] = Math.round(a * 255);
+    }
+  }
+  fg.putImageData(fimg, 0, 0);
+  g.drawImage(fc, 0, 0);
+
+  /* ---------- hatch strokes: shadows dark, highlights pale ---------- */
+  var rowStep = 2.9, cell = 4.6;
+  g.lineWidth = 1;
+  for(y = 0; y < H; y += rowStep){
+    var yo = y + R() * 1.4;
+    for(x = 0; x < W; x += cell){
+      var kf = (y | 0) * W + (x | 0);
+      if(face[kf] <= 0.30) continue;
+      var vv = lum[kf];
+      var len2 = 3 + R() * 5;
+      if(vv < 0.55 * face[kf]){
+        g.strokeStyle = 'rgba(28,20,17,' + (0.06 * (1 - vv / 0.55) * (0.5 + R() * 0.8)).toFixed(3) + ')';
+      } else {
+        g.strokeStyle = 'rgba(250,236,214,' + (0.06 * ((vv - 0.55) / 0.45) * (0.4 + R() * 0.9)).toFixed(3) + ')';
+      }
+      g.beginPath();
+      g.moveTo(x, yo);
+      g.lineTo(x + len2, yo);
+      g.stroke();
+    }
+  }
+
+  /* ---------- features ---------- */
+  function stroke(pts, colour, wd){
+    g.beginPath();
+    g.moveTo(pts[0][0], pts[0][1]);
+    for(var q = 1; q < pts.length; q++) g.lineTo(pts[q][0], pts[q][1]);
+    g.strokeStyle = colour; g.lineWidth = wd; g.stroke();
+  }
+  g.lineCap = 'round'; g.lineJoin = 'round';
+  stroke([[W * .352, H * .348], [W * .390, H * .333], [W * .432, H * .342]], 'rgb(34,25,20)', 3);
+  stroke([[W * .518, H * .340], [W * .560, H * .331], [W * .604, H * .346]], 'rgb(38,28,22)', 3);
+  var eyes = [[0.392, 1.0], [0.552, 0.95]];
+  for(i = 0; i < eyes.length; i++){
+    var ex = eyes[i][0] * W, ey = 0.394 * H, ry = eyes[i][1];
+    g.beginPath(); g.ellipse(ex, ey, W * 0.029, H * 0.0105 * ry, 0, 0, Math.PI * 2);
+    g.fillStyle = 'rgb(18,13,11)'; g.fill();
+    g.beginPath(); g.ellipse(ex, ey, W * 0.011, H * 0.0085 * ry, 0, 0, Math.PI * 2);
+    g.fillStyle = 'rgb(52,38,30)'; g.fill();
+    g.beginPath(); g.ellipse(ex, ey, W * 0.0034, H * 0.0034, 0, 0, Math.PI * 2);
+    g.fillStyle = 'rgb(236,226,212)'; g.fill();
+    g.beginPath(); g.ellipse(ex, ey - H * 0.006, W * 0.030, H * 0.010 * ry, 0, Math.PI * 1.06, Math.PI * 1.94);
+    g.strokeStyle = 'rgb(40,28,22)'; g.lineWidth = 2.4; g.stroke();
+  }
+  stroke([[W * .468, H * .412], [W * .459, H * .466], [W * .446, H * .480]], 'rgb(46,33,26)', 2);
+  stroke([[W * .476, H * .412], [W * .485, H * .466], [W * .498, H * .480]], 'rgb(96,70,54)', 2);
+  g.beginPath(); g.ellipse(W * .4475, H * .483, W * .0075, H * .005, 0, 0, Math.PI * 2); g.fillStyle = 'rgb(32,22,18)'; g.fill();
+  g.beginPath(); g.ellipse(W * .4975, H * .483, W * .0075, H * .005, 0, 0, Math.PI * 2); g.fillStyle = 'rgb(32,22,18)'; g.fill();
+  stroke([[W * .424, H * .529], [W * .460, H * .524], [W * .498, H * .528]], 'rgb(52,32,27)', 2);
+  stroke([[W * .424, H * .537], [W * .460, H * .546], [W * .498, H * .536]], 'rgb(46,28,23)', 2);
+  g.strokeStyle = 'rgb(92,56,48)'; g.lineWidth = 3;
+  g.beginPath(); g.moveTo(W * .428, H * .531); g.lineTo(W * .460, H * .530); g.lineTo(W * .494, H * .531); g.stroke();
+
+  /* ---------- hair fringe framing the face (never across it) ---------- */
+  g.lineWidth = 1;
+  for(i = 0; i < 520; i++){
+    px = W * (0.29 + R() * 0.40); py = H * (0.14 + R() * 0.24);
+    if(face[(py | 0) * W + (px | 0)] > 0.15) continue;
+    if(Math.abs(px / W - 0.470) < 0.09) continue;
+    var ln3 = 8 + R() * 26, an3 = (R() - 0.5) * 0.5;
+    g.strokeStyle = 'rgb(' + Math.round(18 + R() * 22) + ',' + Math.round(15 + R() * 18) + ',' + Math.round(14 + R() * 16) + ')';
+    g.beginPath(); g.moveTo(px, py); g.lineTo(px + Math.sin(an3) * ln3, py + Math.cos(an3) * ln3); g.stroke();
+  }
+
+  /* ---------- neck light, vignette, grain ---------- */
+  var nl = g.createLinearGradient(W * 0.40, 0, W * 0.50, 0);
+  nl.addColorStop(0, 'rgba(38,29,23,.55)');
+  nl.addColorStop(1, 'rgba(38,29,23,0)');
+  g.fillStyle = nl;
+  g.fillRect(W * 0.28, H * 0.60, W * 0.22, H * 0.42);
+
+  var vig = g.createRadialGradient(W * 0.47, H * 0.40, W * 0.16, W * 0.47, H * 0.44, W * 1.02);
+  vig.addColorStop(0, 'rgba(4,4,6,0)');
+  vig.addColorStop(0.62, 'rgba(4,4,6,.42)');
+  vig.addColorStop(1, 'rgba(4,4,6,.97)');
+  g.fillStyle = vig; g.fillRect(0, 0, W, H);
+
+  for(i = 0; i < 26000; i++){
+    g.fillStyle = 'rgba(240,232,222,' + (0.012 + R() * 0.05).toFixed(3) + ')';
+    g.fillRect(R() * W, R() * H, 1, 1);
+  }
+
+  veraCache = cv.toDataURL('image/jpeg', 0.88);
+  return veraCache;
+}
+
+/* =========================================================================
+   PHOTO 10 renderer — the canvas study is exported once and reused
+   ========================================================================= */
+function artVera(){
+  /* the canvas study is painted after first paint (see paintVera) */
+  return '<img data-vera alt="" aria-hidden="true" decoding="async">';
+}
+
+/* =========================================================================
+   THE ARCHIVE — twelve frames
+   ========================================================================= */
+var PHOTOS = [
+  { n: 1, title: 'Basalt Dawn', cat: 'Landscape', art: artBasalt,
+    note: 'Reynisfjara, 04:41. The sea had not decided yet whether to be kind.',
+    exif: [['Camera','Hasselblad X2D 100C'],['Lens','XCD 45mm f/3.5'],['Aperture','f/11'],['Shutter','8 s'],['ISO','ISO 64']] },
+
+  { n: 2, title: 'The Quiet Hour', cat: 'Portrait', art: artQuietHour,
+    note: 'She sat by the window until the light apologised and left.',
+    exif: [['Camera','Leica SL3'],['Lens','Noctilux-M 50mm f/0.95'],['Aperture','f/1.4'],['Shutter','1/60 s'],['ISO','ISO 800']] },
+
+  { n: 3, title: 'Neon Tram', cat: 'Street', art: artTram,
+    note: 'Line 1, Hlemmur, 23:58. Rain doing what rain does to neon.',
+    exif: [['Camera','Fujifilm X100VI'],['Lens','23mm f/2'],['Aperture','f/2'],['Shutter','1/30 s'],['ISO','ISO 1600']] },
+
+  { n: 4, title: 'Fractured Light', cat: 'Abstract', art: artFractured,
+    note: 'A prism, a torch, and forty minutes of arguing with physics.',
+    exif: [['Camera','Phase One XF IQ4'],['Lens','Rodenstock 90mm'],['Aperture','f/16'],['Shutter','1/2 s'],['ISO','ISO 35']] },
+
+  { n: 5, title: 'Salt Flats Mirror', cat: 'Landscape', art: artSaltFlats,
+    note: 'Two centimetres of water, and the whole sky copied twice.',
+    exif: [['Camera','Mamiya RZ67 Pro II'],['Lens','110mm f/2.8'],['Aperture','f/8'],['Shutter','1/500 s'],['ISO','ISO 100']] },
+
+  { n: 6, title: 'Hands of the Baker', cat: 'Portrait', art: artBakerCSS,
+    note: 'Sourdough at 6 a.m., flour still hanging in the warm air.',
+    exif: [['Camera','Hasselblad 907X'],['Lens','XCD 65mm f/2.8'],['Aperture','f/2.8'],['Shutter','1/125 s'],['ISO','ISO 400']] },
+
+  { n: 7, title: 'Rain on Line 9', cat: 'Street', art: artRainLine9,
+    note: 'The night bus, fogged windows, everything outside turned to bokeh.',
+    exif: [['Camera','Leica Q3'],['Lens','Summilux 28mm f/1.7'],['Aperture','f/1.7'],['Shutter','1/15 s'],['ISO','ISO 3200']] },
+
+  { n: 8, title: 'Chromatic Drift', cat: 'Abstract', art: artChromatic,
+    note: 'Colour, left to find its own way across the frame.',
+    exif: [['Camera','Phase One XF IQ4'],['Lens','120mm macro'],['Aperture','f/22'],['Shutter','1/4 s'],['ISO','ISO 50']] },
+
+  { n: 9, title: 'Glacier Blue', cat: 'Landscape', art: artGlacier,
+    note: 'Vatnajökull. Ice older than the language I was swearing in.',
+    exif: [['Camera','Arca-Swiss F-Metric'],['Lens','Schneider 150mm'],['Aperture','f/22'],['Shutter','1/250 s'],['ISO','ISO 100']] },
+
+  { n: 10, title: 'Vera', cat: 'Portrait', art: artVera,
+    note: 'Twenty minutes of silence, then one exposure. Expired Portra.',
+    exif: [['Camera','Mamiya RZ67'],['Lens','180mm f/4.5'],['Aperture','f/4'],['Shutter','1/60 s'],['ISO','ISO 400']] },
+
+  { n: 11, title: 'Crosswalk Ballet', cat: 'Street', art: artCrosswalk,
+    note: 'Skólavörðustígur from above. Everyone late, nobody running.',
+    exif: [['Camera','Leica M11'],['Lens','Summilux 35mm f/1.4'],['Aperture','f/8'],['Shutter','1/1000 s'],['ISO','ISO 200']] },
+
+  { n: 12, title: 'Ink in Water', cat: 'Abstract', art: artInk,
+    note: 'A tank, a dropper, a lens. The patience is the point.',
+    exif: [['Camera','Nikon Z9'],['Lens','105mm macro'],['Aperture','f/16'],['Shutter','1/8 s'],['ISO','ISO 64']] }
+];
+
+/* each render gets a unique id namespace so SVG defs never collide */
+var artSeq = 0;
+function artFor(photo){
+  artSeq += 1;
+  return photo.art('p' + photo.n + 'x' + artSeq);
+}
+
+/* =========================================================================
+   UI ENGINE
+   ========================================================================= */
+var $  = function(s, c){ return (c || document).querySelector(s); };
+var $$ = function(s, c){ return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+var reduced = motionQuery.matches;
+var clamp = function(v, a, b){ return v < a ? a : (v > b ? b : v); };
+var pad2 = function(n){ return n < 10 ? '0' + n : '' + n; };
+function anim(el, frames, opts){
+  if(!el || typeof el.animate !== 'function') return;
+  try { el.animate(frames, opts); } catch(err) { /* very old engines: skip the flourish */ }
+}
+
+/* ---------------- build the archive ---------------- */
+var grid = $('#grid');
+grid.innerHTML = PHOTOS.map(function(ph, i){
+  return '<button class="tile" type="button" data-i="' + i + '" data-cat="' + ph.cat + '" ' +
+         'aria-label="Open ' + ph.title + ' — ' + ph.cat + ', frame ' + (i + 1) + ' of 12">' +
+           '<span class="tile-art">' + artFor(ph) + '</span>' +
+           '<span class="tile-shade" aria-hidden="true"></span>' +
+           '<span class="tile-idx" aria-hidden="true">' + pad2(i + 1) + '</span>' +
+           '<span class="tile-open" aria-hidden="true">View</span>' +
+           '<span class="tile-cap">' +
+             '<span class="tile-title">' + ph.title + '</span>' +
+             '<span class="tile-cat">' + ph.cat + '</span>' +
+           '</span>' +
+         '</button>';
+}).join('');
+
+/* ---------------- build the featured sequence ---------------- */
+var track = $('#featuredTrack');
+track.innerHTML = PHOTOS.slice(0, 5).map(function(ph, i){
+  return '<article class="panel" role="group" aria-roledescription="slide" aria-label="' +
+         (i + 1) + ' of 5 — ' + ph.title + ', ' + ph.cat + '">' +
+           '<div class="panel-art" aria-hidden="true">' + artFor(ph) + '</div>' +
+           '<div class="panel-shade" aria-hidden="true"></div>' +
+           '<div class="panel-inner">' +
+             '<div class="panel-kicker mono"><span>Featured ' + pad2(i + 1) + '</span><span>' + ph.cat + '</span></div>' +
+             '<div class="panel-body">' +
+               '<div class="panel-lead">' +
+                 '<span class="panel-num">No. ' + pad2(ph.n) + ' — ' + ph.cat + '</span>' +
+                 '<h2 class="panel-title">' + ph.title + '</h2>' +
+               '</div>' +
+               '<div class="panel-meta">' +
+                 '<span class="mono">' + ph.exif[0][1] + '</span>' +
+                 '<span class="mono">' + ph.exif[1][1] + ' · ' + ph.exif[3][1] + '</span>' +
+                 '<p class="panel-note">' + ph.note + '</p>' +
+               '</div>' +
+             '</div>' +
+           '</div>' +
+         '</article>';
+}).join('');
+
+/* ---------------- the canvas portrait, painted after first paint ---------------- */
+function paintVera(){
+  var url = '';
+  try { url = buildVera(); } catch(errV){ url = ''; }
+  if(!url) return;
+  $$('[data-vera]').forEach(function(img){
+    img.src = url;
+    img.style.opacity = '1';
+  });
+}
+if('requestIdleCallback' in window){
+  window.requestIdleCallback(paintVera, { timeout: 1400 });
+} else {
+  setTimeout(paintVera, 140);
+}
+
+/* ---------------- ambient marquee ---------------- */
+var marquee = $('#marqueeTrack');
+var marqueeWords = ['Basalt Dawn', 'Glacier Blue', 'Rain on Line 9', 'The Quiet Hour',
+                    'Salt Flats Mirror', 'Ink in Water', 'Crosswalk Ballet', 'Vera',
+                    'Neon Tram', 'Fractured Light', 'Chromatic Drift', 'Hands of the Baker'];
+var marqueeString = marqueeWords.concat(marqueeWords).map(function(w){
+  return '<span>' + w + '</span>';
+}).join('');
+marquee.innerHTML = marqueeString;
+
+/* ---------------- reveal on enter ---------------- */
+var revealEls = $$('.reveal, .reveal-x');
+if('IntersectionObserver' in window && !reduced){
+  var revealObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('in'); revealObs.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+  revealEls.forEach(function(el){ revealObs.observe(el); });
+} else {
+  revealEls.forEach(function(el){ el.classList.add('in'); });
+}
+/* stagger the tiles as they come into view */
+var tiles = $$('.tile');
+tiles.forEach(function(t){ t.style.opacity = reduced ? '1' : '0'; });
+if('IntersectionObserver' in window && !reduced){
+  var tileObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      var el = en.target;
+      var i = parseInt(el.getAttribute('data-i'), 10) % 3;
+      anim(el,
+        [{ opacity: 0, transform: 'translateY(26px) scale(.985)' },
+         { opacity: 1, transform: 'none' }],
+        { duration: 900, delay: i * 90, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' }
+      );
+      el.style.opacity = '1';
+      tileObs.unobserve(el);
+    });
+  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.08 });
+  tiles.forEach(function(t){ tileObs.observe(t); });
+} else {
+  tiles.forEach(function(t){ t.style.opacity = '1'; });
+}
+
+/* ---------------- nav: stuck state + active link ---------------- */
+var nav = $('#nav');
+var navLinks = $$('.navlinks a');
+
+/* ---------------- scroll engine ---------------- */
+var hero = $('#hero');
+var heroName = $('.hero-name');
+var feat = $('#featured');
+var pin = $('.featured-pin');
+var panels = $$('.panel');
+var panelArt = panels.map(function(p){ return $('.panel-art', p); });
+var panelInner = panels.map(function(p){ return $('.panel-inner', p); });
+var featBar = $('#featBar');
+var featIdxEl = $('#featIdx');
+var ticks = $$('#featTicks i');
+var aboutMedia = $('.about-media');
+var aboutArt = $('#aboutArt');
+
+var featTop = 0, featSpan = 1, pinW = 1, vh = window.innerHeight, vw = window.innerWidth;
+var aboutTop = 0, aboutH = 1;
+var ticking = false, lastIdx = -1;
+
+function measure(){
+  vh = window.innerHeight;
+  vw = window.innerWidth;
+  pinW = pin.clientWidth || vw;
+  featTop = feat.getBoundingClientRect().top + window.scrollY;
+  featSpan = Math.max(1, feat.offsetHeight - vh);
+  aboutTop = aboutMedia.getBoundingClientRect().top + window.scrollY;
+  aboutH = aboutMedia.offsetHeight || 1;
+}
+
+function update(){
+  ticking = false;
+  var y = window.scrollY || window.pageYOffset || 0;
+
+  if(nav) nav.classList.toggle('is-stuck', y > 30);
+  if(reduced) return;
+
+  /* hero parallax + fade */
+  var hp = clamp(y / (vh || 1), 0, 1);
+  if(heroName){
+    heroName.style.transform = 'translate3d(0,' + (hp * 78).toFixed(2) + 'px,0)';
+    heroName.style.opacity = (1 - hp * 0.95).toFixed(3);
+  }
+
+  /* pinned horizontal sequence */
+  var p = clamp((y - featTop) / featSpan, 0, 1);
+  track.style.transform = 'translate3d(' + (-p * 4 * pinW).toFixed(2) + 'px,0,0)';
+
+  for(var i = 0; i < panels.length; i++){
+    var local = p * 4 - i;                 /* -1 … +1 around the centre */
+    var art = panelArt[i];
+    if(art){
+      /* scroll-driven transformation: slide, scale and settle */
+      art.style.transform = 'translate3d(' + (local * -7).toFixed(2) + '%,0,0) scale(' +
+                            (1.14 - Math.abs(clamp(local, -1, 1)) * 0.08).toFixed(3) + ')';
+    }
+    if(panelInner[i]){
+      panelInner[i].style.transform = 'translate3d(0,' + (local * 26).toFixed(2) + 'px,0)';
+      panelInner[i].style.opacity = (1 - Math.abs(clamp(local, -1, 1)) * 0.85).toFixed(3);
+    }
+  }
+  featBar.style.transform = 'scaleX(' + (0.04 + p * 0.96).toFixed(4) + ')';
+
+  var idx = Math.round(p * 4);
+  if(idx !== lastIdx){
+    lastIdx = idx;
+    if(featIdxEl) featIdxEl.textContent = pad2(idx + 1);
+    ticks.forEach(function(t, k){ t.classList.toggle('on', k === idx); });
+  }
+
+  /* about: gentle vertical parallax on the portrait */
+  var ap = clamp((vh - (aboutTop - y)) / (vh + aboutH), 0, 1);
+  if(aboutArt) aboutArt.style.transform = 'translate3d(0,' + ((0.5 - ap) * 54).toFixed(2) + 'px,0) scale(1.04)';
+}
+
+function onScroll(){
+  if(!ticking){ ticking = true; requestAnimationFrame(update); }
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+
+/* ---------------- counters ---------------- */
+function runCounter(el){
+  var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+  if(reduced){ el.textContent = target; return; }
+  var t0 = 0, dur = 1500;
+  function step(now){
+    if(!t0) t0 = now;
+    var t = clamp((now - t0) / dur, 0, 1);
+    var e = 1 - Math.pow(1 - t, 4);
+    el.textContent = Math.round(target * e);
+    if(t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+var counters = $$('.count');
+if('IntersectionObserver' in window){
+  var countObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ runCounter(en.target); countObs.unobserve(en.target); }
+    });
+  }, { threshold: 0.6 });
+  counters.forEach(function(c){ countObs.observe(c); });
+} else {
+  counters.forEach(function(c){ c.textContent = c.getAttribute('data-count'); });
+}
+
+/* ---------------- section spy ---------------- */
+if('IntersectionObserver' in window){
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      var id = en.target.id;
+      navLinks.forEach(function(a){
+        a.classList.toggle('is-active', a.getAttribute('href') === '#' + id);
+      });
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  ['#gallery', '#featured', '#about', '#contact'].forEach(function(sel){
+    var el = $(sel); if(el) spy.observe(el);
+  });
+}
+
+/* ---------------- filtering with FLIP reflow ---------------- */
+var filterBtns = $$('.flt');
+var statusEl = $('#galleryStatus');
+var currentFilter = 'all';
+
+function setFilter(cat, announce){
+  if(cat === currentFilter) return;
+  currentFilter = cat;
+  filterBtns.forEach(function(b){
+    b.setAttribute('aria-pressed', String(b.getAttribute('data-filter') === cat));
+  });
+
+  var first = new Map();
+  tiles.forEach(function(t){
+    if(!t.hidden) first.set(t, t.getBoundingClientRect());
+  });
+
+  tiles.forEach(function(t){
+    t.hidden = !(cat === 'all' || t.getAttribute('data-cat') === cat);
+  });
+
+  var shown = 0;
+  tiles.forEach(function(t){
+    if(t.hidden) return;
+    var f = first.get(t);
+    var order = shown++;
+    if(!reduced && f){
+      var l = t.getBoundingClientRect();
+      var dx = f.left - l.left, dy = f.top - l.top;
+      if(dx || dy){
+        anim(t,
+          [{ transform: 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px)' }, { transform: 'none' }],
+          { duration: 640, easing: 'cubic-bezier(.16,1,.3,1)' }
+        );
+      }
+    } else if(!reduced && !f){
+      anim(t,
+        [{ opacity: 0, transform: 'translateY(22px) scale(.97)' }, { opacity: 1, transform: 'none' }],
+        { duration: 520, delay: order * 55, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' }
+      );
+    }
+  });
+
+  if(announce && statusEl){
+    statusEl.textContent = cat === 'all'
+      ? 'Showing all 12 photographs.'
+      : 'Showing ' + shown + ' ' + cat.toLowerCase() + ' photographs.';
+  }
+  /* the page height changed, so re-measure the scroll engine */
+  requestAnimationFrame(measure);
+  requestAnimationFrame(update);
+}
+
+filterBtns.forEach(function(btn){
+  btn.addEventListener('click', function(){
+    setFilter(btn.getAttribute('data-filter'), true);
+  });
+});
+
+/* ---------------- lightbox ---------------- */
+var lb = $('#lightbox');
+var lbArt = $('#lbArt');
+var lbTitle = $('#lbTitle');
+var lbCat = $('#lbCat');
+var lbIndex = $('#lbIndex');
+var lbExif = $('#lbExif');
+var lbNote = $('#lbNote');
+var lbClose = $('#lbClose');
+var lbPrev = $('#lbPrev');
+var lbNext = $('#lbNext');
+var lbOpen = false, lbCurrent = 0, lastFocus = null, didBuild = '';
+
+function paintLightbox(i){
+  var ph = PHOTOS[i];
+  lbCurrent = i;
+  if(didBuild !== String(i)){
+    lbArt.innerHTML = '<div style="position:absolute;inset:0">' + artFor(ph) + '</div>';
+    didBuild = String(i);
+  }
+  lbTitle.textContent = ph.title;
+  lbCat.textContent = ph.cat;
+  lbIndex.textContent = pad2(i + 1) + ' / 12';
+  lbNote.textContent = ph.note;
+  lbExif.innerHTML = ph.exif.map(function(row){
+    return '<dt>' + row[0] + '</dt><dd>' + row[1] + '</dd>';
+  }).join('');
+}
+
+function openLightbox(i){
+  lastFocus = document.activeElement;
+  paintLightbox(i);
+  lb.classList.add('is-open');
+  lb.setAttribute('aria-hidden', 'false');
+  lbOpen = true;
+  /* keep the page from scrolling behind the overlay without a scrollbar jump */
+  var sb = window.innerWidth - document.documentElement.clientWidth;
+  document.body.style.overflow = 'hidden';
+  if(sb > 0) document.body.style.paddingRight = sb + 'px';
+  if(nav) nav.style.paddingRight = '';
+  setTimeout(function(){ lbClose.focus({ preventScroll: true }); }, 60);
+}
+
+function closeLightbox(){
+  lb.classList.remove('is-open');
+  lb.setAttribute('aria-hidden', 'true');
+  lbOpen = false;
+  document.body.style.overflow = '';
+  document.body.style.paddingRight = '';
+  if(lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+}
+
+function stepLightbox(dir){
+  paintLightbox((lbCurrent + dir + PHOTOS.length) % PHOTOS.length);
+  /* re-trigger the frame transition so each slide feels made */
+  var frame = $('.lb-frame');
+  if(frame && !reduced){
+    anim(frame,
+      [{ opacity: .35, transform: 'scale(1.015)' }, { opacity: 1, transform: 'none' }],
+      { duration: 520, easing: 'cubic-bezier(.16,1,.3,1)' }
+    );
+  }
+}
+
+grid.addEventListener('click', function(e){
+  var tile = e.target.closest ? e.target.closest('.tile') : null;
+  if(!tile) return;
+  openLightbox(parseInt(tile.getAttribute('data-i'), 10) || 0);
+});
+
+lbClose.addEventListener('click', closeLightbox);
+lbPrev.addEventListener('click', function(){ stepLightbox(-1); });
+lbNext.addEventListener('click', function(){ stepLightbox(1); });
+lb.addEventListener('click', function(e){
+  if(e.target === lb) closeLightbox();
+});
+
+document.addEventListener('keydown', function(e){
+  if(!lbOpen) return;
+  if(e.key === 'Escape'){ e.preventDefault(); closeLightbox(); }
+  else if(e.key === 'ArrowLeft'){ e.preventDefault(); stepLightbox(-1); }
+  else if(e.key === 'ArrowRight'){ e.preventDefault(); stepLightbox(1); }
+  else if(e.key === 'Tab'){
+    var f = [lbClose, lbPrev, lbNext];
+    var i = f.indexOf(document.activeElement);
+    e.preventDefault();
+    var next = e.shiftKey ? (i <= 0 ? f.length - 1 : i - 1) : (i === -1 || i === f.length - 1 ? 0 : i + 1);
+    f[next].focus();
+  }
+});
+
+/* ---------------- contact form ---------------- */
+var form = $('#contactForm');
+var success = $('#formSuccess');
+var successName = $('#successName');
+var formReset = $('#formReset');
+
+var rules = [
+  { el: $('#cf-name'), err: $('#cf-name-err'),
+    test: function(v){ return v.trim().length >= 2 ? '' : 'A name of two letters or more, please.'; } },
+  { el: $('#cf-email'), err: $('#cf-email-err'),
+    test: function(v){
+      if(!v.trim()) return 'I need an address to reply to.';
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'That address is missing something.';
+    } },
+  { el: $('#cf-msg'), err: $('#cf-msg-err'),
+    test: function(v){ return v.trim().length >= 10 ? '' : 'A sentence or two — at least ten characters.'; } }
+];
+
+function markField(rule, message){
+  var field = rule.el.closest('.field');
+  if(!field) return;
+  rule.err.textContent = message;
+  if(message){
+    field.classList.add('invalid');
+    rule.el.setAttribute('aria-invalid', 'true');
+  } else {
+    field.classList.remove('invalid');
+    rule.el.removeAttribute('aria-invalid');
+  }
+}
+
+rules.forEach(function(rule){
+  rule.el.addEventListener('input', function(){
+    var field = rule.el.closest('.field');
+    if(field && field.classList.contains('invalid')){
+      markField(rule, rule.test(rule.el.value || ''));
+    }
+  });
+  rule.el.addEventListener('blur', function(){
+    var v = rule.el.value || '';
+    if(v.trim()) markField(rule, rule.test(v));
+  });
+});
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  var firstBad = null;
+  rules.forEach(function(rule){
+    var msg = rule.test(rule.el.value || '');
+    markField(rule, msg);
+    if(msg && !firstBad){ firstBad = rule.el; }
+  });
+  if(firstBad){
+    var field = firstBad.closest('.field');
+    if(field && !reduced){
+      field.classList.remove('shake');
+      void field.offsetWidth;
+      field.classList.add('shake');
+      setTimeout(function(){ field.classList.remove('shake'); }, 500);
+    }
+    firstBad.focus();
+    return;
+  }
+  var name = (rules[0].el.value || '').trim().split(/\s+/)[0] || 'friend';
+  successName.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+  form.hidden = true;
+  success.hidden = false;
+  success.setAttribute('tabindex', '-1');
+  success.focus({ preventScroll: true });
+});
+
+formReset.addEventListener('click', function(){
+  form.reset();
+  rules.forEach(function(rule){ markField(rule, ''); });
+  success.hidden = true;
+  form.hidden = false;
+  rules[0].el.focus();
+});
+
+/* ---------------- pointer: custom cursor, magnetic links, tile tilt ---------------- */
+var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+var cursor = $('#cursor');
+var cursorLabel = $('#cursor-label');
+var pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2, tx: window.innerWidth / 2, ty: window.innerHeight / 2 };
+var cursorRaf = 0, cursorOn = false;
+
+function cursorTick(){
+  cursorRaf = 0;
+  pointer.x += (pointer.tx - pointer.x) * 0.18;
+  pointer.y += (pointer.ty - pointer.y) * 0.18;
+  cursor.style.transform = 'translate3d(' + pointer.x.toFixed(2) + 'px,' + pointer.y.toFixed(2) + 'px,0)';
+  if(Math.abs(pointer.tx - pointer.x) > 0.4 || Math.abs(pointer.ty - pointer.y) > 0.4){
+    cursorRaf = requestAnimationFrame(cursorTick);
+  }
+}
+
+if(fine && cursor){
+  document.addEventListener('pointermove', function(e){
+    pointer.tx = e.clientX; pointer.ty = e.clientY;
+    if(!cursorOn){
+      cursorOn = true;
+      cursor.classList.add('is-on');
+      document.body.classList.add('has-cursor');
+      pointer.x = e.clientX; pointer.y = e.clientY;
+    }
+    if(!cursorRaf) cursorRaf = requestAnimationFrame(cursorTick);
+  }, { passive: true });
+
+  document.addEventListener('pointerleave', function(){
+    cursor.classList.remove('is-on');
+    cursorOn = false;
+  });
+
+  document.addEventListener('pointerover', function(e){
+    var t = e.target;
+    var hit = t.closest ? t.closest('.tile, .flt, .submit, .lb-nav, .lb-close, a, button') : null;
+    var big = t.closest ? t.closest('.tile') : null;
+    cursor.classList.toggle('is-lg', !!big);
+    if(cursorLabel) cursorLabel.textContent = big ? 'View' : '';
+    if(hit) cursor.classList.add('is-hot');
+    else cursor.classList.remove('is-hot');
+  }, { passive: true });
+}
+
+/* magnetic nav links + pointer-reactive tilt on tiles */
+if(fine && !reduced){
+  $$('[data-mag]').forEach(function(link){
+    link.addEventListener('pointermove', function(e){
+      var r = link.getBoundingClientRect();
+      var dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+      var dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+      link.style.transform = 'translate3d(' + (dx * 4).toFixed(2) + 'px,' + (dy * 3).toFixed(2) + 'px,0)';
+    });
+    link.addEventListener('pointerleave', function(){ link.style.transform = ''; });
+  });
+
+  tiles.forEach(function(tile){
+    var art = $('.tile-art', tile);
+    if(!art) return;
+    tile.addEventListener('pointermove', function(e){
+      var r = tile.getBoundingClientRect();
+      var nx = (e.clientX - r.left) / r.width - .5;
+      var ny = (e.clientY - r.top) / r.height - .5;
+      art.style.transition = 'transform 140ms linear';
+      art.style.transform = 'perspective(900px) rotateX(' + (-ny * 5).toFixed(2) + 'deg) rotateY(' +
+                            (nx * 6).toFixed(2) + 'deg) scale(1.045)';
+    });
+    tile.addEventListener('pointerleave', function(){
+      art.style.transition = 'transform .9s cubic-bezier(.16,1,.3,1)';
+      art.style.transform = '';
+    });
+  });
+}
+
+/* ---------------- hero canvas: a live northern sky ---------------- */
+(function initAurora(){
+  var cv = $('#aurora');
+  if(!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d');
+  if(!ctx) return;
+
+  var w = 0, h = 0, dpr = 1, t = 0, raf = 0, visible = true;
+  var ptr = { x: .5, y: .5, tx: .5, ty: .5 };
+
+  var blobs = [
+    { x: .22, y: .28, r: .55, c: 'rgba(126,206,224,', a: .30, sx: .00021, sy: .00033, p: 0 },
+    { x: .68, y: .22, r: .48, c: 'rgba(196,236,244,', a: .22, sx: -.00017, sy: .00041, p: 1.7 },
+    { x: .48, y: .62, r: .62, c: 'rgba(58,120,150,', a: .30, sx: .00013, sy: -.00027, p: 3.1 },
+    { x: .82, y: .70, r: .46, c: 'rgba(255,110,50,', a: .20, sx: -.00023, sy: -.00019, p: 4.4 },
+    { x: .12, y: .78, r: .40, c: 'rgba(255,150,90,', a: .14, sx: .00031, sy: .00023, p: 5.6 }
+  ];
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 1.6);
+    w = cv.clientWidth || window.innerWidth;
+    h = cv.clientHeight || window.innerHeight;
+    cv.width = Math.max(1, Math.round(w * dpr * .62));
+    cv.height = Math.max(1, Math.round(h * dpr * .62));
+    draw(true);
+  }
+
+  function draw(staticFrame){
+    var W = cv.width, H = cv.height;
+    ctx.clearRect(0, 0, W, H);
+    var base = ctx.createLinearGradient(0, 0, 0, H);
+    base.addColorStop(0, '#070a12');
+    base.addColorStop(.55, '#0b1019');
+    base.addColorStop(1, '#0f0c0e');
+    ctx.fillStyle = base;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.globalCompositeOperation = 'lighter';
+    for(var i = 0; i < blobs.length; i++){
+      var b = blobs[i];
+      var bx = (b.x + Math.sin(t * b.sx * 1000 + b.p) * .10 + (ptr.x - .5) * .07) * W;
+      var by = (b.y + Math.cos(t * b.sy * 1000 + b.p) * .07 + (ptr.y - .5) * .05) * H;
+      var br = b.r * Math.min(W, H) * (1 + Math.sin(t * .0007 + b.p) * .06);
+      var gr = ctx.createRadialGradient(bx, by, 0, bx, by, br);
+      gr.addColorStop(0, b.c + Math.min(.62, b.a * 1.5) + ')');
+      gr.addColorStop(.45, b.c + (b.a * .45).toFixed(3) + ')');
+      gr.addColorStop(1, b.c + '0)');
+      ctx.fillStyle = gr;
+      ctx.beginPath();
+      ctx.arc(bx, by, br, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    /* faint vertical curtain streaks */
+    for(var s = 0; s < 7; s++){
+      var sx = ((s / 7) + .05 + Math.sin(t * .0004 + s) * .02 + (ptr.x - .5) * .04) * W;
+      var g2 = ctx.createLinearGradient(sx, 0, sx + W * .04, H);
+      g2.addColorStop(0, 'rgba(180,230,240,0)');
+      g2.addColorStop(.42, 'rgba(180,230,240,' + (0.018 + (s % 3) * 0.008) + ')');
+      g2.addColorStop(1, 'rgba(180,230,240,0)');
+      ctx.fillStyle = g2;
+      ctx.fillRect(sx, 0, W * .05, H);
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    if(!staticFrame && !reduced) t += 1;
+  }
+
+  function loop(){
+    raf = 0;
+    if(!visible || reduced) return;
+    ptr.x += (ptr.tx - ptr.x) * .05;
+    ptr.y += (ptr.ty - ptr.y) * .05;
+    draw(false);
+    raf = requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('pointermove', function(e){
+    ptr.tx = e.clientX / (window.innerWidth || 1);
+    ptr.ty = e.clientY / (window.innerHeight || 1);
+  }, { passive: true });
+
+  if('IntersectionObserver' in window){
+    var vis = new IntersectionObserver(function(entries){
+      visible = entries[0].isIntersecting;
+      if(visible && !raf && !reduced) raf = requestAnimationFrame(loop);
+    }, { threshold: 0 });
+    vis.observe(cv);
+  }
+
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden && raf){ cancelAnimationFrame(raf); raf = 0; }
+    else if(!document.hidden && !raf && visible && !reduced) raf = requestAnimationFrame(loop);
+  });
+
+  resize();
+  window.addEventListener('resize', resize);
+  if(!reduced) raf = requestAnimationFrame(loop);
+})();
+
+/* ---------------- motion preference changes ---------------- */
+function onMotionChange(){
+  reduced = motionQuery.matches;
+  if(reduced){
+    track.style.transform = 'none';
+    panels.forEach(function(p, i){
+      if(panelArt[i]) panelArt[i].style.transform = '';
+      if(panelInner[i]){ panelInner[i].style.transform = ''; panelInner[i].style.opacity = ''; }
+    });
+    if(heroName){ heroName.style.transform = ''; heroName.style.opacity = ''; }
+    if(aboutArt) aboutArt.style.transform = '';
+    counters.forEach(function(c){ c.textContent = c.getAttribute('data-count'); });
+  } else {
+    measure();
+    update();
+  }
+}
+if(motionQuery.addEventListener) motionQuery.addEventListener('change', onMotionChange);
+else if(motionQuery.addListener) motionQuery.addListener(onMotionChange);
+
+/* ---------------- boots, spacing, resize ---------------- */
+window.addEventListener('resize', function(){
+  clearTimeout(window.__maraR);
+  window.__maraR = setTimeout(function(){ measure(); update(); }, 120);
+});
+window.addEventListener('orientationchange', function(){
+  setTimeout(function(){ measure(); update(); }, 220);
+});
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(function(){ measure(); update(); });
+}
+
+measure();
+update();
+window.addEventListener('load', function(){ measure(); update(); });
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "slug": "arena-agent",
+  "model": "Arena.ai Agent Mode (Claude Sonnet 4.5)",
+  "title": "Cold Light, Slow Weather",
+  "tagline": "Photographs of cold light, slow weather, and the people who wait for it.",
+  "palette": [
+    "#08090b",
+    "#efe9df",
+    "#ff4a1c",
+    "#9ecfdc"
+  ],
+  "techniques": [
+    "Hand-authored SVG scenes: layered linear/radial gradients, procedurally walked geometry, seeded per-instance randomness (Basalt Dawn, The Quiet Hour, Neon Tram, Fractured Light, Salt Flats Mirror, Rain on Line 9, Chromatic Drift, Glacier Blue, Crosswalk Ballet)",
+    "SVG filter primitives for texture and optics: feTurbulence fractal-noise film grain everywhere, feDisplacementMap refraction in Fractured Light, Chromatic Drift, Ink in Water and Salt Flats Mirror, plus blur-based bloom and glow",
+    "Canvas 2D generative portrait (Vera): gaussian height-field face, Lambert-shaded per-pixel skin pass, hatched stroke field, canvas blur silhouette - rendered once and exported as a data URL",
+    "CSS-only still life (Hands of the Baker): stacked radial gradients, blur(), inset box-shadows and mix-blend-mode with an animated flour drift",
+    "Live canvas sky behind #hero: additive radial gradients, pointer parallax and an IntersectionObserver-gated requestAnimationFrame loop",
+    "Inline SVG fractal-noise data URI used as an animated film-grain layer across the whole page"
+  ],
+  "entry": "index.html",
+  "thumb": null,
+  "submittedAt": "2026-10-23T21:17:12+02:00"
+}
