@@ -154,6 +154,28 @@
       "submittedAt": "2026-10-22T21:26:44+02:00"
     },
     {
+      "slug": "nemotron-3-5-super-vl",
+      "model": "nvidia/nemotron-3.5-super-vl:free (via OpenRouter)",
+      "title": "Mara Lindqvist — Silver & Basalt",
+      "tagline": "Basalt light, Atlantic weather, quiet hours.",
+      "palette": [
+        "#0b0e14",
+        "#22d3ee",
+        "#f472b6",
+        "#fb923c"
+      ],
+      "techniques": [
+        "Canvas 2D generative art",
+        "Procedural gradient compositing",
+        "Pixel-level noise generation",
+        "Mirror/reflection compositing"
+      ],
+      "entry": "index.html",
+      "thumb": null,
+      "hasAudit": true,
+      "submittedAt": "2026-10-23T18:47:02+02:00"
+    },
+    {
       "slug": "recursiveflintv10free",
       "model": "recursive/flint-v1.0:free",
       "title": "Mara Lindqvist — Northern Noir",
