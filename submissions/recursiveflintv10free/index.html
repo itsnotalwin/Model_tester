@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mara Lindqvist — Northern Noir</title>
+<style>
+:root {
+  --ink: #07131c;
+  --ink-2: #0b1a26;
+  --night: #050b12;
+  --paper: #e8f1f2;
+  --ice: #2f7d9c;
+  --glacier: #7fd4e8;
+  --aurora: #9fd8c0;
+  --ember: #e8a15c;
+  --line: rgba(232,241,242,.14);
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --ease-out: cubic-bezier(.22,1,.36,1);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin:0; min-height:100vh; background:var(--ink); color:var(--paper); font-family:var(--font-body); overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+body.has-cursor, body.has-cursor a, body.has-cursor button { cursor: none; }
+::selection { background:var(--aurora); color:var(--ink); }
+h1, h2, h3 { font-family:var(--font-display); font-weight:400; line-height:1.05; margin:0; }
+p { line-height:1.7; }
+a { font-family:var(--font-body); }
+button { font-family:var(--font-body); }
+:focus-visible { outline:2px solid var(--aurora); outline-offset:3px; border-radius:4px; }
+
+#nav { position:fixed; top:0; left:0; right:0; z-index:120; height:64px; display:flex; align-items:center; background:rgba(5,11,18,.55); border-bottom:1px solid rgba(232,241,242,.08); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+.nav-inner { width:min(1440px,100%); margin:0 auto; padding:0 clamp(16px,4vw,48px); display:flex; align-items:center; justify-content:space-between; gap:24px; }
+.wordmark { font-family:var(--font-display); font-size:20px; letter-spacing:.16em; text-transform:uppercase; color:var(--paper); text-decoration:none; }
+.nav-links { display:flex; align-items:center; gap:clamp(14px,2.4vw,30px); }
+.nav-links a { position:relative; color:rgba(232,241,242,.78); text-decoration:none; font-size:11px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; padding:8px 2px; transition:color .3s; }
+.nav-links a::after { content:""; position:absolute; left:0; bottom:2px; width:100%; height:1px; background:var(--aurora); transform:scaleX(0); transform-origin:right; transition:transform .45s var(--ease-out); }
+.nav-links a:hover, .nav-links a:focus-visible { color:var(--paper); }
+.nav-links a:hover::after, .nav-links a:focus-visible::after { transform:scaleX(1); transform-origin:left; }
+
+#hero { position:relative; min-height:100vh; min-height:100svh; display:grid; place-items:center; overflow:hidden; background:var(--night); }
+#heroCanvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+.aurora { position:absolute; border-radius:50%; filter:blur(70px); opacity:.35; mix-blend-mode:screen; pointer-events:none; }
+.aurora-a { width:44vw; height:44vw; min-width:320px; min-height:320px; background:radial-gradient(circle, rgba(47,125,156,.8), transparent 65%); top:-10%; left:-8%; animation:drift-a 22s ease-in-out infinite alternate; }
+.aurora-b { width:40vw; height:40vw; min-width:280px; min-height:280px; background:radial-gradient(circle, rgba(159,216,192,.55), transparent 65%); bottom:-12%; right:-6%; animation:drift-b 26s ease-in-out infinite alternate; }
+@keyframes drift-a { from { transform:translate3d(0,0,0) scale(1); } to { transform:translate3d(6vw,4vh,0) scale(1.12); } }
+@keyframes drift-b { from { transform:translate3d(0,0,0) scale(1.05); } to { transform:translate3d(-5vw,-3vh,0) scale(.95); } }
+.hero-inner { position:relative; z-index:2; width:min(1120px,100%); padding:140px 20px 120px; text-align:center; }
+.eyebrow { margin:0; font-size:12px; font-weight:600; letter-spacing:.32em; text-transform:uppercase; color:var(--aurora); }
+.hero-name { font-size:clamp(64px,13vw,180px); margin:20px 0 12px; letter-spacing:-.03em; text-wrap:balance; }
+.tagline { font-family:var(--font-display); font-style:italic; font-size:clamp(18px,2.6vw,30px); color:rgba(232,241,242,.82); margin:0 0 36px; }
+.scroll-cue { display:inline-flex; align-items:center; gap:14px; color:var(--paper); text-decoration:none; font-size:11px; letter-spacing:.28em; text-transform:uppercase; }
+.scroll-cue-line { width:56px; height:1px; background:rgba(232,241,242,.25); overflow:hidden; display:block; }
+.scroll-cue-line span { display:block; width:100%; height:100%; background:var(--aurora); transform:translateX(-100%); animation:scroll-line 2.2s var(--ease-out) infinite; }
+@keyframes scroll-line { 0% { transform:translateX(-100%); } 55% { transform:translateX(0); } 100% { transform:translateX(100%); } }
+
+.featured { position:relative; height:500vh; background:var(--night); }
+.featured-sticky { position:sticky; top:64px; height:calc(100vh - 64px); height:calc(100svh - 64px); overflow:hidden; }
+.featured-track { display:flex; width:max-content; height:100%; transition:transform 0s linear; will-change:transform; }
+.featured-panel { position:relative; flex:0 0 100vw; height:100%; overflow:hidden; }
+.featured-art { position:absolute; inset:0; }
+.featured-art .photo { position:absolute; inset:0; width:100%; height:100%; }
+.featured-caption { position:absolute; left:0; right:0; bottom:0; padding:24px; background:linear-gradient(transparent, rgba(4,8,12,.8)); }
+.featured-kicker { margin:0 0 6px; font-size:11px; font-weight:600; letter-spacing:.3em; text-transform:uppercase; color:var(--aurora); }
+.featured-progress { position:absolute; top:0; left:0; right:0; height:3px; background:rgba(232,241,242,.08); z-index:5; }
+.featured-progress-bar { height:100%; background:var(--aurora); transform:scaleX(0); transform-origin:left; }
+
+.gallery { padding: clamp(90px,12vw,160px) clamp(16px,4vw,48px); background:linear-gradient(var(--ink), #08131c); }
+.gallery-head { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:34px; }
+.gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(18px,2.4vw,32px); }
+.tile { position:relative; display:block; width:100%; aspect-ratio:4/5; padding:0; border:0; background:var(--ink-2); overflow:hidden; border-radius:20px; cursor:pointer; text-align:left; }
+.tile[hidden] { display:none !important; }
+.tile-media { position:absolute; inset:0; }
+.tile-media .photo { position:absolute; inset:0; width:100%; height:100%; transition:transform .8s var(--ease-out); }
+.tile:hover .tile-media .photo, .tile:focus-visible .tile-media .photo { transform:scale(1.06); }
+.tile-caption { position:absolute; inset:auto 0 0 0; padding:18px; background:linear-gradient(transparent, rgba(4,8,12,.85)); display:flex; flex-direction:column; gap:4px; transform:translateY(12px); opacity:0; transition:transform .5s var(--ease-out), opacity .5s; }
+.tile:hover .tile-caption, .tile:focus-visible .tile-caption { transform:translateY(0); opacity:1; }
+.tile-title { font-family:var(--font-display); font-size:24px; }
+.tile-category { font-size:11px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--aurora); }
+.filter-bar { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:34px; }
+.filter-button { border:1px solid rgba(232,241,242,.16); background:rgba(5,11,18,.5); color:var(--paper); padding:10px 18px; border-radius:999px; font-size:11px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; transition:background .3s, color .3s, border-color .3s; }
+.filter-button:hover, .filter-button:focus-visible { border-color:var(--aurora); color:var(--aurora); }
+.filter-button.is-active { background:var(--paper); color:var(--ink); border-color:var(--paper); }
+
+.lightbox { position:fixed; inset:0; z-index:200; display:grid; place-items:center; background:rgba(3,6,10,.88); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .45s var(--ease-out), visibility 0s linear .45s; }
+.lightbox.is-open { opacity:1; visibility:visible; pointer-events:auto; transition:opacity .45s var(--ease-out); }
+.lightbox-backdrop { position:absolute; inset:0; background:radial-gradient(circle at 50% 40%, rgba(11,26,38,.85), rgba(3,6,10,.95)); }
+.lightbox-panel { position:relative; width:min(1180px, calc(100vw - 32px)); max-height:calc(100vh - 64px); background:var(--ink-2); border:1px solid rgba(232,241,242,.12); border-radius:24px; overflow:hidden; transform:translateY(24px) scale(.97); opacity:0; transition:transform .45s var(--ease-out), opacity .45s; }
+.lightbox.is-open .lightbox-panel { transform:none; opacity:1; }
+.lightbox-media { aspect-ratio:4/5; background:var(--night); }
+.lightbox-media .photo { position:absolute; inset:0; width:100%; height:100%; }
+.lightbox-info { padding:22px 26px 28px; }
+.lightbox-button { position:absolute; z-index:3; width:48px; height:48px; border-radius:50%; border:1px solid rgba(232,241,242,.2); background:rgba(5,11,18,.6); color:var(--paper); font-size:26px; line-height:1; display:grid; place-items:center; transition:background .3s, color .3s, border-color .3s; }
+.lightbox-button:hover, .lightbox-button:focus-visible { background:var(--aurora); color:var(--ink); border-color:var(--aurora); }
+.lightbox-close { top:18px; right:18px; }
+.lightbox-prev { top:50%; left:18px; transform:translateY(-50%); }
+.lightbox-next { top:50%; right:18px; transform:translateY(-50%); }
+.lightbox-prev:hover, .lightbox-prev:focus-visible { transform:translateY(-50%) scale(1.06); }
+.lightbox-next:hover, .lightbox-next:focus-visible { transform:translateY(-50%) scale(1.06); }
+
+.about { padding: clamp(90px,12vw,160px) clamp(16px,4vw,48px); background:var(--ink-2); }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:clamp(30px,6vw,90px); align-items:center; width:min(1440px,100%); margin:0 auto; }
+.about-portrait { aspect-ratio:4/5; border-radius:24px; overflow:hidden; background:var(--night); }
+.about-portrait .photo { position:absolute; inset:0; width:100%; height:100%; }
+.about-copy h2 { font-size:clamp(44px,6vw,84px); margin:16px 0 20px; }
+.bio { max-width:58ch; color:rgba(232,241,242,.78); margin:0 0 36px; }
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.stat { border:1px solid var(--line); border-radius:18px; padding:20px; background:rgba(5,11,18,.35); }
+.stat-value { display:block; font-family:var(--font-display); font-size:clamp(40px,5vw,64px); color:var(--aurora); }
+.stat-label { display:block; margin-top:8px; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:rgba(232,241,242,.6); }
+
+.contact { padding: clamp(90px,12vw,160px) clamp(16px,4vw,48px) 0; background:var(--ink); }
+.contact-wrap { width:min(820px,100%); margin:0 auto; }
+.contact h2 { font-size:clamp(44px,6vw,84px); margin:16px 0 36px; }
+form { display:grid; gap:18px; }
+.field { display:grid; gap:8px; }
+label { font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:rgba(232,241,242,.7); }
+input, textarea { width:100%; background:rgba(5,11,18,.6); border:1px solid rgba(232,241,242,.16); border-radius:14px; padding:16px; color:var(--paper); font:inherit; transition:border-color .3s, box-shadow .3s; }
+textarea { resize:vertical; min-height:120px; }
+input:focus-visible, textarea:focus-visible { outline:none; border-color:var(--aurora); box-shadow:0 0 0 4px rgba(159,216,192,.15); }
+.field.is-error input, .field.is-error textarea { border-color:#ff8f8f; animation:shake .4s; }
+.field-status { min-height:18px; font-size:13px; color:var(--aurora); opacity:0; transform:translateY(-4px); transition:opacity .3s, transform .3s; }
+.field.is-error .field-status { color:#ff9c9c; opacity:1; transform:none; }
+@keyframes shake { 0%,100% { transform:translateX(0); } 25% { transform:translateX(-4px); } 75% { transform:translateX(4px); } }
+.contact-button { justify-self:start; border:0; border-radius:999px; padding:16px 30px; background:var(--aurora); color:var(--ink); font-size:12px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; transition:transform .3s, background .3s; }
+.contact-button:hover, .contact-button:focus-visible { background:var(--paper); transform:translateY(-2px); }
+.form-status { min-height:20px; color:var(--aurora); margin:0; }
+
+.site-footer { margin-top:80px; border-top:1px solid rgba(232,241,242,.08); }
+.footer-inner { width:min(1440px,100%); margin:0 auto; padding:28px clamp(16px,4vw,48px); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:rgba(232,241,242,.55); }
+
+[data-reveal] { opacity:0; transform:translateY(28px); transition:opacity .9s var(--ease-out), transform .9s var(--ease-out); }
+[data-reveal].is-visible { opacity:1; transform:none; }
+
+.cursor-dot, .cursor-ring { position:fixed; top:0; left:0; z-index:300; pointer-events:none; border-radius:50%; }
+.cursor-dot { width:8px; height:8px; background:var(--aurora); margin:-4px 0 0 -4px; opacity:0; transition:opacity .3s; }
+.cursor-ring { width:38px; height:38px; margin:-19px 0 0 -19px; border:1px solid rgba(159,216,192,.7); transition:width .3s, height .3s, margin .3s, border-color .3s, background .3s; }
+body.has-cursor .cursor-dot { opacity:1; }
+body.has-cursor #cursorRing { width:58px; height:58px; margin:-29px 0 0 -29px; background:rgba(159,216,192,.08); }
+body.has-cursor #cursorRing.is-hover { border-color:var(--paper); background:rgba(232,241,242,.12); }
+@media (pointer:coarse) { .cursor-dot, .cursor-ring { display:none; } }
+
+@media (max-width:900px) {
+  .about-grid { grid-template-columns:1fr; }
+  .stats { grid-template-columns:1fr; }
+}
+@media (max-width:900px) {
+  .gallery-grid { grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:640px) {
+  .gallery-grid { grid-template-columns:1fr; }
+  .stats { grid-template-columns:1fr; }
+  #nav { height:64px; }
+  .nav-inner { padding:0 16px; }
+  .wordmark { font-size:16px; }
+  .nav-links { gap:10px; overflow-x:auto; scrollbar-width:none; }
+  .nav-links::-webkit-scrollbar { display:none; }
+  .nav-links a { font-size:10px; letter-spacing:.14em; white-space:nowrap; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior:auto; }
+  *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+  [data-reveal] { opacity:1; transform:none; }
+}
+</style>
+</head>
+<body id="top">
+<header id="nav">
+  <div class="nav-inner">
+    <a class="wordmark" href="#top">Mara Lindqvist</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#gallery">Work</a>
+      <a href="#featured">Featured</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="hero" class="hero">
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
+    <div class="aurora aurora-a" aria-hidden="true"></div>
+    <div class="aurora aurora-b" aria-hidden="true"></div>
+    <div class="hero-inner" id="heroInner">
+      <p class="eyebrow" data-reveal>Mara Lindqvist · Reykjavík</p>
+      <h1 class="hero-name" data-reveal data-reveal-delay="80">Mara Lindqvist</h1>
+      <p class="tagline" data-reveal data-reveal-delay="160">Chasing the long blue hour where light becomes memory.</p>
+      <a class="scroll-cue" href="#featured" data-reveal data-reveal-delay="240">
+        <span>Scroll</span>
+        <span class="scroll-cue-line" aria-hidden="true"><span></span></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="featured" aria-label="Featured photography">
+    <div class="featured-sticky">
+      <div class="featured-track" id="featuredTrack">
+        <article class="featured-panel" data-photo="1">
+          <div class="featured-art"><div class="photo" data-photo="1"></div></div>
+          <div class="featured-caption">
+            <p class="featured-kicker">Featured</p>
+            <h2>Basalt Dawn</h2>
+            <p>Landscape</p>
+          </div>
+        </article>
+        <article class="featured-panel" data-photo="2">
+          <div class="featured-art"><div class="photo" data-photo="2"></div></div>
+          <div class="featured-caption">
+            <p class="featured-kicker">Featured</p>
+            <h2>The Quiet Hour</h2>
+            <p>Portrait</p>
+          </div>
+        </article>
+        <article class="featured-panel" data-photo="3">
+          <div class="featured-art"><div class="photo" data-photo="3"></div></div>
+          <div class="featured-caption">
+            <p class="featured-kicker">Featured</p>
+            <h2>Neon Tram</h2>
+            <p>Street</p>
+          </div>
+        </article>
+        <article class="featured-panel" data-photo="4">
+          <div class="featured-art"><div class="photo" data-photo="4"></div></div>
+          <div class="featured-caption">
+            <p class="featured-kicker">Featured</p>
+            <h2>Fractured Light</h2>
+            <p>Abstract</p>
+          </div>
+        </article>
+        <article class="featured-panel" data-photo="5">
+          <div class="featured-art"><div class="photo" data-photo="5"></div></div>
+          <div class="featured-caption">
+            <p class="featured-kicker">Featured</p>
+            <h2>Salt Flats Mirror</h2>
+            <p>Landscape</p>
+          </div>
+        </article>
+      </div>
+      <div class="featured-progress" aria-hidden="true"><div class="featured-progress-bar" id="featuredProgress"></div></div>
+    </div>
+  </section>
+
+  <section id="gallery" class="gallery" aria-label="Photography gallery">
+    <div class="gallery-head">
+      <div>
+        <p class="eyebrow" data-reveal>Selected Work</p>
+        <h2 data-reveal data-reveal-delay="100">Gallery</h2>
+      </div>
+      <p data-reveal data-reveal-delay="200">Twelve studies in light, mood, and place.</p>
+    </div>
+    <div class="filter-bar" role="group" aria-label="Filter gallery">
+      <button class="filter-button is-active" type="button" data-filter="All">All</button>
+      <button class="filter-button" type="button" data-filter="Landscape">Landscape</button>
+      <button class="filter-button" type="button" data-filter="Portrait">Portrait</button>
+      <button class="filter-button" type="button" data-filter="Street">Street</button>
+      <button class="filter-button" type="button" data-filter="Abstract">Abstract</button>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <button class="tile" type="button" data-category="Landscape" data-photo="1" aria-label="Basalt Dawn, Landscape">
+        <span class="tile-media"><span class="photo" data-photo="1"></span></span>
+        <span class="tile-caption"><span class="tile-title">Basalt Dawn</span><span class="tile-category">Landscape</span></span>
+      </button>
+      <button class="tile" type="button" data-category="Portrait" data-photo="2" aria-label="The Quiet Hour, Portrait">
+        <span class="tile-media"><span class="photo" data-photo="2"></span></span>
+        <span class="tile-caption"><span class="tile-title">The Quiet Hour</span><span class="tile-category">Portrait</span></span>
+      </button>
+      <button class="tile" type="button" data-category="Street" data-photo="3" aria-label="Neon Tram, Street">
+        <span class="tile-media"><span class="photo" data-photo="3"></span></span>
+        <span class="tile-caption"><span class="tile-title">Neon Tram</span><span class="tile-category">Street</span></span>
+      </button>
+      <button class="tile" type="button" data-category="Abstract" data-photo="4" aria-label="Fractured Light, Abstract">
+        <span class="tile-media"><span class="photo" data-photo="4"></span></span>
+        <span class="tile-caption"><span class="tile-title">Fractured Light</span><span class="tile-category">Abstract</span></span>
+      </button>
+      <button class="tile" type="button" data-category="Landscape" data-photo="5" aria-label="Salt Flats Mirror, Landscape">
+        <span class="tile-media"><span class="photo" data-photo="5"></span></span>
+        <span class="tile-caption"><span class="tile-title">Salt Flats Mirror</span><span class="tile-category">Landscape</span></span>
+      </button>
+      <button class="tile" type="button" data-category="Portrait" data-photo="6" aria-label="Hands of the Baker, Portrait">
+        <span class="tile-media"><span class="photo" data-photo="6"></span></span>
+        <span class="tile-caption"><span class="tile-title">Hands of the Baker</span><span class="tile-category">Portrait</span></span>
+      </button>
+      <button class="tile" type="button" data-category="Street" data-photo="7" aria-label="Rain on Line 9, Street">
+        <span class="tile-media"><span class="photo" data-photo="7"></span></span>
+        <span class="tile-caption"><span class="tile-title">Rain on Line 9</span><span class="tile-category">Street</span></span>
+      </button>
+      <button class="tile" type="button" data-category="Abstract" data-photo="8" aria-label="Chromatic Drift, Abstract">
+        <span class="tile-media"><span class="photo" data-photo="8"></span></span>
+        <span class="tile-caption"><span class="tile-title">Chromatic Drift</span><span class="tile-category">Abstract</span></span>
+      </button>
+      <button class="tile" type="button" data-category="Landscape" data-photo="9" aria-label="Glacier Blue, Landscape">
+        <span class="tile-media"><span class="photo" data-photo="9"></span></span>
+        <span class="tile-caption"><span class="tile-title">Glacier Blue</span><span class="tile-category">Landscape</span></span>
+      </button>
+      <button class="tile" type="button" data-category="Portrait" data-photo="10" aria-label="Vera, Portrait">
+        <span class="tile-media"><span class="photo" data-photo="10"></span></span>
+        <span class="tile-caption"><span class="tile-title">Vera</span><span class="tile-category">Portrait</span></span>
+      </button>
+      <button class="tile" type="button" data-category="Street" data-photo="11" aria-label="Crosswalk Ballet, Street">
+        <span class="tile-media"><span class="photo" data-photo="11"></span></span>
+        <span class="tile-caption"><span class="tile-title">Crosswalk Ballet</span><span class="tile-category">Street</span></span>
+      </button>
+      <button class="tile" type="button" data-category="Abstract" data-photo="12" aria-label="Ink in Water, Abstract">
+        <span class="tile-media"><span class="photo" data-photo="12"></span></span>
+        <span class="tile-caption"><span class="tile-title">Ink in Water</span><span class="tile-category">Abstract</span></span>
+      </button>
+    </div>
+  </section>
+
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
+    <div class="lightbox-backdrop" data-lightbox-close></div>
+    <div class="lightbox-panel">
+      <button id="lightboxClose" class="lightbox-button lightbox-close" type="button" aria-label="Close lightbox">
+        <span aria-hidden="true">×</span>
+      </button>
+      <button id="lightboxPrev" class="lightbox-button lightbox-prev" type="button" aria-label="Previous photo">
+        <span aria-hidden="true">‹</span>
+      </button>
+      <button id="lightboxNext" class="lightbox-button lightbox-next" type="button" aria-label="Next photo">
+        <span aria-hidden="true">›</span>
+      </button>
+      <div class="lightbox-content">
+        <div class="lightbox-media"><div class="photo" data-photo="1"></div></div>
+        <div class="lightbox-info">
+          <p class="featured-kicker" id="lightboxKicker">Featured</p>
+          <h3 id="lightboxTitle">Basalt Dawn</h3>
+          <p class="lightbox-category" id="lightboxCategory">Landscape</p>
+          <p class="lightbox-exif" id="lightboxExif">Canon EOS R5 · 85mm f/1.2 · 1/250 · ISO 100</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="about" class="about" aria-label="About Mara Lindqvist">
+    <div class="about-grid">
+      <div class="about-portrait-wrap">
+        <div class="about-portrait"><div class="photo" data-photo="2"></div></div>
+      </div>
+      <div class="about-copy">
+        <p class="eyebrow" data-reveal>About</p>
+        <h2 data-reveal data-reveal-delay="100">Mara Lindqvist</h2>
+        <p class="bio" data-reveal data-reveal-delay="200">Mara Lindqvist is a Reykjavík-based photographer working at the edge of landscape, memory, and night light. Her portraits feel like half-remembered dreams; her landscapes feel like places that have been waiting for years. She shoots in small batches, mostly film, always chasing the hour when weather and light stop negotiating.</p>
+        <div class="stats" data-reveal data-reveal-delay="300">
+          <div class="stat">
+            <span class="stat-value" data-target="9" data-suffix="+">0</span>
+            <span class="stat-label">Years behind the camera</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" data-target="140" data-suffix="+">0</span>
+            <span class="stat-label">Commissioned stories</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" data-target="26" data-suffix="">0</span>
+            <span class="stat-label">Northern latitudes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact" aria-label="Contact">
+    <div class="contact-wrap">
+      <p class="eyebrow" data-reveal>Contact</p>
+      <h2 data-reveal data-reveal-delay="100">Let's make light.</h2>
+      <form id="contactForm" novalidate>
+        <div class="field" data-field-key="name">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+          <p class="field-status" id="nameStatus" aria-live="polite"></p>
+        </div>
+        <div class="field" data-field-key="email">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+          <p class="field-status" id="emailStatus" aria-live="polite"></p>
+        </div>
+        <div class="field" data-field-key="message">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+          <p class="field-status" id="messageStatus" aria-live="polite"></p>
+        </div>
+        <button class="contact-button" type="submit">Send message</button>
+        <p class="form-status" id="formStatus" role="status"></p>
+      </form>
+    </div>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p>© 2026 Mara Lindqvist</p>
+        <p>Reykjavík, Iceland</p>
+      </div>
+    </footer>
+  </section>
+</main>
+
+<div id="cursorDot" class="cursor-dot" aria-hidden="true"></div>
+<div id="cursorRing" class="cursor-ring" aria-hidden="true"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const featured = document.getElementById('featured');
+  const featuredTrack = document.getElementById('featuredTrack');
+  const featuredProgress = document.getElementById('featuredProgress');
+  const featuredPanels = Array.from(featuredTrack.children);
+  const heroCanvas = document.getElementById('heroCanvas');
+  const heroInner = document.getElementById('heroInner');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxMedia = lightbox.querySelector('.lightbox-media .photo');
+  const lightboxTitle = document.getElementById('lightboxTitle');
+  const lightboxCategory = document.getElementById('lightboxCategory');
+  const lightboxExif = document.getElementById('lightboxExif');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+  const photos = [
+    { id: 1, title: 'Basalt Dawn', category: 'Landscape' },
+    { id: 2, title: 'The Quiet Hour', category: 'Portrait' },
+    { id: 3, title: 'Neon Tram', category: 'Street' },
+    { id: 4, title: 'Fractured Light', category: 'Abstract' },
+    { id: 5, title: 'Salt Flats Mirror', category: 'Landscape' },
+    { id: 6, title: 'Hands of the Baker', category: 'Portrait' },
+    { id: 7, title: 'Rain on Line 9', category: 'Street' },
+    { id: 8, title: 'Chromatic Drift', category: 'Abstract' },
+    { id: 9, title: 'Glacier Blue', category: 'Landscape' },
+    { id: 10, title: 'Vera', category: 'Portrait' },
+    { id: 11, title: 'Crosswalk Ballet', category: 'Street' },
+    { id: 12, title: 'Ink in Water', category: 'Abstract' }
+  ];
+
+  function svgWrap(content, w, h) {
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="xMidYMid slice">' + content + '</svg>';
+  }
+
+  function landscapeArt(variant) {
+    if (variant === 1) {
+      return svgWrap('<defs><linearGradient id="l1-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050b12"/><stop offset=".42" stop-color="#123a5c"/><stop offset=".72" stop-color="#2f7d9c"/><stop offset="1" stop-color="#e8a15c"/></linearGradient><radialGradient id="l1-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe6b8"/><stop offset=".45" stop-color="#f4a259" stop-opacity=".85"/><stop offset="1" stop-color="#f4a259" stop-opacity="0"/></radialGradient></defs><rect width="800" height="1000" fill="url(#l1-sky)"/><circle cx="400" cy="540" r="180" fill="url(#l1-sun)"/><circle cx="400" cy="540" r="72" fill="#ffdcae"/><path d="M0 620 L180 430 L340 620 L480 380 L640 620 L800 500 L800 1000 L0 1000 Z" fill="#0a1a28" opacity=".88"/><path d="M0 720 L140 540 L300 720 L460 500 L620 720 L800 580 L800 1000 L0 1000 Z" fill="#050e16" opacity=".95"/>', 800, 1000);
+    }
+    if (variant === 5) {
+      return svgWrap('<defs><linearGradient id="l5-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#08131c"/><stop offset=".55" stop-color="#123a5c"/><stop offset="1" stop-color="#2f7d9c"/></linearGradient><linearGradient id="l5-ref" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f7d9c" stop-opacity=".55"/><stop offset="1" stop-color="#2f7d9c" stop-opacity="0"/></linearGradient></defs><rect width="800" height="1000" fill="url(#l5-sky)"/><path d="M0 540 L180 380 L340 540 L480 320 L640 540 L800 420 L800 1000 L0 1000 Z" fill="#123a5c"/><path d="M0 660 L140 520 L300 660 L460 480 L620 660 L800 540 L800 1000 L0 1000 Z" fill="#050e16"/><rect y="540" width="800" height="460" fill="url(#l5-ref)" opacity=".5"/>', 800, 1000);
+    }
+    return svgWrap('<defs><linearGradient id="l9-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dceef7"/><stop offset=".55" stop-color="#8fcbe8"/><stop offset="1" stop-color="#2f7d9c"/></linearGradient></defs><rect width="800" height="1000" fill="url(#l9-sky)"/><path d="M0 420 L180 260 L340 420 L480 220 L640 420 L800 300 L800 1000 L0 1000 Z" fill="#eaf6fc"/><path d="M0 560 L180 430 L340 560 L480 360 L640 560 L800 460 L800 1000 L0 1000 Z" fill="#7fd4e8" opacity=".55"/>', 800, 1000);
+  }
+
+  function portraitArt(variant) {
+    if (variant === 2) {
+      return svgWrap('<defs><radialGradient id="p2-glow" cx=".5" cy=".38" r=".62"><stop offset="0" stop-color="#eef7f6" stop-opacity=".95"/><stop offset=".38" stop-color="#9fd8c0" stop-opacity=".5"/><stop offset="1" stop-color="#050b12" stop-opacity="0"/></radialGradient><linearGradient id="p2-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d2436"/><stop offset="1" stop-color="#050b12"/></linearGradient></defs><rect width="800" height="1000" fill="url(#p2-bg)"/><circle cx="400" cy="420" r="210" fill="url(#p2-glow)"/><path d="M400 830 C 230 830 165 665 165 520 C 165 395 255 335 400 335 C 545 335 635 395 635 520 C 635 665 570 830 400 830 Z" fill="#0a1822"/><path d="M400 180 C 300 180 240 250 240 330 C 240 390 285 420 400 420 C 515 420 560 390 560 330 C 560 250 500 180 400 180 Z" fill="#101f2b"/>', 800, 1000);
+    }
+    if (variant === 6) {
+      return svgWrap('<defs><radialGradient id="p6-glow" cx=".5" cy=".45" r=".65"><stop offset="0" stop-color="#f9d9a8"/><stop offset="1" stop-color="#e8a15c" stop-opacity="0"/></radialGradient></defs><rect width="800" height="1000" fill="#1a120b"/><circle cx="400" cy="450" r="220" fill="url(#p6-glow)"/><circle cx="320" cy="380" r="90" fill="#e8a15c" opacity=".35"/><circle cx="480" cy="420" r="110" fill="#f4a259" opacity=".3"/><path d="M220 760 C 260 620 340 560 420 560 C 500 560 580 620 620 760 Z" fill="#3a2415"/>', 800, 1000);
+    }
+    return svgWrap('<defs><radialGradient id="p10-glow" cx=".5" cy=".35" r=".65"><stop offset="0" stop-color="#bfe9ff"/><stop offset="1" stop-color="#2f7d9c" stop-opacity="0"/></radialGradient></defs><rect width="800" height="1000" fill="#0b1a26"/><circle cx="400" cy="360" r="200" fill="url(#p10-glow)"/><path d="M400 820 C 230 820 165 665 165 520 C 165 395 255 335 400 335 C 545 335 635 395 635 520 C 635 665 570 820 400 820 Z" fill="#08131c"/><path d="M400 180 C 300 180 240 250 240 330 C 240 390 285 420 400 420 C 515 420 560 390 560 330 C 560 250 500 180 400 180 Z" fill="#0a1822"/>', 800, 1000);
+  }
+
+  function streetArt(variant) {
+    if (variant === 3) {
+      return svgWrap('<rect width="800" height="1000" fill="#05060f"/><rect x="0" y="90" width="800" height="180" fill="#0a0f1c"/><rect x="40" y="160" width="90" height="200" fill="#0d1424"/><rect x="150" y="120" width="70" height="240" fill="#0d1424"/><rect x="240" y="70" width="90" height="290" fill="#0d1424"/><rect x="350" y="140" width="80" height="220" fill="#0d1424"/><rect x="450" y="80" width="100" height="280" fill="#0d1424"/><rect x="570" y="150" width="70" height="210" fill="#0d1424"/><rect x="660" y="110" width="100" height="250" fill="#0d1424"/><rect x="250" y="260" width="300" height="360" rx="20" fill="#0e1420" stroke="#39ff88" stroke-width="4"/><rect x="278" y="300" width="244" height="60" rx="8" fill="#39ff88" opacity=".85"/><line x1="0" y1="620" x2="800" y2="620" stroke="#f0f6ff" stroke-width="6" opacity=".25"/><circle cx="400" cy="540" r="12" fill="#ff2e88"/><circle cx="400" cy="540" r="20" fill="none" stroke="#ff2e88" stroke-width="2" opacity=".6"/>', 800, 1000);
+    }
+    if (variant === 7) {
+      return svgWrap('<rect width="800" height="1000" fill="#05060f"/><rect x="0" y="0" width="800" height="1000" fill="#0a0f1c"/><g stroke="#9fd8c0" stroke-width="2" opacity=".35"><path d="M0 200 L800 180"/><path d="M0 380 L800 360"/><path d="M0 560 L800 540"/></g><g stroke="#e8f1f2" stroke-width="2" opacity=".25"><path d="M0 150 L800 140"/><path d="M0 330 L800 320"/><path d="M0 510 L800 500"/></g><rect x="180" y="220" width="120" height="180" fill="#0d1424"/><rect x="500" y="240" width="120" height="160" fill="#0d1424"/><rect x="320" y="300" width="160" height="140" fill="#0d1424"/><line x1="0" y1="700" x2="800" y2="700" stroke="#f0f6ff" stroke-width="8" opacity=".2"/><circle cx="400" cy="650" r="10" fill="#7fd4e8"/>', 800, 1000);
+    }
+    return svgWrap('<rect width="800" height="1000" fill="#111827"/><g fill="#e8f1f2"><path d="M0 180 L120 180 L120 380 L0 380 Z"/><path d="M180 180 L300 180 L300 380 L180 380 Z"/><path d="M360 180 L480 180 L480 380 L360 380 Z"/><path d="M540 180 L660 180 L660 380 L540 380 Z"/><path d="M720 180 L800 180 L800 380 L720 380 Z"/></g><rect x="180" y="430" width="440" height="20" fill="#e8f1f2"/><rect x="180" y="460" width="440" height="20" fill="#e8f1f2"/><rect x="180" y="490" width="440" height="20" fill="#e8f1f2"/><rect x="180" y="520" width="440" height="20" fill="#e8f1f2"/><circle cx="400" cy="650" r="70" fill="#0b1220"/><path d="M360 650 C 360 580 420 560 400 520 C 380 560 440 580 440 650 Z" fill="#0b1220"/>', 800, 1000);
+  }
+
+  function abstractArt(variant) {
+    if (variant === 4) {
+      return svgWrap('<defs><linearGradient id="a4-line" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f7d9c"/><stop offset="1" stop-color="#9fd8c0"/></linearGradient></defs><rect width="800" height="1000" fill="#070b12"/><g fill="none" stroke="url(#a4-line)" stroke-width="10" stroke-linecap="round"><path d="M-50 250 C 150 100, 300 -50, 850 180"/><path d="M-50 420 C 180 300, 350 250, 850 420"/><path d="M-50 590 C 160 500, 320 450, 850 580"/></g><polygon points="180,220 420,180 360,420 120,440" fill="#2f7d9c" opacity=".35" mix-blend-mode="screen"/><polygon points="420,220 660,180 600,420 360,440" fill="#9fd8c0" opacity=".25" mix-blend-mode="screen"/>', 800, 1000);
+    }
+    if (variant === 8) {
+      return svgWrap('<rect width="800" height="1000" fill="#0a0612"/><g fill="none" stroke="#7b2ff7" stroke-width="8"><path d="M-50 200 C 150 80, 300 -60, 850 160"/><path d="M-50 380 C 180 260, 350 200, 850 360"/></g><g fill="none" stroke="#ff6ec7" stroke-width="6"><path d="M-50 560 C 150 440, 300 380, 850 540"/><path d="M-50 720 C 180 600, 350 540, 850 700"/></g>', 800, 1000);
+    }
+    return svgWrap('<rect width="800" height="1000" fill="#03100d"/><g fill="none" stroke="#0f9b8e" stroke-width="8"><path d="M-50 220 C 150 120, 300 60, 850 180"/><path d="M-50 420 C 180 320, 350 260, 850 380"/></g><circle cx="400" cy="500" r="140" fill="none" stroke="#e8f1f2" stroke-width="6" opacity=".5"/><circle cx="400" cy="500" r="80" fill="none" stroke="#f4a259" stroke-width="4" opacity=".6"/>', 800, 1000);
+  }
+
+  function artwork(id) {
+    const variant = id;
+    if (id === 1 || id === 5 || id === 9) return landscapeArt(variant);
+    if (id === 2 || id === 6 || id === 10) return portraitArt(variant);
+    if (id === 3 || id === 7 || id === 11) return streetArt(variant);
+    return abstractArt(variant);
+  }
+
+  function renderArt(id, el) {
+    if (!el) return;
+    const canvasIds = [2, 6, 10];
+    const cssIds = [4, 8, 12];
+    if (canvasIds.includes(id)) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 1000;
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.setAttribute('aria-hidden', 'true');
+      el.innerHTML = '';
+      el.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        const bg = ctx.createLinearGradient(0, 0, 0, 1000);
+        bg.addColorStop(0, '#0b1a26');
+        bg.addColorStop(1, '#050b12');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, 800, 1000);
+        const glow = ctx.createRadialGradient(400, 420, 0, 400, 420, 340);
+        glow.addColorStop(0, '#2f7d9c');
+        glow.addColorStop(1, 'rgba(47,125,156,0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, 800, 1000);
+        const face = ctx.createRadialGradient(400, 430, 20, 400, 430, 150);
+        face.addColorStop(0, '#e8f1f2');
+        face.addColorStop(1, '#7fd4e8');
+        ctx.fillStyle = face;
+        ctx.beginPath();
+        ctx.arc(400, 430, 150, 0, Math.PI * 2);
+        ctx.fill();
+        const shoulders = ctx.createLinearGradient(180, 700, 620, 700);
+        shoulders.addColorStop(0, '#123a5c');
+        shoulders.addColorStop(1, '#050e16');
+        ctx.fillStyle = shoulders;
+        ctx.beginPath();
+        ctx.moveTo(180, 1000);
+        ctx.lineTo(180, 720);
+        ctx.quadraticCurveTo(400, 620, 620, 720);
+        ctx.lineTo(620, 1000);
+        ctx.closePath();
+        ctx.fill();
+      }
+      return;
+    }
+    if (cssIds.includes(id)) {
+      const backgrounds = {
+        4: 'radial-gradient(circle at 30% 20%, rgba(47,125,156,.65), transparent 45%), radial-gradient(circle at 70% 80%, rgba(159,216,192,.5), transparent 40%), linear-gradient(160deg, #070b12, #0b1a26)',
+        8: 'radial-gradient(circle at 25% 25%, rgba(123,47,247,.55), transparent 45%), radial-gradient(circle at 75% 70%, rgba(255,110,199,.45), transparent 40%), linear-gradient(200deg, #0a0612, #111827)',
+        12: 'radial-gradient(circle at 30% 30%, rgba(15,155,142,.55), transparent 45%), radial-gradient(circle at 70% 70%, rgba(232,161,92,.35), transparent 40%), linear-gradient(150deg, #03100d, #050b12)'
+      };
+      el.style.background = backgrounds[id] || '';
+      return;
+    }
+    el.innerHTML = artwork(id);
+  }
+
+  // Canvas hero
+  const ctx = heroCanvas.getContext('2d');
+  function resizeCanvas() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = heroCanvas.clientWidth * dpr;
+    const h = heroCanvas.clientHeight * dpr;
+    if (heroCanvas.width !== w) heroCanvas.width = w;
+    if (heroCanvas.height !== h) heroCanvas.height = h;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function drawCanvas(time) {
+    const w = heroCanvas.clientWidth;
+    const h = heroCanvas.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    const bg = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, Math.max(w, h) * 0.7);
+    bg.addColorStop(0, 'rgba(47,125,156,0.38)');
+    bg.addColorStop(1, 'rgba(5,11,18,0)');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, w, h);
+    const g = ctx.createRadialGradient(w / 2 + Math.cos(time / 3000) * 100, h / 2 + Math.sin(time / 3500) * 80, 0, w / 2, h / 2, Math.max(w, h) * 0.7);
+    g.addColorStop(0, 'rgba(159,216,192,0.22)');
+    g.addColorStop(1, 'rgba(159,216,192,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+  }
+  let canvasRaf = null;
+  function startCanvas() {
+    function frame(time) {
+      drawCanvas(time);
+      canvasRaf = requestAnimationFrame(frame);
+    }
+    canvasRaf = requestAnimationFrame(frame);
+  }
+  function stopCanvas() { if (canvasRaf) cancelAnimationFrame(canvasRaf); canvasRaf = null; }
+  function initCanvas() { resizeCanvas(); startCanvas(); }
+  if (reduceMotion) { drawCanvas(0); } else { initCanvas(); }
+
+  // Featured scroll
+  let featuredTicking = false;
+  function updateFeatured() {
+    const rect = featured.getBoundingClientRect();
+    const total = featured.offsetHeight - window.innerHeight;
+    const progress = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+    featuredTrack.style.transform = 'translate3d(' + (-progress * (featuredPanels.length - 1) * 100) + 'vw, 0, 0)';
+    if (featuredProgress) featuredProgress.style.transform = 'scaleX(' + progress + ')';
+  }
+  function requestFeaturedUpdate() { if (!featuredTicking) { featuredTicking = true; requestAnimationFrame(() => { updateFeatured(); featuredTicking = false; }); } }
+  window.addEventListener('scroll', requestFeaturedUpdate, { passive: true });
+  window.addEventListener('resize', requestFeaturedUpdate);
+
+  // Hero parallax + reveal
+  let heroTicking = false;
+  function updateHero() {
+    const y = window.scrollY;
+    heroInner.style.transform = 'translate3d(0, ' + (y * 0.16) + 'px, 0)';
+    heroInner.style.opacity = String(Math.max(0, 1 - y / (window.innerHeight * 0.85)));
+  }
+  function requestHeroUpdate() { if (!heroTicking) { heroTicking = true; requestAnimationFrame(() => { updateHero(); heroTicking = false; }); } }
+  window.addEventListener('scroll', requestHeroUpdate, { passive: true });
+
+  // Reveals
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('[data-reveal]').forEach((el) => revealObserver.observe(el));
+
+  // Stats
+  const stats = Array.from(document.querySelectorAll('.stat-value'));
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        statsObserver.unobserve(entry.target);
+        const el = entry.target;
+        const target = Number(el.getAttribute('data-target') || 0);
+        const suffix = el.getAttribute('data-suffix') || '';
+        if (reduceMotion) { el.textContent = target + suffix; return; }
+        const start = performance.now();
+        const duration = 1400;
+        function tick(now) {
+          const p = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * eased) + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+    });
+  }, { threshold: 0.4 });
+  stats.forEach((el) => statsObserver.observe(el));
+
+  // Gallery filtering with FLIP
+  const filterButtons = Array.from(document.querySelectorAll('.filter-button'));
+  const tiles = Array.from(document.querySelectorAll('.tile'));
+  function visibleTiles(value) {
+    return tiles.filter((tile) => value === 'All' || tile.getAttribute('data-category') === value);
+  }
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      filterButtons.forEach((b) => b.classList.toggle('is-active', b === button));
+      const value = button.getAttribute('data-filter');
+      const visible = visibleTiles(value);
+      const rects = visible.map((tile) => tile.getBoundingClientRect());
+      tiles.forEach((tile) => {
+        const match = value === 'All' || tile.getAttribute('data-category') === value;
+        tile.setAttribute('hidden', match ? null : 'true');
+      });
+      requestAnimationFrame(() => {
+        visible.forEach((tile, index) => {
+          const rect = tile.getBoundingClientRect();
+          const start = rects[index];
+          if (start && (start.top !== rect.top || start.left !== rect.left)) {
+            tile.style.transition = 'none';
+            tile.style.transform = 'translate3d(' + (start.left - rect.left) + 'px, ' + (start.top - rect.top) + 'px, 0)';
+            tile.style.opacity = '0';
+            void tile.offsetHeight;
+            tile.style.transition = 'transform .65s cubic-bezier(.22,1,.36,1), opacity .65s cubic-bezier(.22,1,.36,1)';
+            tile.style.transform = '';
+            tile.style.opacity = '';
+          }
+        });
+      });
+    });
+  });
+
+  // Lightbox
+  let lightboxIndex = 0;
+  let lastTile = null;
+  function openLightbox(index, triggerTile) {
+    lightboxIndex = index;
+    lastTile = triggerTile;
+    const photo = photos[index];
+    lightboxMedia.innerHTML = artwork(photo.id);
+    lightboxTitle.textContent = photo.title;
+    lightboxCategory.textContent = photo.category;
+    lightboxExif.textContent = 'Canon EOS R5 · 85mm f/1.2 · 1/250 · ISO 100';
+    lightbox.classList.add('is-open');
+    lightboxClose.setAttribute('aria-hidden', 'false');
+    lightboxClose.focus();
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    lightboxClose.setAttribute('aria-hidden', 'true');
+    if (lastTile) lastTile.focus();
+  }
+  function stepLightbox(direction) {
+    const next = (lightboxIndex + direction + photos.length) % photos.length;
+    openLightbox(next, lastTile);
+  }
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightboxPrev.addEventListener('click', () => stepLightbox(-1));
+  lightboxNext.addEventListener('click', () => stepLightbox(1));
+  document.addEventListener('keydown', (event) => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (event.key === 'Escape') closeLightbox();
+    if (event.key === 'ArrowRight') stepLightbox(1);
+    if (event.key === 'ArrowLeft') stepLightbox(-1);
+  });
+  lightbox.addEventListener('click', (event) => {
+    if (event.target.hasAttribute('data-lightbox-close')) closeLightbox();
+  });
+
+  // Tile click opens lightbox
+  tiles.forEach((tile) => {
+    tile.addEventListener('click', () => {
+      const index = photos.findIndex((photo) => photo.id === Number(tile.getAttribute('data-photo')));
+      if (index >= 0) openLightbox(index, tile);
+    });
+  });
+
+  // Contact validation
+  const form = document.getElementById('contactForm');
+  const formStatus = document.getElementById('formStatus');
+  function setFieldState(key, state, message) {
+    const field = form.querySelector('[data-field-key="' + key + '"]');
+    const status = document.getElementById(key + 'Status');
+    if (!field || !status) return;
+    if (state === 'error') {
+      field.classList.add('is-error');
+      status.textContent = message;
+      status.setAttribute('aria-live', 'assertive');
+    } else {
+      field.classList.remove('is-error');
+      status.textContent = message;
+      status.setAttribute('aria-live', 'polite');
+    }
+  }
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    let valid = true;
+    const name = document.getElementById('name');
+    const email = document.getElementById('email');
+    const message = document.getElementById('message');
+    if (name.value.trim().length < 2) { valid = false; setFieldState('name', 'error', 'Please enter your name.'); }
+    else setFieldState('name', 'valid', 'Looks good.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { valid = false; setFieldState('email', 'error', 'Please enter a valid email.'); }
+    else setFieldState('email', 'valid', 'Looks good.');
+    if (message.value.trim().length < 10) { valid = false; setFieldState('message', 'error', 'Please tell us a little more.'); }
+    else setFieldState('message', 'valid', 'Looks good.');
+    if (valid) {
+      formStatus.textContent = 'Thanks — this demo form is not sending anywhere.';
+      formStatus.style.color = 'var(--aurora)';
+    } else {
+      formStatus.textContent = 'Please review the highlighted fields.';
+      formStatus.style.color = '#ff9c9c';
+    }
+  });
+  ['name', 'email', 'message'].forEach((key) => {
+    const field = document.getElementById(key);
+    if (field) {
+      field.addEventListener('input', () => setFieldState(key, 'valid', key === 'message' ? 'Keep writing — we are listening.' : 'Looks good.'));
+    }
+  });
+
+  // Custom cursor
+  const cursorDot = document.getElementById('cursorDot');
+  const cursorRing = document.getElementById('cursorRing');
+  if (window.matchMedia('(pointer: fine)').matches && !reduceMotion) {
+    document.body.classList.add('has-cursor');
+    let mouseX = -100;
+    let mouseY = -100;
+    let ringX = -100;
+    let ringY = -100;
+    let raf = null;
+    function loop() {
+      ringX += (mouseX - ringX) * 0.16;
+      ringY += (mouseY - ringY) * 0.16;
+      cursorRing.style.transform = 'translate3d(' + ringX + 'px, ' + ringY + 'px, 0) translate(-50%, -50%)';
+      cursorDot.style.transform = 'translate3d(' + mouseX + 'px, ' + mouseY + 'px, 0) translate(-50%, -50%)';
+      raf = null;
+    }
+    function schedule() { if (!raf) raf = requestAnimationFrame(loop); }
+    window.addEventListener('mousemove', (event) => { mouseX = event.clientX; mouseY = event.clientY; cursorDot.style.opacity = '1'; schedule(); }, { passive: true });
+    document.addEventListener('mouseover', (event) => {
+      const target = event.target;
+      const interactive = target && target.closest ? target.closest('a, button, input, textarea, [data-hover]') : null;
+      cursorRing.classList.toggle('is-hover', Boolean(interactive));
+    });
+  } else {
+    cursorDot.style.display = 'none';
+    cursorRing.style.display = 'none';
+  }
+
+  // Initial render
+  tiles.forEach((tile) => {
+    const id = Number(tile.getAttribute('data-photo'));
+    renderArt(id, tile.querySelector('.photo'));
+  });
+  featuredPanels.forEach((panel) => {
+    const id = Number(panel.getAttribute('data-photo'));
+    renderArt(id, panel.querySelector('.photo'));
+  });
+  renderArt(2, document.querySelector('.about-portrait .photo'));
+  renderArt(1, lightboxMedia);
+
+  // Initial states
+  if (reduceMotion) {
+    featuredTrack.style.transform = 'translate3d(0px, 0, 0)';
+    featuredProgress.style.transform = 'scaleX(0)';
+    heroInner.style.transform = 'translate3d(0, 0, 0)';
+    heroInner.style.opacity = '1';
+  }
+
+  window.addEventListener('scroll', () => { requestFeaturedUpdate(); requestHeroUpdate(); }, { passive: true });
+  window.addEventListener('resize', () => { resizeCanvas(); requestFeaturedUpdate(); requestHeroUpdate(); });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(() => {}, { threshold: 0 }).observe(document.body);
+  }
+});
+</script>
+</body>
+</html>
