@@ -2,6 +2,7 @@
   "submissions": [
     {
       "slug": "nemotron-3-5-lightning",
+      "sourceDir": "submissions/nemotron-3-5-lightning",
       "model": "Nemotron 3.5 Lightning",
       "title": "Luminous — Mara Lindqvist Photography",
       "tagline": "Capturing the sublime moments where light meets landscape",
@@ -23,6 +24,7 @@
     },
     {
       "slug": "inkling",
+      "sourceDir": "submissions/inkling",
       "model": "thinkingmachines/inkling:free",
       "title": "Mara Lindqvist — Light From Reykjavík",
       "tagline": "Fine-art photography from the edge of the world",
@@ -44,6 +46,7 @@
     },
     {
       "slug": "inkling-small",
+      "sourceDir": "submissions/inkling-small",
       "model": "Inkling (Thinking Machines Lab — inkling-small)",
       "title": "Mara Lindqvist — Light From Reykjavík",
       "tagline": "Fine-art photography from the edge of the world",
@@ -65,6 +68,7 @@
     },
     {
       "slug": "glm-5-3-flash-free",
+      "sourceDir": "submissions/glm-5-3-flash-free",
       "model": "glm-5.3-flash-free",
       "title": "Rimelight",
       "tagline": "The North, developed slowly.",
@@ -87,6 +91,7 @@
     },
     {
       "slug": "deepseek-flash",
+      "sourceDir": "submissions/deepseek-flash",
       "model": "deepseek-account/deepseek-flash",
       "title": "Low Light, Hard Weather",
       "tagline": "I photograph the weather between people.",
@@ -110,6 +115,7 @@
     },
     {
       "slug": "deepseek-flash-max",
+      "sourceDir": "submissions/deepseek-flash-max",
       "model": "DeepSeek Flash (reasoning effort: max)",
       "title": "MAXIMAL LIGHT",
       "tagline": "I photograph the weather inside the light.",
@@ -133,6 +139,7 @@
     },
     {
       "slug": "deepseek-v4-pro",
+      "sourceDir": "submissions/deepseek-v4-pro",
       "model": "deepseek-v4-pro",
       "title": "Mara Lindqvist — The Light Decides",
       "tagline": "Chasing northern light to the edge of the world.",
@@ -154,7 +161,31 @@
       "submittedAt": "2026-10-22T21:26:44+02:00"
     },
     {
+      "slug": "glm-5-3-flash-solo",
+      "sourceDir": "submissions/glm-5-3-flash-solo",
+      "model": "GLM 5.3 Flash (solo)",
+      "title": "Mara Lindqvist — Photographer",
+      "tagline": "Northern light, quiet streets, and the geometry of ice.",
+      "palette": [
+        "#0D1116",
+        "#E9E5DC",
+        "#83B7D0",
+        "#C58250"
+      ],
+      "techniques": [
+        "canvas-2d-procedural-scenes",
+        "svg-rendered-illustrations-with-turbulence-and-glow-filters",
+        "css-multi-layer-gradients-with-blend-modes",
+        "seeded-noise-grain-overlays"
+      ],
+      "entry": "index.html",
+      "thumb": null,
+      "hasAudit": true,
+      "submittedAt": "2026-10-22T21:55:16+02:00"
+    },
+    {
       "slug": "nemotron-3-5-super-vl",
+      "sourceDir": "submissions/nemotron-3-5-super-vl",
       "model": "nvidia/nemotron-3.5-super-vl:free (via OpenRouter)",
       "title": "Mara Lindqvist — Silver & Basalt",
       "tagline": "Basalt light, Atlantic weather, quiet hours.",
@@ -177,6 +208,7 @@
     },
     {
       "slug": "recursiveflintv10free",
+      "sourceDir": "submissions/recursiveflintv10free",
       "model": "recursive/flint-v1.0:free",
       "title": "Mara Lindqvist — Northern Noir",
       "tagline": "Chasing the long blue hour where light becomes memory.",
@@ -195,6 +227,54 @@
       "thumb": null,
       "hasAudit": true,
       "submittedAt": "2026-10-23T20:00:00+02:00"
+    },
+    {
+      "slug": "arena-agent",
+      "sourceDir": "arena-agent",
+      "model": "Arena.ai Agent Mode (Claude Sonnet 4.5)",
+      "title": "Cold Light, Slow Weather",
+      "tagline": "Photographs of cold light, slow weather, and the people who wait for it.",
+      "palette": [
+        "#08090b",
+        "#efe9df",
+        "#ff4a1c",
+        "#9ecfdc"
+      ],
+      "techniques": [
+        "Hand-authored SVG scenes: layered linear/radial gradients, procedurally walked geometry, seeded per-instance randomness (Basalt Dawn, The Quiet Hour, Neon Tram, Fractured Light, Salt Flats Mirror, Rain on Line 9, Chromatic Drift, Glacier Blue, Crosswalk Ballet)",
+        "SVG filter primitives for texture and optics: feTurbulence fractal-noise film grain everywhere, feDisplacementMap refraction in Fractured Light, Chromatic Drift, Ink in Water and Salt Flats Mirror, plus blur-based bloom and glow",
+        "Canvas 2D generative portrait (Vera): gaussian height-field face, Lambert-shaded per-pixel skin pass, hatched stroke field, canvas blur silhouette - rendered once and exported as a data URL",
+        "CSS-only still life (Hands of the Baker): stacked radial gradients, blur(), inset box-shadows and mix-blend-mode with an animated flour drift",
+        "Live canvas sky behind #hero: additive radial gradients, pointer parallax and an IntersectionObserver-gated requestAnimationFrame loop",
+        "Inline SVG fractal-noise data URI used as an animated film-grain layer across the whole page"
+      ],
+      "entry": "index.html",
+      "thumb": null,
+      "hasAudit": true,
+      "submittedAt": "2026-10-23T21:17:12+02:00"
+    },
+    {
+      "slug": "gpt-6TERRA",
+      "sourceDir": "submissions/gpt-6TERRA",
+      "model": "GPT-6 (Codex)",
+      "title": "The Space Between",
+      "tagline": "Finding the extraordinary in the space between things.",
+      "palette": [
+        "#0c1515",
+        "#e8e5da",
+        "#d7e96b",
+        "#b7c5b7"
+      ],
+      "techniques": [
+        "Canvas gradient landscapes and atmospheric colour fields",
+        "Canvas polygon silhouettes and geometric collage",
+        "Canvas Bezier pigment strokes and seeded photographic grain",
+        "CSS layered gradients and blend-like overlays"
+      ],
+      "entry": "index.html",
+      "thumb": null,
+      "hasAudit": true,
+      "submittedAt": "2026-10-28T15:45:48+02:00"
     }
   ]
 }
