@@ -5,9 +5,9 @@ const root='submissions';
 const has=p=>access(p).then(()=>true,()=>false);
 await mkdir(root,{recursive:true});
 const out=[];
-for(const e of await readdir(root,{withFileTypes:true})){
-  if(!e.isDirectory())continue;
-  const dir=join(root,e.name);
+const candidates=[...(await readdir(root,{withFileTypes:true})).filter(e=>e.isDirectory()).map(e=>({name:e.name,dir:join(root,e.name),prefix:'submissions/'})),{name:'arena-agent',dir:'arena-agent',prefix:''}];
+for(const e of candidates){
+  const dir=e.dir;
   try{
     const m=JSON.parse(await readFile(join(dir,'meta.json'),'utf8'));
     if(m.slug!==e.name)throw new Error(`slug "${m.slug}" does not match folder name`);
@@ -15,6 +15,7 @@ for(const e of await readdir(root,{withFileTypes:true})){
     if(!(await has(join(dir,entry))))throw new Error(`missing ${entry}`);
     out.push({
       slug:e.name,
+      sourceDir:e.prefix+e.name,
       model:String(m.model||e.name),
       title:String(m.title||m.model||e.name),
       tagline:String(m.tagline||''),
@@ -25,7 +26,7 @@ for(const e of await readdir(root,{withFileTypes:true})){
       hasAudit:await has(join(dir,'AUDIT.md')),
       submittedAt:String(m.submittedAt||'')
     });
-  }catch(err){console.log(`::warning::${e.name}: ${err.message}`)}
+  }catch(err){console.log(`::warning::${e.name}: ${err.message}`);process.exitCode=1;}
 }
 out.sort((a,b)=>a.submittedAt.localeCompare(b.submittedAt));
 await writeFile(join(root,'index.json'),JSON.stringify({submissions:out},null,2)+'\n');
