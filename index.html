@@ -89,7 +89,7 @@ const $=(s,r=document)=>r.querySelector(s);
 const grid=$('#grid'),viewer=$('#viewer'),frame=$('#frame'),main=$('#main'),state=$('#state');
 let items=[],cur=-1,lastFocus=null;
 const el=(t,c,x)=>{const n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n};
-const base=s=>'submissions/'+encodeURIComponent(s.slug)+'/';
+const base=s=>(s.sourceDir||('submissions/'+s.slug)).split('/').map(encodeURIComponent).join('/')+'/';
 const path=(s,f)=>base(s)+f.split('/').map(encodeURIComponent).join('/');
 
 const ro=new ResizeObserver(es=>es.forEach(e=>{const f=e.target.querySelector('iframe');if(f)f.style.transform='scale('+e.contentRect.width/1440+')'}));
@@ -174,7 +174,7 @@ $('#q').oninput=render;$('#sort').onchange=render;
       d=await r.json();
       if(!Array.isArray(d.submissions))throw new Error('Invalid deployed manifest');
     }
-    items=d.submissions.filter(s=>s&&/^[a-z0-9-]+$/.test(s.slug)&&s.entry==='index.html')
+    items=d.submissions.filter(s=>s&&/^[a-zA-Z0-9-]+$/.test(s.slug)&&s.entry==='index.html')
       .sort((a,b)=>String(a.submittedAt).localeCompare(String(b.submittedAt))||a.slug.localeCompare(b.slug));
     items.forEach((s,i)=>s.n=i+1);
   }catch(e){
