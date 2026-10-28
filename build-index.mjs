@@ -5,7 +5,7 @@ const root='submissions';
 const has=p=>access(p).then(()=>true,()=>false);
 await mkdir(root,{recursive:true});
 const out=[];
-const candidates=[...(await readdir(root,{withFileTypes:true})).filter(e=>e.isDirectory()).map(e=>({name:e.name,dir:join(root,e.name),prefix:'submissions/'})),{name:'arena-agent',dir:'arena-agent',prefix:''}];
+const candidates=(await readdir(root,{withFileTypes:true})).filter(e=>e.isDirectory()).map(e=>({name:e.name,dir:join(root,e.name),prefix:'submissions/'}));
 for(const e of candidates){
   const dir=e.dir;
   try{

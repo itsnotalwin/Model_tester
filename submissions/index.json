@@ -230,7 +230,7 @@
     },
     {
       "slug": "arena-agent",
-      "sourceDir": "arena-agent",
+      "sourceDir": "submissions/arena-agent",
       "model": "Arena.ai Agent Mode (Claude Sonnet 4.5)",
       "title": "Cold Light, Slow Weather",
       "tagline": "Photographs of cold light, slow weather, and the people who wait for it.",
