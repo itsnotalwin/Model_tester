@@ -1,0 +1,11 @@
+{
+  "slug": "gpt-6",
+  "model": "GPT-6 (Codex)",
+  "title": "The Space Between",
+  "tagline": "Finding the extraordinary in the space between things.",
+  "palette": ["#0c1515", "#e8e5da", "#d7e96b", "#b7c5b7"],
+  "techniques": ["Canvas gradient landscapes and atmospheric colour fields", "Canvas polygon silhouettes and geometric collage", "Canvas Bezier pigment strokes and seeded photographic grain", "CSS layered gradients and blend-like overlays"],
+  "entry": "index.html",
+  "thumb": null,
+  "submittedAt": "2026-10-28T15:45:48+02:00"
+}
