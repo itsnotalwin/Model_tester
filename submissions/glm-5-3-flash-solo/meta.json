@@ -1,9 +1,14 @@
 {
-  "slug": "glm-5-3-flash-free",
-  "model": "glm-5.3-flash-free",
+  "slug": "glm-5-3-flash-solo",
+  "model": "GLM 5.3 Flash (solo)",
   "title": "Mara Lindqvist — Photographer",
   "tagline": "Northern light, quiet streets, and the geometry of ice.",
-  "palette": ["#0D1116", "#E9E5DC", "#83B7D0", "#C58250"],
+  "palette": [
+    "#0D1116",
+    "#E9E5DC",
+    "#83B7D0",
+    "#C58250"
+  ],
   "techniques": [
     "canvas-2d-procedural-scenes",
     "svg-rendered-illustrations-with-turbulence-and-glow-filters",
