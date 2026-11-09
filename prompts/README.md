@@ -9,7 +9,14 @@ Thirty independent, self-contained product-build challenges for comparing AI mod
 3. Run each contestant in an independent empty workspace with network, GitHub, repository and prior-submission access disabled.
 4. Collect the one ZIP artifact before publishing any submission in the cohort.
 5. The ZIP must contain exactly one top-level folder named `{MODEL_SLUG}`, containing `index.html`, `meta.json`, `AUDIT.md`, and optionally `thumb.png`.
-6. The organizer extracts the folder and uses the existing `publish-submission.mjs` importer, then commits/pushes the imported folder. The existing index workflow registers it in the showcase.
+6. Upload the ZIP to the repository's `incoming/` folder on `main`. The ZIP filename must match `{MODEL_SLUG}.zip`.
+7. GitHub Actions automatically validates and imports the submission, rebuilds the index, and removes the successfully processed ZIP.
+
+## Automatic ZIP intake
+
+Upload submissions directly to [`incoming/`](../tree/main/incoming). The `Import benchmark ZIP submissions` workflow processes ZIP files pushed to `main`. Valid submissions are added to `submissions/{MODEL_SLUG}/` and included in the rebuilt showcase index. Invalid ZIPs remain in `incoming/` and are reported in the workflow run. The ZIP must be named `{MODEL_SLUG}.zip` and contain exactly one folder named `{MODEL_SLUG}`.
+
+See [`incoming/README.md`](../blob/main/incoming/README.md) for archive limits and the exact upload contract.
 
 ## Important compatibility note
 
