@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Safely import one benchmark submission ZIP into submissions/<slug>/."""
 import json
-import os
 import re
 import stat
 import subprocess
@@ -12,7 +11,6 @@ from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 ALLOWED = {"index.html", "meta.json", "AUDIT.md", "thumb.png"}
-REQUIRED = {"index.html", "meta.json", "AUDIT.md"}
 MAX_ARCHIVE = 30 * 1024 * 1024
 MAX_TOTAL = 25 * 1024 * 1024
 MAX_RATIO = 200
@@ -43,7 +41,7 @@ def main():
         total_size = 0
         for info in infos:
             name = info.filename
-            if "\\\\" in name or name.startswith("/"):
+            if "\\" in name or name.startswith("/"):
                 reject("Unsafe ZIP path: " + name)
             path = PurePosixPath(name)
             if any(part in ("", ".", "..") for part in path.parts):
@@ -82,9 +80,11 @@ def main():
         slug = next(iter(root_names))
         if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
             reject("Top-level folder must use the assigned lowercase model slug.")
+        if archive_path.stem != slug:
+            reject("ZIP filename must match its top-level model slug: " + slug + ".zip")
         expected = {f"{slug}/{name}" for name in ALLOWED}
         actual = set(files)
-        if not REQUIRED.issubset({PurePosixPath(p).name for p in actual}):
+        if not {"index.html", "meta.json", "AUDIT.md"}.issubset({PurePosixPath(p).name for p in actual}):
             reject("ZIP is missing index.html, meta.json or AUDIT.md.")
         if any(not p.startswith(slug + "/") for p in actual):
             reject("All files must be inside the single top-level folder.")
