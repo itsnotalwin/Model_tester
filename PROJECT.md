@@ -1,11 +1,11 @@
 # PROJECT.md — Model_tester
 
 ## Purpose
-A reproducible benchmark for comparing AI models on substantial software-building challenges. It includes 30 standalone Markdown prompts, a public results showcase, an organizer-only artifact importer, and automated ZIP intake.
+A reproducible benchmark for comparing AI models on substantial software-building and creative-production challenges. It includes 31 standalone Markdown prompts, a public results showcase, an organizer-only artifact importer, and automated ZIP intake.
 
 ## Architecture
 - `index.html` — public benchmark and submission showcase.
-- `prompts/` — 30 challenge prompts and their index.
+- `prompts/` — 31 challenge prompts and their index.
 - `incoming/` — organizer upload drop for model ZIP artifacts.
 - `scripts/` — safe ZIP validation and handoff to the existing publisher.
 - `.github/workflows/` — ZIP intake, index rebuild and repository checks.
@@ -21,7 +21,7 @@ A reproducible benchmark for comparing AI models on substantial software-buildin
 - GitHub Pages publishes the showcase from the repository's configured Pages source.
 
 ## Current state
-Verified on 9 November 2026: 30 Markdown challenges exist; automatic ZIP intake has been added. The ZIP workflow is committed, but a real uploaded model ZIP has not yet completed an end-to-end test.
+Verified on 10 November 2026: 31 standalone Markdown challenges exist, including a new original manga-booklet production challenge; automatic ZIP intake has been added. The ZIP workflow is committed, but a real uploaded model ZIP has not yet completed an end-to-end test.
 
 ## Decisions and constraints
 - Keep submission folders append-only. Existing slugs are never overwritten.
