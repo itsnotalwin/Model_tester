@@ -1,10 +1,10 @@
 # Context: prompts
 
 ## Purpose
-Holds the 30 independent Markdown challenges used to compare model software-building capability.
+Holds 31 independent, self-contained Markdown challenges used to compare model software-building and creative-production capability.
 
 ## Key files
-- `01-*.md` through `30-*.md` — standalone challenge prompts.
+- `01-*.md` through `31-*.md` — standalone challenge prompts.
 - `README.md` — prompt index, blind-run guidance, artifact contract and upload instructions.
 
 ## Connections
