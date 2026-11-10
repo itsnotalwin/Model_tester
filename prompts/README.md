@@ -1,6 +1,6 @@
-# THE GAUNTLET 30 — Prompt Suite
+# THE GAUNTLET 31 — Prompt Suite
 
-Thirty independent, self-contained product-build challenges for comparing AI models on substantial software creation.
+Thirty-one independent, self-contained product-build challenges for comparing AI models on substantial software creation.
 
 ## How to run
 
@@ -58,6 +58,7 @@ Use the same prompt version, model-specific slug substitution policy, runtime re
 - **28. The Logistics Empire** — Advanced Engineering — `prompts/28-LOGISTICS-EMPIRE.md`
 - **29. The Autonomous Civilization** — Advanced Engineering — `prompts/29-AUTONOMOUS-CIVILIZATION.md`
 - **30. The Living World** — Advanced Engineering — `prompts/30-LIVING-WORLD.md`
+- **31. The Manga Booklet** — Creative Publishing — `prompts/31-MANGA-BOOKLET.md`
 
 ## Common judging rubric (100 points)
 
